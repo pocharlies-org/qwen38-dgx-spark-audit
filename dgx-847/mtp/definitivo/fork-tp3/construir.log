@@ -1,0 +1,120 @@
+== dgx1 2026-10-14T09:40:19+02:00 | libres 96 GB | fuente /home/dibanerz/.cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3-e768 | copia /home/dibanerz/.cache/huggingface/hub/models--local-inference-lab--Qwen3.8-Flash-Next-NVFP4/snapshots/7c4f1bc1a2d6847e0cbc01ac6b823f00251de8dd/.
+== 1/2 plan (check, sin escribir)
+relleno: 2 tensores {'vocab_crop': 2}
+PLE: 0 capas, 0 shards descuantizados, 0 escalas por shard descartadas
+  model.language_model.layers.1: filas 320001536 -> 320001792 (divisor 384->384), por rango 106667264, shards de 2500014 en la imagen vs 2500012 en el checkpoint (los QWEN_TP3_PLE_SHARD_SKIP los descarta y manda las filas al NVMe)
+config.json (text_config): {'num_key_value_heads': 6, 'linear_num_key_heads': 24, 'linear_num_value_heads': 72, 'shared_expert_intermediate_size': 768, 'moe_intermediate_size': 768, 'vocab_size': 248320, 'make_ngram_vocab_size_divisible_by': 384, 'ple_embedding_dtype': 'float8_e4m3fn'}
+  fork model.language_model.layers.1: vocabulario 248448->248320 filas; PLE 128 partes de 2500012 -> 2500014 filas (tabla 320,001,536 -> 320,001,792, relleno 256 al final); reescribe 17 ficheros
+  model-00002-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00005-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00007-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00009-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00011-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00013-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00015-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00017-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00019-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00021-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00023-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00025-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00027-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00029-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00031-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00033-of-00036.safetensors: 3,200,019,256 bytes de salida
+  model-00034-of-00036.safetensors: 4,845,321,342 bytes de salida
+  vista: 56,045,629,438 reescritos + 85,809,426,000 copiados (19 shards) = 132.1 GiB
+== 2/2 convert --fork-view
+AVISO (config distinta de la que DGX-780 esperaba): num_key_value_heads: esperado 2, visto 6
+AVISO (config distinta de la que DGX-780 esperaba): linear_num_key_heads: esperado 16, visto 24
+AVISO (config distinta de la que DGX-780 esperaba): linear_num_value_heads: esperado 48, visto 72
+AVISO (config distinta de la que DGX-780 esperaba): shared_expert_intermediate_size: esperado 640, visto 768
+AVISO (config distinta de la que DGX-780 esperaba): moe_intermediate_size: esperado 640, visto 768
+AVISO (config distinta de la que DGX-780 esperaba): full_attention_interval: esperado 4, visto None
+AVISO (config distinta de la que DGX-780 esperaba): vocab_size: esperado 248320, visto 248448
+AVISO (config distinta de la que DGX-780 esperaba): make_ngram_vocab_size_divisible_by: esperado 128, visto 384
+relleno: 2 tensores {'vocab_crop': 2}
+PLE: 0 capas, 0 shards descuantizados, 0 escalas por shard descartadas
+  model.language_model.layers.1: filas 320001536 -> 320001792 (divisor 384->384), por rango 106667264, shards de 2500014 en la imagen vs 2500012 en el checkpoint (los QWEN_TP3_PLE_SHARD_SKIP los descarta y manda las filas al NVMe)
+config.json (text_config): {'num_key_value_heads': 6, 'linear_num_key_heads': 24, 'linear_num_value_heads': 72, 'shared_expert_intermediate_size': 768, 'moe_intermediate_size': 768, 'vocab_size': 248320, 'make_ngram_vocab_size_divisible_by': 384, 'ple_embedding_dtype': 'float8_e4m3fn'}
+  fork model.language_model.layers.1: vocabulario 248448->248320 filas; PLE 128 partes de 2500012 -> 2500014 filas (tabla 320,001,536 -> 320,001,792, relleno 256 al final); reescribe 17 ficheros
+  model-00002-of-00036.safetensors: 3,200,019,256 bytes sha256=e63c14ba51e7d854
+  model-00005-of-00036.safetensors: 3,200,019,256 bytes sha256=779ddada8b34c8d0
+  model-00007-of-00036.safetensors: 3,200,019,256 bytes sha256=3000853dc4dbf8d2
+  model-00009-of-00036.safetensors: 3,200,019,256 bytes sha256=118e676586547ceb
+  model-00011-of-00036.safetensors: 3,200,019,256 bytes sha256=09530e6b5cc37425
+  model-00013-of-00036.safetensors: 3,200,019,256 bytes sha256=f8a755e52f816aee
+  model-00015-of-00036.safetensors: 3,200,019,256 bytes sha256=f0d76ac81d31c249
+  model-00017-of-00036.safetensors: 3,200,019,256 bytes sha256=a5335b9b1e3306af
+  model-00019-of-00036.safetensors: 3,200,019,256 bytes sha256=55a9da18e3665b6b
+  model-00021-of-00036.safetensors: 3,200,019,256 bytes sha256=fed8a5b9e723d614
+  model-00023-of-00036.safetensors: 3,200,019,256 bytes sha256=0beb0d6ffd9246fd
+  model-00025-of-00036.safetensors: 3,200,019,256 bytes sha256=8a7c5c8ccf2561a0
+  model-00027-of-00036.safetensors: 3,200,019,256 bytes sha256=45b34f2fe7924d26
+  model-00029-of-00036.safetensors: 3,200,019,256 bytes sha256=28da238822d65df3
+  model-00031-of-00036.safetensors: 3,200,019,256 bytes sha256=4cf12fe26e155de4
+  model-00033-of-00036.safetensors: 3,200,019,256 bytes sha256=24c25fe9c1fa56f2
+  model-00034-of-00036.safetensors: 4,845,321,342 bytes sha256=0054eb1b1609f283
+  model-00001-of-00036.safetensors: 5,097,976,280 bytes enlazado sha256=1d1fd97d5e9cbaf6
+  model-00003-of-00036.safetensors: 1,764,827,728 bytes enlazado sha256=80a9f23985625496
+  model-00004-of-00036.safetensors: 5,097,980,600 bytes enlazado sha256=91778636647c1108
+  model-00006-of-00036.safetensors: 5,097,980,600 bytes enlazado sha256=000da1765939f442
+  model-00008-of-00036.safetensors: 5,097,992,696 bytes enlazado sha256=b82fe3c33165204a
+  model-00010-of-00036.safetensors: 5,097,994,424 bytes enlazado sha256=4b8866082082b1a1
+  model-00012-of-00036.safetensors: 5,097,994,424 bytes enlazado sha256=e46f908908165661
+  model-00014-of-00036.safetensors: 5,097,994,424 bytes enlazado sha256=756327f4a8447c02
+  model-00016-of-00036.safetensors: 5,097,994,424 bytes enlazado sha256=b7139661f1cab0ff
+  model-00018-of-00036.safetensors: 5,097,994,424 bytes enlazado sha256=282a05fa4e194a73
+  model-00020-of-00036.safetensors: 5,097,994,424 bytes enlazado sha256=2a89d8a6808bf73f
+  model-00022-of-00036.safetensors: 5,097,994,424 bytes enlazado sha256=d8efb64748055078
+  model-00024-of-00036.safetensors: 5,097,994,424 bytes enlazado sha256=1f274c84950fbe73
+  model-00026-of-00036.safetensors: 5,097,994,424 bytes enlazado sha256=18128abab11d1b57
+  model-00028-of-00036.safetensors: 5,097,994,424 bytes enlazado sha256=5ed2c20f2cb0f0ad
+  model-00030-of-00036.safetensors: 5,097,994,424 bytes enlazado sha256=caea1277e8e6c364
+  model-00032-of-00036.safetensors: 5,097,994,424 bytes enlazado sha256=c5b8770dab12ae82
+  model-00035-of-00036.safetensors: 2,467,065,040 bytes enlazado sha256=2d678a8ee451b45c
+  model-00036-of-00036.safetensors: 9,669,968 bytes enlazado sha256=72c76c2b5249adfe
+index: 301710 tensores, 141,814,532,310 bytes tiles, 0 escalas PLE fuera
+== verify --fork-view
+AVISO (config distinta de la que DGX-780 esperaba): num_key_value_heads: esperado 2, visto 6
+AVISO (config distinta de la que DGX-780 esperaba): linear_num_key_heads: esperado 16, visto 24
+AVISO (config distinta de la que DGX-780 esperaba): linear_num_value_heads: esperado 48, visto 72
+AVISO (config distinta de la que DGX-780 esperaba): shared_expert_intermediate_size: esperado 640, visto 768
+AVISO (config distinta de la que DGX-780 esperaba): moe_intermediate_size: esperado 640, visto 768
+AVISO (config distinta de la que DGX-780 esperaba): full_attention_interval: esperado 4, visto None
+AVISO (config distinta de la que DGX-780 esperaba): vocab_size: esperado 248320, visto 248448
+AVISO (config distinta de la que DGX-780 esperaba): make_ngram_vocab_size_divisible_by: esperado 128, visto 384
+relleno: 2 tensores {'vocab_crop': 2}
+PLE: 0 capas, 0 shards descuantizados, 0 escalas por shard descartadas
+  model.language_model.layers.1: filas 320001536 -> 320001792 (divisor 384->384), por rango 106667264, shards de 2500014 en la imagen vs 2500012 en el checkpoint (los QWEN_TP3_PLE_SHARD_SKIP los descarta y manda las filas al NVMe)
+config.json (text_config): {'num_key_value_heads': 6, 'linear_num_key_heads': 24, 'linear_num_value_heads': 72, 'shared_expert_intermediate_size': 768, 'moe_intermediate_size': 768, 'vocab_size': 248320, 'make_ngram_vocab_size_divisible_by': 384, 'ple_embedding_dtype': 'float8_e4m3fn'}
+  fork model.language_model.layers.1: vocabulario 248448->248320 filas; PLE 128 partes de 2500012 -> 2500014 filas (tabla 320,001,536 -> 320,001,792, relleno 256 al final); reescribe 17 ficheros
+verify pasa=True errores=0 avisos=[]
+== convert --mxfp8-copy (shard 35 de la copia MXFP8)
+AVISO (--mxfp8-copy): se ignoran 35 ficheros referenciados y no presentes (la copia solo trae ['model-00035-of-00036.safetensors'])
+AVISO (config distinta de la que DGX-780 esperaba): full_attention_interval: esperado 4, visto None
+AVISO (config distinta de la que DGX-780 esperaba): ple_embedding_dtype: esperado 'float8_e4m3fn', visto 'nvfp4'
+relleno: 408 tensores {'ab': 144, 'kv': 48, 'out': 72, 'qkv': 72, 'z': 72}
+PLE: 0 capas, 0 shards descuantizados, 0 escalas por shard descartadas
+config.json (text_config): {'num_key_value_heads': 6, 'linear_num_key_heads': 24, 'linear_num_value_heads': 72, 'shared_expert_intermediate_size': 768, 'moe_intermediate_size': 640, 'vocab_size': 248448, 'make_ngram_vocab_size_divisible_by': 128, 'tp3_orig_vocab_size': 248320, 'ple_embedding_dtype': 'float8_e4m3fn'}
+  copia MXFP8: 408 tensores rellenos en 1 ficheros presentes de la copia
+  model-00035-of-00036.safetensors: 3,926,866,248 bytes sha256=74023b81f8234ffe
+index: 480 tensores, 3,926,799,360 bytes tiles, 0 escalas PLE fuera
+== verify --mxfp8-copy
+AVISO (--mxfp8-copy): se ignoran 35 ficheros referenciados y no presentes (la copia solo trae ['model-00035-of-00036.safetensors'])
+AVISO (config distinta de la que DGX-780 esperaba): full_attention_interval: esperado 4, visto None
+AVISO (config distinta de la que DGX-780 esperaba): ple_embedding_dtype: esperado 'float8_e4m3fn', visto 'nvfp4'
+relleno: 408 tensores {'ab': 144, 'kv': 48, 'out': 72, 'qkv': 72, 'z': 72}
+PLE: 0 capas, 0 shards descuantizados, 0 escalas por shard descartadas
+config.json (text_config): {'num_key_value_heads': 6, 'linear_num_key_heads': 24, 'linear_num_value_heads': 72, 'shared_expert_intermediate_size': 768, 'moe_intermediate_size': 640, 'vocab_size': 248448, 'make_ngram_vocab_size_divisible_by': 128, 'tp3_orig_vocab_size': 248320, 'ple_embedding_dtype': 'float8_e4m3fn'}
+  copia MXFP8: 408 tensores rellenos en 1 ficheros presentes de la copia
+verify pasa=True errores=0 avisos=[]
+== pruebas
+  config fork: vocab_size 248320 | tp3_orig_vocab_size fuera: True | divisor 384 | dtype PLE float8_e4m3fn | moe 768
+  qwen38fn-mtp-ursu-nvfp4-tp3-fork: 36 shards, 19 ENLAZADOS DUROS a su fuente
+  qwen38fn-mtp-ursu-mxfp8-tp3: 1 shards, 0 ENLAZADOS DUROS a su fuente
+  PLE en la vista: F8_E4M3 [2500014, 160] | en la fuente: [2500012, 160]
+  embed/lm_head: [248320, 2560] [248320, 2560] | escala global PLE: {'dtype': 'BF16', 'shape': [1], 'data_offsets': [280, 282]}
+  copia MXFP8: {'model.language_model.layers.0.linear_attn.in_proj_qkv.weight': ('F8_E4M3', [15360, 2560]), 'model.language_model.layers.0.linear_attn.out_proj.weight': ('F8_E4M3', [2560, 9216]), 'model.language_model.layers.0.linear_attn.in_proj_a.weight': ('F8_E4M3', [72, 2560])}
+  index copia: 480 tensores; config.json presente: False
+/dev/nvme0n1p2  916G  763G  106G  88% /
+== hecho 2026-10-14T09:44:25+02:00: MODEL_DIR=/home/dibanerz/.cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3-fork  VLLM_B12X_NVFP4_MXFP8_CHECKPOINT=/home/dibanerz/.cache/huggingface/qwen38fn-mtp-ursu-mxfp8-tp3

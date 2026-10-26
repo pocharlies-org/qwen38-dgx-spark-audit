@@ -1,0 +1,157 @@
+# DGX-852: el fork de ursuciprian en TP=3 (dgx2 head + dgx1 + dgx3) con E2 (SSM BF16 + GDN triton) y
+# el vocabulario del borrador en castellano. Copia de tp3/ursu-3x.yaml (el original de DGX-847 no se
+# toca) con tres cambios de bulto y ninguno de recursos:
+#  1. nombres y etiquetas propios (ursu-fork-3x-*, dgx-852=fork-tp3) y sus ConfigMaps, para no pisar
+#     los de DGX-847 si llegan a estar aplicados;
+#  2. el vocabulario del borrador: volumen del ConfigMap llm/qwen38fn-mtp-draft-vocab en
+#     /opt/mtp-vocab-es (readOnly), como hizo ops/prueba-e2.sh;
+#  3. `imagePullSecrets: harbor-pull` en los tres pods: el volumen de imagen `nccl-ring` se resuelve con
+#     las credenciales del pod y el SA `default` de llm no trae ninguna. Comprobado en vivo (14-10 08:09Z):
+#     en dgx3 el pull falla `no basic auth credentials` -> ErrImagePull, y el montaje del recipe cae despues.
+#     El secreto existe en llm (144 d, cubre internal.example); falta solo enlazarlo. Los manifiestos
+#     de DGX-847 (el residente y su 3x) tampoco lo llevan.
+#  4. dgx3 lee el cache de dgx1 por la PVC de NFS que ya usa el residente TP=3
+#     (hf-cache-dgx1-dgx3-llm-ro, server 10.0.2.1, ro vers=3 proto=rdma) en lugar del hostPath
+#     /srv/models/hf-ursu: así NO hay que copiar 133 GB a dgx3 y la ruta /cache/huggingface/… es la
+#     misma en los tres rangos. El xdg de compilación va a /srv/ursu-cache/fork-3x para no mezclar
+#     cachés con otra corrida.
+# REQUIERE las dos vistas construidas en dgx1 (construir-vistas.sh). apply: aplicar-3x.sh, solo con la
+# ventana abierta (ahora corren ahí ursu-2x-head/worker y ursu-1x). Nada de esto toca el residente.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: ursu-fork-3x-head, namespace: llm, labels: {app: ursu-fork-3x-head, dgx-852: fork-tp3}}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector: {matchLabels: {app: ursu-fork-3x-head}}
+  template:
+    metadata: {labels: {app: ursu-fork-3x-head, dgx-852: fork-tp3}}
+    spec:
+      nodeSelector: {kubernetes.io/hostname: gx10-ec3d}
+      tolerations: [{operator: Exists}]
+      hostNetwork: true
+      hostIPC: true
+      dnsPolicy: ClusterFirstWithHostNet
+      imagePullSecrets: [{name: harbor-pull}]
+      containers:
+      - name: vllm
+        image: ghcr.io/ursuciprian/spark-vllm-b12x@sha256:8abb60eeeb79ca13680341c17d87975801da1218c06df2505856b23da7ed1821
+        securityContext: {privileged: true}
+        args: [bash, /etc/ursu/serve-3x.sh]
+        envFrom: [{configMapRef: {name: ursu-fork-env-3x}}]
+        env:
+        - {name: NODE_RANK, value: "0"}
+        - {name: HEADLESS, value: ""}
+        - {name: VLLM_HOST_IP, value: spark2}
+        - {name: QWEN_NCCL_RING_HOST, value: dgx2}
+        resources: {requests: {memory: 16Gi}, limits: {nvidia.com/gpu: 1, memory: 112Gi}}
+        readinessProbe: {httpGet: {path: /health, port: 8000}, periodSeconds: 10}
+        volumeMounts:
+        - {name: recipe, mountPath: /etc/ursu}
+        - {name: hf, mountPath: /cache/huggingface, readOnly: true}
+        - {name: mtp-vocab-es, mountPath: /opt/mtp-vocab-es, readOnly: true}
+        - {name: xdg, mountPath: /cache/xdg}
+        - {name: nccl-ring, mountPath: /opt/nccl-ring, subPath: opt/nccl-ring, readOnly: true}
+        - {name: shm, mountPath: /dev/shm}
+      volumes:
+      - {name: recipe, configMap: {name: ursu-fork-recipe-3x}}
+      - {name: hf, persistentVolumeClaim: {claimName: hf-cache-nvidia-dgx-ro, readOnly: true}}
+      - {name: mtp-vocab-es, configMap: {name: qwen38fn-mtp-draft-vocab}}
+      - {name: xdg, hostPath: {path: /srv/ursu-cache/fork-3x, type: DirectoryOrCreate}}
+      - name: nccl-ring
+        image:
+          reference: internal.example/homelab/nccl-ring@sha256:79db26e7877a099847cf12c2067a3dd3f02156c51a0d77386691b272316ce77e
+          pullPolicy: IfNotPresent
+      - {name: shm, emptyDir: {medium: Memory, sizeLimit: 25Gi}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: ursu-fork-3x-worker-dgx1, namespace: llm, labels: {app: ursu-fork-3x-worker-dgx1, dgx-852: fork-tp3}}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector: {matchLabels: {app: ursu-fork-3x-worker-dgx1}}
+  template:
+    metadata: {labels: {app: ursu-fork-3x-worker-dgx1, dgx-852: fork-tp3}}
+    spec:
+      nodeSelector: {kubernetes.io/hostname: nvidia-dgx}
+      tolerations: [{operator: Exists}]
+      hostNetwork: true
+      hostIPC: true
+      dnsPolicy: ClusterFirstWithHostNet
+      imagePullSecrets: [{name: harbor-pull}]
+      containers:
+      - name: vllm
+        image: ghcr.io/ursuciprian/spark-vllm-b12x@sha256:8abb60eeeb79ca13680341c17d87975801da1218c06df2505856b23da7ed1821
+        securityContext: {privileged: true}
+        args: [bash, /etc/ursu/serve-3x.sh]
+        envFrom: [{configMapRef: {name: ursu-fork-env-3x}}]
+        env:
+        - {name: NODE_RANK, value: "1"}
+        - {name: HEADLESS, value: --headless}
+        - {name: VLLM_HOST_IP, value: spark1}
+        - {name: QWEN_NCCL_RING_HOST, value: dgx1}
+        resources: {requests: {memory: 16Gi}, limits: {nvidia.com/gpu: 1, memory: 112Gi}}
+        volumeMounts:
+        - {name: recipe, mountPath: /etc/ursu}
+        - {name: hf, mountPath: /cache/huggingface, readOnly: true}
+        - {name: mtp-vocab-es, mountPath: /opt/mtp-vocab-es, readOnly: true}
+        - {name: xdg, mountPath: /cache/xdg}
+        - {name: nccl-ring, mountPath: /opt/nccl-ring, subPath: opt/nccl-ring, readOnly: true}
+        - {name: shm, mountPath: /dev/shm}
+      volumes:
+      - {name: recipe, configMap: {name: ursu-fork-recipe-3x}}
+      - {name: hf, hostPath: {path: /home/dibanerz/.cache/huggingface, type: Directory}}
+      - {name: mtp-vocab-es, configMap: {name: qwen38fn-mtp-draft-vocab}}
+      - {name: xdg, hostPath: {path: /srv/ursu-cache/fork-3x, type: DirectoryOrCreate}}
+      - name: nccl-ring
+        image:
+          reference: internal.example/homelab/nccl-ring@sha256:79db26e7877a099847cf12c2067a3dd3f02156c51a0d77386691b272316ce77e
+          pullPolicy: IfNotPresent
+      - {name: shm, emptyDir: {medium: Memory, sizeLimit: 25Gi}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: ursu-fork-3x-worker-dgx3, namespace: llm, labels: {app: ursu-fork-3x-worker-dgx3, dgx-852: fork-tp3}}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector: {matchLabels: {app: ursu-fork-3x-worker-dgx3}}
+  template:
+    metadata: {labels: {app: ursu-fork-3x-worker-dgx3, dgx-852: fork-tp3}}
+    spec:
+      nodeSelector: {kubernetes.io/hostname: dgx3}
+      tolerations: [{operator: Exists}]
+      hostNetwork: true
+      hostIPC: true
+      dnsPolicy: ClusterFirstWithHostNet
+      imagePullSecrets: [{name: harbor-pull}]
+      containers:
+      - name: vllm
+        image: ghcr.io/ursuciprian/spark-vllm-b12x@sha256:8abb60eeeb79ca13680341c17d87975801da1218c06df2505856b23da7ed1821
+        securityContext: {privileged: true}
+        args: [bash, /etc/ursu/serve-3x.sh]
+        envFrom: [{configMapRef: {name: ursu-fork-env-3x}}]
+        env:
+        - {name: NODE_RANK, value: "2"}
+        - {name: HEADLESS, value: --headless}
+        - {name: VLLM_HOST_IP, value: spark3}
+        - {name: QWEN_NCCL_RING_HOST, value: dgx3}
+        resources: {requests: {memory: 16Gi}, limits: {nvidia.com/gpu: 1, memory: 112Gi}}
+        volumeMounts:
+        - {name: recipe, mountPath: /etc/ursu}
+        - {name: hf, mountPath: /cache/huggingface, readOnly: true}
+        - {name: mtp-vocab-es, mountPath: /opt/mtp-vocab-es, readOnly: true}
+        - {name: xdg, mountPath: /cache/xdg}
+        - {name: nccl-ring, mountPath: /opt/nccl-ring, subPath: opt/nccl-ring, readOnly: true}
+        - {name: shm, mountPath: /dev/shm}
+      volumes:
+      - {name: recipe, configMap: {name: ursu-fork-recipe-3x}}
+      - {name: hf, persistentVolumeClaim: {claimName: hf-cache-dgx1-dgx3-llm-ro, readOnly: true}}
+      - {name: mtp-vocab-es, configMap: {name: qwen38fn-mtp-draft-vocab}}
+      - {name: xdg, hostPath: {path: /srv/ursu-cache/fork-3x, type: DirectoryOrCreate}}
+      - name: nccl-ring
+        image:
+          reference: internal.example/homelab/nccl-ring@sha256:79db26e7877a099847cf12c2067a3dd3f02156c51a0d77386691b272316ce77e
+          pullPolicy: IfNotPresent
+      - {name: shm, emptyDir: {medium: Memory, sizeLimit: 25Gi}}

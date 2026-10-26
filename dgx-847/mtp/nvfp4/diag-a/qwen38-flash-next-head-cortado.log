@@ -1,0 +1,630 @@
+QWEN_NCCL_RING host=dgx2 NCCL_IB_HCA==rocep1s0f0,rocep1s0f1,roceP2p1s0f0,roceP2p1s0f1 NCCL_GRAPH_FILE=/tmp/nccl-graph.xml
+<graphs version="1">
+  <graph id="0" pattern="4" crossnic="1" nchannels="2" speedintra="40" speedinter="12" latencyinter="0" typeintra="LOC" typeinter="PHB" samechannels="0">
+    <channel>
+      <net dev="1"/>
+      <gpu dev="0"/>
+      <net dev="0"/>
+    </channel>
+    <channel>
+      <net dev="3"/>
+      <gpu dev="0"/>
+      <net dev="2"/>
+    </channel>
+  </graph>
+</graphs>
+QWEN_TP3_PREFLIGHT ok rank=0 hcas=rocep1s0f0,rocep1s0f1,roceP2p1s0f0,roceP2p1s0f1 gid=3 mtu=9000
+[qwen38next-rank1] anclaje aplicado: 6 sitios target + 3 drafter
+[qwen38next-runtime] lambda por peticion conectado: 5 ficheros
+[refusal-probe] sonda cableada: 9 ficheros
+1) un writer                       err_max=4.768e-06
+2) suma de 5 writers, 1 proyeccion err_max=9.537e-06
+3) embed_tokens (project_in)       err_max=2.384e-07
+4) apply_hc por stream             err_max=2.384e-07
+5) lambda=0 identidad bit a bit    True
+6) set_lambda muta in-place        True
+7) forma incorrecta -> RuntimeError True
+
+TODO OK
+rank1-refusal: cache_salt pide lambda 99.0, fuera de [-1.0, 4.0]; se usa el global
+OK   buffer por token: [0,0,1.5,1.5] -> [0.0, 0.0, 1.5, 1.5]
+OK   tramo lam=0 sale bit-exacto 
+OK   tramo lam=1.5 sale corregido 
+OK   tramo lam=1.5 == algebra del autor (W-lam*v(vW)) err_max=8.030e-03 (suelo bf16 sobre |y|~1)
+OK   sello 0.0 explicito != ausencia (pide base) 
+OK   slot reusado sin sello usa el global 
+OK   global 1.5 mueve a quien no trae sello 
+OK   sello con basura alrededor 
+OK   sello fuera de cota -> None 
+OK   sin sello -> None 
+TODO OK
+PASS  literal 'refusal:1.0' -> 1.0  -> 1.0
+PASS  otro valor 'refusal:1.5' -> 1.5  -> 1.5
+PASS  'refusal:0' -> 0.0 y no None  -> 0.0
+PASS  sin sello -> None (cae al global)  
+PASS  salt ajeno 'otra-cosa' -> None  -> None
+PASS  salt ajeno 'prefix-cache-v2' -> None  -> None
+PASS  salt ajeno 'refusal' -> None  -> None
+PASS  salt ajeno 'refusal:' -> None  -> None
+WARNING 10-13 17:24:35 [refusal_projection.py:128] rank1-refusal: cache_salt pide lambda 99.0, fuera de [-1.0, 4.0]; se usa el global
+PASS  'refusal:99' no cuela  -> None
+PASS  'refusal:-99' no cuela  -> None
+PASS  'refusal:abc' no cuela  -> None
+WARNING 10-13 17:24:37 [import_utils.py:429] Module deep_ep was found but failed to import
+WARNING 10-13 17:24:37 [import_utils.py:429] Traceback (most recent call last):
+WARNING 10-13 17:24:37 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/vllm/utils/import_utils.py", line 427, in _has_module
+WARNING 10-13 17:24:37 [import_utils.py:429]     importlib.import_module(module_name)
+WARNING 10-13 17:24:37 [import_utils.py:429]   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+WARNING 10-13 17:24:37 [import_utils.py:429]     return _bootstrap._gcd_import(name[level:], package, level)
+WARNING 10-13 17:24:37 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:24:37 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+WARNING 10-13 17:24:37 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+WARNING 10-13 17:24:37 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+WARNING 10-13 17:24:37 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+WARNING 10-13 17:24:37 [import_utils.py:429]   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+WARNING 10-13 17:24:37 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+WARNING 10-13 17:24:37 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 83, in <module>
+WARNING 10-13 17:24:37 [import_utils.py:429]     check_nccl_so()
+WARNING 10-13 17:24:37 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 59, in check_nccl_so
+WARNING 10-13 17:24:37 [import_utils.py:429]     assert so == loaded_nccl_so, f'Duplicate NCCL runtime found in the current system: {so} and {loaded_nccl_so}'
+WARNING 10-13 17:24:37 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:24:37 [import_utils.py:429] AssertionError: Duplicate NCCL runtime found in the current system: /opt/nccl-ring/lib/libnccl.so.2 and /usr/local/lib/python3.12/dist-packages/nvidia/nccl/lib/libnccl.so.2
+PASS  Worker.set_refusal_lambda alcanzable por collective_rpc  
+PASS  Worker.get_refusal_lambda alcanzable por collective_rpc  
+
+FALLOS: ninguno
+INFO 10-13 17:24:43 [refusal_projection.py:173] rank1-refusal: ACTIVA dir=/opt/refusal/refusal_direction_flashnext.npy hidden=2560 lambda=1.0000 device=cpu
+PASS  hay estado (si no, esto no probaria nada)  
+PASS  la forma separada se rechaza  -> rank1-refusal(hc): separado esperaba ultimo eje 10240, visto
+PASS  aplanar+project_hc == proyeccion por stream  max|delta|=0.00e+00
+PASS  no es un no-op  max|x-y|=0.2631
+
+FALLOS: ninguno
+INFO 10-13 17:24:45 [refusal_projection.py:147] rank1-refusal: sin VLLM_REFUSAL_DIRECTION, proyeccion DESACTIVADA
+PASS  A1 sin variable no hay estado  
+PASS  A2 identidad exacta torch.bfloat16  
+PASS  A2 identidad exacta torch.float16  
+PASS  A2 identidad exacta torch.float32  
+INFO 10-13 17:24:45 [refusal_projection.py:173] rank1-refusal: ACTIVA dir=/opt/refusal/refusal_direction_flashnext.npy hidden=2560 lambda=0.0000 device=cpu
+PASS  B1 con variable hay estado  
+PASS  B2 lambda es 0.0 exacto  lambda=0.0
+PASS  B3 max|delta| == 0 torch.bfloat16  max|delta|=0.0
+PASS  B4 bit-exact torch.bfloat16  
+PASS  B3 max|delta| == 0 torch.float16  max|delta|=0.0
+PASS  B4 bit-exact torch.float16  
+PASS  B3 max|delta| == 0 torch.float32  max|delta|=0.0
+PASS  B4 bit-exact torch.float32  
+PASS  C1 control negativo: lambda=1.5 mueve  max|delta|=0.3906
+PASS  C2 volver a 0 restaura la identidad  
+
+FALLOS: ninguno
+ok   models/qwen4_exp/nvidia/model.py
+ok   models/qwen4_exp/nvidia/mtp.py
+ok   v1/worker/gpu/refusal_utils.py
+
+gate de ambito OK: 3 ficheros, todos los nombres ligados
+--- produccion: 48 capas, ple en [2] (98 sitios registrados)
+  ok   verify_consumed('language_model.model.layers', 48, suffix='attn_out') -> registrados=48
+  ok   verify_consumed('language_model.model.layers', 48, suffix='mlp_out') -> registrados=48
+  ok   verify_consumed('language_model.model.layers', 1, suffix='ple') -> registrados=1
+--- control: 4 capas, ple en [1, 3] (11 sitios registrados)
+  ok   verify_consumed('language_model.model.layers', 4, suffix='attn_out') -> registrados=4
+  ok   verify_consumed('language_model.model.layers', 4, suffix='mlp_out') -> registrados=4
+  ok   verify_consumed('language_model.model.layers', 2, suffix='ple') -> registrados=2
+
+gate de cuentas OK: las 3 verificaciones casan en 2 topologias
+PASS  el runner llama al estado de refusal  5 llamadas
+PASS  nada arrasa el buffer tras fill_target  
+PASS  la neutralizacion del drafter sigue existiendo  lineas [2056]
+PASS  y esta pegada a speculator.propose()  draft=[2056] propose=[853, 2060]
+INFO 10-13 17:24:49 [refusal_projection.py:173] rank1-refusal: ACTIVA dir=/opt/refusal/refusal_direction_flashnext.npy hidden=2560 lambda=1.0000 device=cpu
+PASS  fill_target escribe lambda por peticion  tok[:6]=[0.0, 0.0, 0.0, 1.0, 1.0, 1.0]
+
+FALLOS: ninguno
+refusal-probe: calibracion /tmp/tmpksvyq3nc/cal.json invalida: {'id': 't3', 'feature': 'inventada', 'threshold': 1}
+refusal-probe: DESACTIVADA: model.layers.16: forma (3, 1280), se esperaba (N, 1x2560)
+OK   probe no modifica el tensor del forward 
+OK   capa 16 -> columna 0, coseno exacto 
+OK   capa 24 -> columna 1, invariante a escala 
+OK   hc=4: coseno de la suma de streams, tensor intacto 
+OK   el drafter MTP no pisa la capa 16 del target 
+OK   req 0: max/suma/n de SUS tres tokens 
+OK   req 1: max/suma/n de SUS dos tokens 
+OK   ultimo token por capa de cada peticion [0.20000000298023224, 0.20000000298023224] [0.6000000238418579, 0.800000011920929]
+OK   prefill por peticion 
+OK   prompt: max de todos los tramos 
+OK   prompt: ultimo token = el del ULTIMO tramo 
+OK   generacion cortada en GEN_WINDOW g_n=64.0
+OK   sin cal: score = prompt_last_mean {'v': 1, 'score': 0.3, 'feature': 'prompt_last_mean', 'flag': None, 'cal': None, 'layers': [16, 24], 'prompt_last': [0.2, 0.4], 'prompt_max': 0.9, 'prompt_mean': 0.26667, 'gen_max': 0.05, 'gen_mean': 0.02, 'prompt_last_mean': 0.3, 'prompt_n': 6, 'gen_n': 64}
+OK   sin cal: flag None y cal None 
+OK   finalize limpia el acumulador 
+OK   finalize sin tokens -> None 
+OK   gen_mean correcto 0.02
+OK   cal: por encima del umbral -> flag True 
+OK   cal: por debajo -> flag False 
+OK   cal releida por mtime sin reiniciar {'v': 1, 'score': 0.1, 'feature': 'prompt_last_mean', 'flag': True, 'cal': 't2', 'layers': [16, 24], 'prompt_last': [0.1, 0.1], 'prompt_max': 0.0, 'prompt_mean': 0.0, 'gen_max': None, 'gen_mean': None, 'prompt_last_mean': 0.1, 'prompt_n': 1, 'gen_n': 0}
+OK   cal invalida -> sin flag (nunca un veredicto inventado) {'v': 1, 'score': 0.9, 'feature': 'prompt_last_mean', 'flag': None, 'cal': None, 'layers': [16, 24], 'prompt_last': [0.9, 0.9], 'prompt_max': 0.0, 'prompt_mean': 0.0, 'gen_max': None, 'gen_mean': None, 'prompt_last_mean': 0.9, 'prompt_n': 1, 'gen_n': 0}
+OK   forma inesperada desactiva la sonda 
+OK   desactivada: step_stats -> None 
+OK   sin VLLM_REFUSAL_PROBE no se activa 
+OK   capas por entorno 
+OK   nan/inf no viajan como numero 
+
+0 fallos
+Ursucipian hybrid mod applied and CPU contracts passed
+QWEN_URSU_MOD instalado (marcador /opt/refusal/ursucipian-installed.json)
+QWEN_VLLM_EFFECTIVE rank=0 kv=fp8_e4m3 seqs=10 memutil=0.816 kvbytes=51539607552 headless=no v2runner=1 long_prefill_threshold=2048 mamba_ssm=bfloat16 ple=/ple scheduling_policy=priority
+QWEN_PATCH_58692 aplicado
+QWEN_PLE_MMAP aplicado en ngram_embedding.py, model_state.py; tabla /ple/table.u8 17066762240 bytes
+QWEN_KDET listo: /tmp/qwen38fn-kdet-075774603bd6cd84/build/_C_det.so (210 casos OK)
+QWEN_KDET cableado en /usr/local/lib/python3.12/dist-packages/vllm/models/qwen4_exp/nvidia/ops/qsa_indexer.py
+QWEN_FI_EP_UNEVEN aplicado
+QWEN_TP3_MTP_FC_REPLICATED aplicado
+QWEN_TP3_VOCAB_MASK aplicado (-inf en ids >= 248320 de 248448)
+QWEN_TP3_PLE_SHARD_SKIP aplicado
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+QWEN38_B12X rueda ok sha256=c97d88635521a7fd…
+QWEN38_B12X dependencias ok (11): torch=2.13.0+cu130, cuda-python=13.4.1, nvidia-cutlass-dsl=4.6.2, nvidia-cutlass-dsl-libs-base=4.6.2, nvidia-cutlass-dsl-libs-core=4.6.2, nvidia-cutlass-dsl-libs-cu12=4.6.2, nvidia-cutlass-dsl-libs-cu13=4.6.2, apache-tvm-ffi=0.1.11, rich=15.0.0, transformers=5.17.0, safetensors=0.8.0
+QWEN38_B12X instalado b12x==1.3.0 desde /cache/huggingface/wheelhouse/b12x-1.3.0
+QWEN38_B12X imports ok (6 submodulos)
+QWEN38_B12X gating ok cap=(12, 1) cutlass-dsl=4.6.2 triton=3.7.1
+QWEN38_B12X MoE ok moe_intermediate_size=768 % tp=3 == 0
+QWEN38_B12X activo rank=0 linear=b12x moe=1 wheelhouse=/cache/huggingface/wheelhouse/b12x-1.3.0 jit=/tmp/b12x-compile
+WARNING 10-13 17:25:13 [import_utils.py:429] Module deep_ep was found but failed to import
+WARNING 10-13 17:25:13 [import_utils.py:429] Traceback (most recent call last):
+WARNING 10-13 17:25:13 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/vllm/utils/import_utils.py", line 427, in _has_module
+WARNING 10-13 17:25:13 [import_utils.py:429]     importlib.import_module(module_name)
+WARNING 10-13 17:25:13 [import_utils.py:429]   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+WARNING 10-13 17:25:13 [import_utils.py:429]     return _bootstrap._gcd_import(name[level:], package, level)
+WARNING 10-13 17:25:13 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:25:13 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+WARNING 10-13 17:25:13 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+WARNING 10-13 17:25:13 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+WARNING 10-13 17:25:13 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+WARNING 10-13 17:25:13 [import_utils.py:429]   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+WARNING 10-13 17:25:13 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+WARNING 10-13 17:25:13 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 83, in <module>
+WARNING 10-13 17:25:13 [import_utils.py:429]     check_nccl_so()
+WARNING 10-13 17:25:13 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 59, in check_nccl_so
+WARNING 10-13 17:25:13 [import_utils.py:429]     assert so == loaded_nccl_so, f'Duplicate NCCL runtime found in the current system: {so} and {loaded_nccl_so}'
+WARNING 10-13 17:25:13 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:25:13 [import_utils.py:429] AssertionError: Duplicate NCCL runtime found in the current system: /opt/nccl-ring/lib/libnccl.so.2 and /usr/local/lib/python3.12/dist-packages/nvidia/nccl/lib/libnccl.so.2
+(APIServer pid=1) INFO 10-13 17:25:14 [api_utils.py:347] 
+(APIServer pid=1) INFO 10-13 17:25:14 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=1) INFO 10-13 17:25:14 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.28.1rc1.dev628+g2a02f6efe
+(APIServer pid=1) INFO 10-13 17:25:14 [api_utils.py:347]   █▄█▀ █     █     █     █  model   /cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3-e768
+(APIServer pid=1) INFO 10-13 17:25:14 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=1) INFO 10-13 17:25:14 [api_utils.py:347] 
+(APIServer pid=1) INFO 10-13 17:25:14 [api_utils.py:286] non-default args: {'model_tag': '/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3-e768', 'enable_auto_tool_choice': True, 'tool_call_parser': 'qwen3_coder', 'enable_prompt_tokens_details': True, 'host': '0.0.0.0', 'model': '/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3-e768', 'trust_remote_code': True, 'revision': '16c9bd54788d12390838a65ce4a4ecda97fa5f1d', 'max_model_len': 262144, 'served_model_name': ['qwen38-flash-next'], 'reasoning_parser': 'qwen3', 'distributed_executor_backend': 'mp', 'master_addr': 'spark2', 'nnodes': 3, 'tensor_parallel_size': 3, 'gpu_memory_utilization': 0.816, 'kv_cache_memory_bytes': 51539607552, 'kv_cache_dtype': 'fp8_e4m3', 'mamba_ssm_cache_dtype': 'bfloat16', 'mm_encoder_tp_mode': 'data', 'max_num_batched_tokens': 4096, 'max_num_seqs': 10, 'long_prefill_token_threshold': 2048, 'scheduling_policy': 'priority', 'moe_backend': 'b12x', 'linear_backend': 'b12x', 'speculative_config': {'method': 'mtp', 'num_speculative_tokens': 2, 'disable_eagle_block_drop': True, 'num_speculative_tokens_per_batch_size': [[1, 16, 2]], 'rejection_sample_method': 'block', 'draft_sample_method': 'probabilistic'}, 'compilation_config': {'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': [], 'ir_enable_torch_wrap': None, 'splitting_ops': None, 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': None, 'compile_ranges_endpoints': None, 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': None, 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': None, 'pass_config': {}, 'max_cudagraph_capture_size': None, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': None, 'static_all_moe_layers': []}, 'attention_config': AttentionConfig(backend=None, minimax_m3_msa_decode_backend='triton', backend_per_kind={}, flash_attn_version=None, flash_attn_max_num_splits_for_cuda_graph=32, tq_max_kv_splits_for_cuda_graph=32, use_trtllm_attention=None, disable_flashinfer_q_quantization=False, mla_prefill_backend=None, use_prefill_query_quantization=False, use_fp4_indexer_cache=None, indexer_kv_dtype='fp8', use_non_causal=False, sparse_mla_force_mqa=False, flex_attn_block_m=None, flex_attn_block_n=None, flex_attn_q_block_size=None, flex_attn_kv_block_size=None), 'additional_config': {'gdn_prefill_backend': 'triton'}}
+(APIServer pid=1) WARNING 10-13 17:25:14 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_ATTENTION_CONFIG
+(APIServer pid=1) WARNING 10-13 17:25:14 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_QSA_DET_LIB
+(APIServer pid=1) WARNING 10-13 17:25:14 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_REFUSAL_LAMBDA
+(APIServer pid=1) WARNING 10-13 17:25:14 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_NODE_RANK
+(APIServer pid=1) WARNING 10-13 17:25:14 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_CPUSET
+(APIServer pid=1) WARNING 10-13 17:25:14 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_REFUSAL_DIRECTION
+(APIServer pid=1) WARNING 10-13 17:25:14 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_QSA_DET_TOPK
+(APIServer pid=1) WARNING 10-13 17:25:14 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_REFUSAL_PROBE_LAYERS
+(APIServer pid=1) WARNING 10-13 17:25:14 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_REFUSAL_PROBE_CAL
+(APIServer pid=1) WARNING 10-13 17:25:14 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_REFUSAL_PROBE
+(APIServer pid=1) WARNING 10-13 17:25:14 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_MASTER_ADDR
+(APIServer pid=1) WARNING 10-13 17:25:14 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_ADDITIONAL_CONFIG
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) INFO 10-13 17:25:21 [model.py:691] Resolved architecture: Qwen4ExpForConditionalGeneration
+(APIServer pid=1) INFO 10-13 17:25:21 [model.py:2027] Using max model len 262144
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) INFO 10-13 17:25:22 [cache.py:355] Using fp8_e4m3 data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(APIServer pid=1) INFO 10-13 17:25:22 [arg_utils.py:2264] Inferred data_parallel_rank 0 from node_rank 0
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) INFO 10-13 17:25:28 [model.py:691] Resolved architecture: Qwen4ExpMTP
+(APIServer pid=1) INFO 10-13 17:25:28 [model.py:2027] Using max model len 262144
+(APIServer pid=1) WARNING 10-13 17:25:28 [speculative.py:1333] Enabling num_speculative_tokens > 1 will run multiple times of forward on same MTP layer,which may result in lower acceptance rate
+(APIServer pid=1) INFO 10-13 17:25:28 [scheduler.py:288] Chunked prefill is enabled with max_num_batched_tokens=4096.
+(APIServer pid=1) WARNING 10-13 17:25:28 [config.py:819] Qwen3.5 model specifies mamba_ssm_dtype='float32' in its config, but --mamba-ssm-cache-dtype='bfloat16' was passed. Using the user-specified value.
+(APIServer pid=1) INFO 10-13 17:25:28 [config.py:625] Mamba cache mode is set to 'align' for Qwen4ExpForConditionalGeneration by default when prefix caching is enabled
+(APIServer pid=1) INFO 10-13 17:25:28 [vllm.py:746] Auto-enabling VLLM_USE_BREAKABLE_CUDAGRAPH=1. Set VLLM_USE_BREAKABLE_CUDAGRAPH=0 to opt out.
+(APIServer pid=1) INFO 10-13 17:25:28 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+(APIServer pid=1) WARNING 10-13 17:25:28 [vllm.py:1999] max_num_scheduled_tokens is set to 4096 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increasing max_num_batched_tokens to accommodate the additional draft token slots, or decrease num_speculative_tokens.
+(APIServer pid=1) INFO 10-13 17:25:28 [compilation.py:329] Enabled custom fusions: norm_quant, act_quant
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+WARNING 10-13 17:25:38 [import_utils.py:429] Module deep_ep was found but failed to import
+WARNING 10-13 17:25:38 [import_utils.py:429] Traceback (most recent call last):
+WARNING 10-13 17:25:38 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/vllm/utils/import_utils.py", line 427, in _has_module
+WARNING 10-13 17:25:38 [import_utils.py:429]     importlib.import_module(module_name)
+WARNING 10-13 17:25:38 [import_utils.py:429]   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+WARNING 10-13 17:25:38 [import_utils.py:429]     return _bootstrap._gcd_import(name[level:], package, level)
+WARNING 10-13 17:25:38 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:25:38 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+WARNING 10-13 17:25:38 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+WARNING 10-13 17:25:38 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+WARNING 10-13 17:25:38 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+WARNING 10-13 17:25:38 [import_utils.py:429]   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+WARNING 10-13 17:25:38 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+WARNING 10-13 17:25:38 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 83, in <module>
+WARNING 10-13 17:25:38 [import_utils.py:429]     check_nccl_so()
+WARNING 10-13 17:25:38 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 59, in check_nccl_so
+WARNING 10-13 17:25:38 [import_utils.py:429]     assert so == loaded_nccl_so, f'Duplicate NCCL runtime found in the current system: {so} and {loaded_nccl_so}'
+WARNING 10-13 17:25:38 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:25:38 [import_utils.py:429] AssertionError: Duplicate NCCL runtime found in the current system: /opt/nccl-ring/lib/libnccl.so.2 and /usr/local/lib/python3.12/dist-packages/nvidia/nccl/lib/libnccl.so.2
+(EngineCore pid=920) INFO 10-13 17:25:39 [core.py:123] Initializing a V1 LLM engine (v0.28.1rc1.dev628+g2a02f6efe) with config: model='/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3-e768', speculative_config=SpeculativeConfig(method='mtp', model='/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3-e768', num_spec_tokens=2), tokenizer='/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3-e768', skip_tokenizer_init=False, tokenizer_mode=auto, revision=16c9bd54788d12390838a65ce4a4ecda97fa5f1d, tokenizer_revision=16c9bd54788d12390838a65ce4a4ecda97fa5f1d, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=262144, download_dir=None, load_format=auto, tensor_parallel_size=3, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=modelopt_mixed, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=fp8_e4m3, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='qwen3', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=qwen38-flash-next, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [4096], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 3, 4, 6, 8, 12, 16, 24, 30, 32, 40, 48, 56], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 56, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='b12x', linear_backend='b12x')
+(EngineCore pid=920) INFO 10-13 17:25:39 [multiproc_executor.py:153] DP group leader: node_rank=0, node_rank_within_dp=0, master_addr=spark2, mq_connect_ip=spark2 (local), world_size=3, local_world_size=1
+WARNING 10-13 17:25:43 [import_utils.py:429] Module deep_ep was found but failed to import
+WARNING 10-13 17:25:43 [import_utils.py:429] Traceback (most recent call last):
+WARNING 10-13 17:25:43 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/vllm/utils/import_utils.py", line 427, in _has_module
+WARNING 10-13 17:25:43 [import_utils.py:429]     importlib.import_module(module_name)
+WARNING 10-13 17:25:43 [import_utils.py:429]   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+WARNING 10-13 17:25:43 [import_utils.py:429]     return _bootstrap._gcd_import(name[level:], package, level)
+WARNING 10-13 17:25:43 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:25:43 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+WARNING 10-13 17:25:43 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+WARNING 10-13 17:25:43 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+WARNING 10-13 17:25:43 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+WARNING 10-13 17:25:43 [import_utils.py:429]   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+WARNING 10-13 17:25:43 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+WARNING 10-13 17:25:43 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 83, in <module>
+WARNING 10-13 17:25:43 [import_utils.py:429]     check_nccl_so()
+WARNING 10-13 17:25:43 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 59, in check_nccl_so
+WARNING 10-13 17:25:43 [import_utils.py:429]     assert so == loaded_nccl_so, f'Duplicate NCCL runtime found in the current system: {so} and {loaded_nccl_so}'
+WARNING 10-13 17:25:43 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:25:43 [import_utils.py:429] AssertionError: Duplicate NCCL runtime found in the current system: /opt/nccl-ring/lib/libnccl.so.2 and /usr/local/lib/python3.12/dist-packages/nvidia/nccl/lib/libnccl.so.2
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker pid=962) INFO 10-13 17:25:45 [parallel_state.py:1807] world_size=3 rank=0 local_rank=0 distributed_init_method=tcp://spark2:29501 backend=nccl
+(Worker pid=962) INFO 10-13 17:25:47 [nccl.py:25] Found nccl from environment variable VLLM_NCCL_SO_PATH=/opt/nccl-ring/lib/libnccl.so.2
+(Worker pid=962) INFO 10-13 17:25:47 [pynccl.py:120] vLLM is using nccl==2.30.7
+dgx2:962:962 [0] NCCL INFO ncclOsDlopen(libnccl-env.so) failed: libnccl-env.so: cannot open shared object file: No such file or directory
+dgx2:962:962 [0] NCCL INFO ENV/Plugin: Could not find: libnccl-env.so
+dgx2:962:962 [0] NCCL INFO NCCL_SOCKET_IFNAME set to enP7s7
+dgx2:962:962 [0] NCCL INFO cudaDriverVersion 13030
+dgx2:962:962 [0] NCCL INFO NCCL version 2.30.7+cuda13.0
+dgx2:962:962 [0] NCCL INFO NCCL git version HEAD 73cf112-dirty
+dgx2:962:962 [0] NCCL INFO NCCL_NET_PLUGIN set by environment to none
+dgx2:962:962 [0] NCCL INFO dlvsym failed on mlx5dv_get_data_direct_sysfs_path - /lib/aarch64-linux-gnu/libmlx5.so: undefined symbol: mlx5dv_get_data_direct_sysfs_path, version MLX5_1.25 version MLX5_1.25
+dgx2:962:962 [0] NCCL INFO dlvsym failed on mlx5dv_reg_dmabuf_mr - /lib/aarch64-linux-gnu/libmlx5.so: undefined symbol: mlx5dv_reg_dmabuf_mr, version MLX5_1.25 version MLX5_1.25
+dgx2:962:962 [0] NCCL INFO NCCL_IB_HCA set to =rocep1s0f0,rocep1s0f1,roceP2p1s0f0,roceP2p1s0f1
+dgx2:962:962 [0] NCCL INFO NET/IB: [0] rocep1s0f0:uverbs0:1/RoCE provider=Mlx5 speed=200000 context=0x29b31950 pciPath=/sys/devices/pci0000:00/0000:00:00.0/0000:01:00.0 ar=0 oooRqSize=0
+dgx2:962:962 [0] NCCL INFO NET/IB: [1] rocep1s0f1:uverbs1:1/RoCE provider=Mlx5 speed=200000 context=0x29b73050 pciPath=/sys/devices/pci0000:00/0000:00:00.0/0000:01:00.0 ar=0 oooRqSize=0
+dgx2:962:962 [0] NCCL INFO NET/IB: [2] roceP2p1s0f0:uverbs2:1/RoCE provider=Mlx5 speed=200000 context=0x29bb4750 pciPath=/sys/devices/pci0002:00/0002:00:00.0/0002:01:00.0 ar=0 oooRqSize=0
+dgx2:962:962 [0] NCCL INFO NET/IB: [3] roceP2p1s0f1:uverbs3:1/RoCE provider=Mlx5 speed=200000 context=0x29bf5e50 pciPath=/sys/devices/pci0002:00/0002:00:00.0/0002:01:00.0 ar=0 oooRqSize=0
+dgx2:962:962 [0] NCCL INFO NET/IB : Made virtual device [0] name=rocep1s0f0 speed=200000 ndevs=1 rail=-1 plane=-1
+dgx2:962:962 [0] NCCL INFO NET/IB : Made virtual device [1] name=rocep1s0f1 speed=200000 ndevs=1 rail=-1 plane=-1
+dgx2:962:962 [0] NCCL INFO NET/IB : Made virtual device [2] name=roceP2p1s0f0 speed=200000 ndevs=1 rail=-1 plane=-1
+dgx2:962:962 [0] NCCL INFO NET/IB : Made virtual device [3] name=roceP2p1s0f1 speed=200000 ndevs=1 rail=-1 plane=-1
+dgx2:962:962 [0] NCCL INFO NET/IB : Using [0]rocep1s0f0:1/RoCE [1]rocep1s0f1:1/RoCE [2]roceP2p1s0f0:1/RoCE [3]roceP2p1s0f1:1/RoCE [RO]; OOB enP7s7:spark2<0>
+dgx2:962:962 [0] NCCL INFO Initialized NET plugin IB
+dgx2:962:962 [0] NCCL INFO Assigned NET plugin IB to comm
+dgx2:962:962 [0] NCCL INFO ncclOsDlopen(libnccl-rma.so) failed: libnccl-rma.so: cannot open shared object file: No such file or directory
+dgx2:962:962 [0] NCCL INFO RMA/Plugin: Could not find: libnccl-rma.so
+dgx2:962:962 [0] NCCL INFO RMA/Plugin: Failed to load external plugin libnccl-rma.so, dlHandle: (nil), ncclRma: (nil)
+dgx2:962:962 [0] NCCL INFO RMA/Plugin: Assigned plugin RMA_IB_PROXY to comm
+dgx2:962:962 [0] NCCL INFO ncclOsDlopen(libnccl-gin.so) failed: libnccl-gin.so: cannot open shared object file: No such file or directory
+dgx2:962:962 [0] NCCL INFO GIN/Plugin: Could not find: libnccl-gin.so
+dgx2:962:962 [0] NCCL INFO GIN/Plugin: Failed to load external plugin libnccl-gin.so, dlHandle: (nil), ncclGin: (nil)
+dgx2:962:962 [0] NCCL INFO GIN/Plugin: Assigned plugin GIN_IB_GDAKI type 3 to comm
+dgx2:962:962 [0] NCCL INFO Using network IB
+dgx2:962:962 [0] NCCL INFO Loaded NVML from libnvidia-ml.so.1
+dgx2:962:962 [0] NCCL INFO [Rank 0] ncclCommInitRank comm 0x222af9a0 rank 0 nranks 3 cudaDev 0 nvmlDev 0 busId f01000 commId 0xe940b92bca881625 - Init START
+dgx2:962:962 [0] NCCL INFO RAS client listening socket at 127.0.0.1<28028>
+dgx2:962:962 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 0 'rocep1s0f0'
+dgx2:962:962 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 1 'rocep1s0f1'
+dgx2:962:962 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 2 'roceP2p1s0f0'
+dgx2:962:962 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 3 'roceP2p1s0f1'
+dgx2:962:962 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 0 'rocep1s0f0'
+dgx2:962:962 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 1 'rocep1s0f1'
+dgx2:962:962 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 2 'roceP2p1s0f0'
+dgx2:962:962 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 3 'roceP2p1s0f1'
+dgx2:962:962 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 0 'rocep1s0f0'
+dgx2:962:962 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 1 'rocep1s0f1'
+dgx2:962:962 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 2 'roceP2p1s0f0'
+dgx2:962:962 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 3 'roceP2p1s0f1'
+dgx2:962:962 [0] NCCL INFO NET/IB : Skipping makeVDevice, NCCL_IB_MERGE_NICS=0
+dgx2:962:962 [0] NCCL INFO TOPO/NET : Tried merging multiple devices together and failed. vProps={ndevs=2, devs=[0 1 0 0]}. Set NCCL_NET_MERGE_LEVEL=LOC to disable NIC fusion.
+dgx2:962:962 [0] NCCL INFO Marking physical devices as unplaced, increasing distance and restarting search.
+dgx2:962:962 [0] NCCL INFO NET/IB : Skipping makeVDevice, NCCL_IB_MERGE_NICS=0
+dgx2:962:962 [0] NCCL INFO TOPO/NET : Tried merging multiple devices together and failed. vProps={ndevs=2, devs=[2 3 0 0]}. Set NCCL_NET_MERGE_LEVEL=LOC to disable NIC fusion.
+dgx2:962:962 [0] NCCL INFO Marking physical devices as unplaced, increasing distance and restarting search.
+dgx2:962:962 [0] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 0 is empty, ignoring. (GPU affinity = ).
+dgx2:962:962 [0] NCCL INFO Rank 0: 4 Net devices
+dgx2:962:962 [0] NCCL INFO Rank 0: 0 CollNet devices
+dgx2:962:962 [0] NCCL INFO Local Net device counts across ranks: min 4 max 4
+dgx2:962:962 [0] NCCL INFO Local CollNet device counts across ranks: min 0 max 0
+dgx2:962:962 [0] NCCL INFO comm 0x222af9a0 rank 0 nRanks 3 nNodes 3 localRanks 1 localRank 0 MNNVL 0
+dgx2:962:962 [0] NCCL INFO Channel 00/04 : 0 1 2
+dgx2:962:962 [0] NCCL INFO Channel 01/04 : 0 1 2
+dgx2:962:962 [0] NCCL INFO Channel 02/04 : 0 1 2
+dgx2:962:962 [0] NCCL INFO Channel 03/04 : 0 1 2
+dgx2:962:962 [0] NCCL INFO Trees [0] 2/-1/-1->0->-1 [1] 2/-1/-1->0->-1 [2] 2/-1/-1->0->1 [3] 2/-1/-1->0->1
+dgx2:962:962 [0] NCCL INFO P2P Chunksize set to 262144
+dgx2:962:962 [0] NCCL INFO Tuning P2P operations with maxP2pPeers = 3
+dgx2:962:962 [0] NCCL INFO ncclOsDlopen(libnccl-profiler.so) failed: libnccl-profiler.so: cannot open shared object file: No such file or directory
+dgx2:962:962 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so
+dgx2:962:962 [0] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+dgx2:962:1059 [0] NCCL INFO [Proxy Service] Device 0 CPU core 8
+dgx2:962:1059 [0] NCCL INFO proxy listening socket at spark2<35441>
+dgx2:962:1060 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 15
+dgx2:962:962 [0] NCCL INFO ncclOsDlopen(libnccl-tuner.so) failed: libnccl-tuner.so: cannot open shared object file: No such file or directory
+dgx2:962:962 [0] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so
+dgx2:962:962 [0] NCCL INFO threadThresholds 8/8/64 | 24/8/64 | 512 | 512
+dgx2:962:962 [0] NCCL INFO 4 coll channels, 4 collnet channels, 0 nvls channels, 4 p2p channels, 4 p2p channels per peer
+dgx2:962:962 [0] NCCL INFO Symmetric memory is not supported. cuMemEnable 1, globalGinSupport 0, cuMemGdrSupport 0
+dgx2:962:962 [0] NCCL INFO CC Off, workFifoBytes 1048576
+dgx2:962:962 [0] NCCL INFO ncclCommInitRank comm 0x222af9a0 rank 0 nranks 3 cudaDev 0 nvmlDev 0 busId f01000 commId 0xe940b92bca881625 - Init COMPLETE
+dgx2:962:962 [0] NCCL INFO Init timings - ncclCommInitRank: rank 0 nranks 3 total 0.25 (kernels 0.17, alloc 0.02, bootstrap 0.05, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.00, rest 0.00)
+dgx2:962:1061 [0] NCCL INFO [Proxy Progress] Device 0 CPU core 15
+dgx2:962:962 [0] NCCL INFO Channel 00/0 : 2[0] -> 0[0] [receive] via NET/IB/1
+dgx2:962:962 [0] NCCL INFO Channel 01/0 : 2[0] -> 0[0] [receive] via NET/IB/3
+dgx2:962:962 [0] NCCL INFO Channel 02/0 : 2[0] -> 0[0] [receive] via NET/IB/1
+dgx2:962:962 [0] NCCL INFO Channel 03/0 : 2[0] -> 0[0] [receive] via NET/IB/3
+dgx2:962:962 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[0] [send] via NET/IB/0
+dgx2:962:962 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[0] [send] via NET/IB/2
+dgx2:962:962 [0] NCCL INFO Channel 02/0 : 0[0] -> 1[0] [send] via NET/IB/0
+dgx2:962:962 [0] NCCL INFO Channel 03/0 : 0[0] -> 1[0] [send] via NET/IB/2
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xee672400c000)
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xee6724050000)
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xee6724098000)
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbSenderQpsCreate: QP created: port=1 dev=0 devName=rocep1s0f0 ndevs=4 nmdevs=4 qp_num=3263 pkey=0 pd=0xee672400bec0 oooRq=0
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbConnectImpl: NCCL Dev 0 IbDev 0 Port 1 qp_num 3263 mtu 5 GID 3 (0/200000AFFFF0000) ctsFifoRkey=0x17df9c ctsFifoLkey=0x17df9c
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbConnectImpl: IbDev 0 Port 1 qp_num 3263 query_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbSenderQpsCreate: QP created: port=1 dev=2 devName=roceP2p1s0f0 ndevs=4 nmdevs=4 qp_num=3363 pkey=0 pd=0xee6724094440 oooRq=0
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbConnectImpl: NCCL Dev 2 IbDev 2 Port 1 qp_num 3363 mtu 5 GID 3 (0/201000AFFFF0000) ctsFifoRkey=0x19b7b6 ctsFifoLkey=0x19b7b6
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbConnectImpl: IbDev 2 Port 1 qp_num 3363 query_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xee6724154000)
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: QP created: port=1 dev=1 devName=rocep1s0f1 ndevs=4 nmdevs=4 qp_num=624 pkey=0 pd=0xee672412a640 oooRq=0
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: Flush QP created: port=1 dev=1 devName=rocep1s0f1 ndevs=4 nmdevs=4 qp_num=625 pkey=0 pd=0xee672412a640
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: QP created: port=1 dev=3 devName=roceP2p1s0f1 ndevs=4 nmdevs=4 qp_num=752 pkey=0 pd=0xee67240eef40 oooRq=0
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: Flush QP created: port=1 dev=3 devName=roceP2p1s0f1 ndevs=4 nmdevs=4 qp_num=753 pkey=0 pd=0xee67240eef40
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xee6724250000)
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbSenderQpsToRts: Set ECE: IbDev 0 Port 1 qp_num 3263 set_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbSenderQpsToRts: Set ECE: IbDev 2 Port 1 qp_num 3363 set_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbSenderQpsCreate: QP created: port=1 dev=0 devName=rocep1s0f0 ndevs=4 nmdevs=4 qp_num=3264 pkey=0 pd=0xee672400bec0 oooRq=0
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbConnectImpl: NCCL Dev 0 IbDev 0 Port 1 qp_num 3264 mtu 5 GID 3 (0/200000AFFFF0000) ctsFifoRkey=0x180cc9 ctsFifoLkey=0x180cc9
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbConnectImpl: IbDev 0 Port 1 qp_num 3264 query_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xee67242c2000)
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xee6724307000)
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (co(Worker pid=962) WARNING 10-13 17:25:47 [symm_mem.py:67] SymmMemCommunicator: Device capability 12.1 not supported, communicator is not available.
+(Worker pid=962) WARNING 10-13 17:25:47 [flashinfer_all_reduce.py:383] FlashInfer All Reduce is disabled because it is not supported for world_size=3.
+(Worker pid=962) WARNING 10-13 17:25:47 [custom_all_reduce.py:184] Custom allreduce is disabled due to an unsupported world size: 3. Supported world sizes: [2, 4, 6, 8, 16]. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+(Worker pid=962) INFO 10-13 17:25:47 [cuda_communicator.py:297] Using ['PYNCCL'] all-reduce backends (in dispatch order) for group 'tp:0' out of potential backends: ['FLASHINFER_PCIE_IPC', 'FLASHINFER', 'NCCL_SYMM_MEM', 'QUICK_REDUCE', 'AITER_CUSTOM', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=962) INFO 10-13 17:25:47 [nccl.py:25] Found nccl from environment variable VLLM_NCCL_SO_PATH=/opt/nccl-ring/lib/libnccl.so.2
+mm=0xee6724348000)
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: QP created: port=1 dev=1 devName=rocep1s0f1 ndevs=4 nmdevs=4 qp_num=626 pkey=0 pd=0xee672412a640 oooRq=0
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: Flush QP created: port=1 dev=1 devName=rocep1s0f1 ndevs=4 nmdevs=4 qp_num=627 pkey=0 pd=0xee672412a640
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: QP created: port=1 dev=3 devName=roceP2p1s0f1 ndevs=4 nmdevs=4 qp_num=754 pkey=0 pd=0xee67240eef40 oooRq=0
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: Flush QP created: port=1 dev=3 devName=roceP2p1s0f1 ndevs=4 nmdevs=4 qp_num=755 pkey=0 pd=0xee67240eef40
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbSenderQpsToRts: Set ECE: IbDev 0 Port 1 qp_num 3264 set_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbSenderQpsCreate: QP created: port=1 dev=2 devName=roceP2p1s0f0 ndevs=4 nmdevs=4 qp_num=3364 pkey=0 pd=0xee6724094440 oooRq=0
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbConnectImpl: NCCL Dev 2 IbDev 2 Port 1 qp_num 3364 mtu 5 GID 3 (0/201000AFFFF0000) ctsFifoRkey=0x194e4e ctsFifoLkey=0x194e4e
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbConnectImpl: IbDev 2 Port 1 qp_num 3364 query_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx2:962:1059 [0] NCCL INFO NET/IB: ncclIbSenderQpsToRts: Set ECE: IbDev 2 Port 1 qp_num 3364 set_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx2:962:962 [0] NCCL INFO Connected all rings, use ring PXN 0 GDR 0
+dgx2:962:962 [0] NCCL INFO Initialized NET plugin IB
+dgx2:962:962 [0] NCCL INFO Assigned NET plugin IB to comm
+dgx2:962:962 [0] NCCL INFO RMA/Plugin: Assigned plugin RMA_IB_PROXY to comm
+dgx2:962:962 [0] NCCL INFO GIN/Plugin: Assigned plugin GIN_IB_GDAKI type 3 to comm
+dgx2:962:962 [0] NCCL INFO Using network IB
+dgx2:962:962 [0] NCCL INFO [Rank 0] ncclCommInitRank comm 0x2b9ef1b0 rank 0 nranks 3 cudaDev 0 nvmlDev 0 busId f01000 commId 0x3dd1f6427ad63eab - Init START
+dgx2:962:962 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 0 'rocep1s0f0'
+dgx2:962:962 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 1 'rocep1s0f1'
+dgx2:962:962 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 2 'roceP2p1s0f0'
+dgx2:962:962 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 3 'roceP2p1s0f1'
+dgx2:962:962 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 0 'rocep1s0f0'
+dgx2:962:962 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 1 'rocep1s0f1'
+dgx2:962:962 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 2 'roceP2p1s0f0'
+dgx2:962:962 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 3 'roceP2p1s0f1'
+dgx2:962:962 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 0 'rocep1s0f0'
+dgx2:962:962 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 1 'rocep1s0f1'
+dgx2:962:962 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 2 'roceP2p1s0f0'
+dgx2:962:962 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 3 'roceP2p1s0f1'
+dgx2:962:962 [0] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 0 is empty, ignoring. (GPU affinity = ).
+dgx2:962:962 [0] NCCL INFO Rank 0: 4 Net devices
+dgx2:962:962 [0] NCCL INFO Rank 0: 0 CollNet devices
+dgx2:962:962 [0] NCCL INFO Local Net device counts across ranks: min 4 max 4
+dgx2:962:962 [0] NCCL INFO Local CollNet device counts across ranks: min 0 max 0
+dgx2:962:962 [0] NCCL INFO comm 0x2b9ef1b0 rank 0 nRanks 3 nNodes 3 localRanks 1 localRank 0 MNNVL 0
+dgx2:962:962 [0] NCCL INFO Channel 00/04 : 0 1 2
+dgx2:962:962 [0] NCCL INFO Channel 01/04 : 0 1 2
+dgx2:962:962 [0] NCCL INFO Channel 02/04 : 0 1 2
+dgx2:962:962 [0] NCCL INFO Channel 03/04 : 0 1 2
+dgx2:962:962 [0] NCCL INFO Trees [0] 2/-1/-1->0->-1 [1] 2/-1/-1->0->-1 [2] 2/-1/-1->0->1 [3] 2/-1/-1->0->1
+dgx2:962:962 [0] NCCL INFO P2P Chunksize set to 262144
+dgx2:962:962 [0] NCCL INFO Tuning P2P operations with maxP2pPeers = 3
+dgx2:962:962 [0] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+dgx2:962:1091 [0] NCCL INFO [Proxy Service] Device 0 CPU core 17
+dgx2:962:1091 [0] NCCL INFO proxy listening socket at spark2<48913>
+dgx2:962:1092 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 18
+dgx2:962:962 [0] NCCL INFO threadThresholds 8/8/64 | 24/8/64 | 512 | 512
+dgx2:962:962 [0] NCCL INFO 4 coll channels, 4 collnet channels, 0 nvls channels, 4 p2p channels, 4 p2p channels per peer
+dgx2:962:962 [0] NCCL INFO Symmetric memory is not supported. cuMemEnable 1, globalGinSupport 0, cuMemGdrSupport 0
+dgx2:962:962 [0] NCCL INFO CC Off, workFifoBytes 1048576
+dgx2:962:962 [0] NCCL INFO ncclCommInitRank comm 0x2b9ef1b0 rank 0 nranks 3 cudaDev 0 nvmlDev 0 busId f01000 commId 0x3dd1f6427ad63eab - Init COMPLETE
+dgx2:962:962 [0] NCCL INFO Init timings - ncclCommInitRank: rank 0 nranks 3 total 0.01 (kernels 0.00, alloc 0.00, bootstrap 0.00, allgathers 0.00, topo 0.00, graphs 0.00, connections 0.00, rest 0.00)
+dgx2:962:1093 [0] NCCL INFO [Proxy Progress] Device 0 CPU core 16
+dgx2:962:962 [0] NCCL INFO Channel 00/0 : 2[0] -> 0[0] [receive] via NET/IB/1
+dgx2:962:962 [0] NCCL INFO Channel 01/0 : 2[0] -> 0[0] [receive] via NET/IB/3
+dgx2:962:962 [0] NCCL INFO Channel 02/0 : 2[0] -> 0[0] [receive] via NET/IB/1
+dgx2:962:962 [0] NCCL INFO Channel 03/0 : 2[0] -> 0[0] [receive] via NET/IB/3
+dgx2:962:962 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[0] [send] via NET/IB/0
+dgx2:962:962 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[0] [send] via NET/IB/2
+dgx2:962:962 [0] NCCL INFO Channel 02/0 : 0[0] -> 1[0] [send] via NET/IB/0
+dgx2:962:962 [0] NCCL INFO Channel 03/0 : 0[0] -> 1[0] [send] via NET/IB/2
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xee66e000c000)
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xee66e0050000)
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xee66e0098000)
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbSenderQpsCreate: QP created: port=1 dev=0 devName=rocep1s0f0 ndevs=4 nmdevs=4 qp_num=3265 pkey=0 pd=0xee672400bec0 oooRq=0
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbConnectImpl: NCCL Dev 0 IbDev 0 Port 1 qp_num 3265 mtu 5 GID 3 (0/200000AFFFF0000) ctsFifoRkey=0x17d794 ctsFifoLkey=0x17d794
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbConnectImpl: IbDev 0 Port 1 qp_num 3265 query_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: QP created: port=1 dev=1 devName=rocep1s0f1 ndevs=4 nmdevs=4 qp_num=628 pkey=0 pd=0xee672412a640 oooRq=0
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: Flush QP created: port=1 dev=1 devName=rocep1s0f1 ndevs=4 nmdevs=4 qp_num=629 pkey=0 pd=0xee672412a640
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xee66e015e000)
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xee66e01a6000)
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xee66e01ea000)
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xee66e0232000)
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xee66e0276000)
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx2:962:1091 [0] NCCL INFO NET/IB: ncclIbSenderQpsToRts: (Worker pid=962) INFO 10-13 17:25:47 [cuda_communicator.py:297] Using ['PYNCCL'] all-reduce backends (in dispatch order) for group 'ep:0' out of potential backends: ['FLASHINFER_PCIE_IPC', 'FLASHINFER', 'NCCL_SYMM_MEM', 'QUICK_REDUCE', 'AITER_CUSTOM', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=962) INFO 10-13 17:25:47 [parallel_state.py:2173] rank 0 in world size 3 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank 0, EPLB rank N/A
+(Worker pid=962) INFO 10-13 17:25:47 [gpu_worker.py:450] Using V2 Model Runner
+(Worker_TP0 pid=962) INFO 10-13 17:25:48 [model_runner.py:401] Loading model from scratch...
+(Worker_TP0 pid=962) INFO 10-13 17:25:48 [__init__.py:883] Using B12xMxfp8LinearKernel for MXFP8 GEMM
+(Worker_TP0 pid=962) INFO 10-13 17:25:48 [cuda.py:587] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(Worker_TP0 pid=962) INFO 10-13 17:25:48 [mm_encoder_attention.py:372] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(Worker_TP0 pid=962) WARNING 10-13 17:25:48 [__init__.py:355] --linear-backend=b12x has no kernel for this linear layer type; using automatic selection for that layer type.
+(Worker_TP0 pid=962) INFO 10-13 17:25:48 [__init__.py:1128] Using FlashInferCuteDslNvFp4W4A16LinearKernel for NVFP4 GEMM
+(Worker_TP0 pid=962) INFO 10-13 17:25:48 [refusal_projection.py:173] rank1-refusal: ACTIVA dir=/opt/refusal/refusal_direction_flashnext.npy hidden=2560 lambda=0.0000 device=cuda:0
+(Worker_TP0 pid=962) INFO 10-13 17:25:48 [qwen_gdn_linear_attn.py:176] Using Triton/FLA GDN prefill kernel (requested=triton, head_k_dim=128).
+(Worker_TP0 pid=962) INFO 10-13 17:25:48 [qwen_gdn_linear_attn.py:528] GDN decode kernel: cuda
+(Worker_TP0 pid=962) INFO 10-13 17:25:48 [nvfp4.py:261] Using 'B12X' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CUTLASS', 'VLLM_CUTLASS', 'MARLIN', 'HUMMING', 'EMULATION'].
+(Worker_TP0 pid=962) INFO 10-13 17:25:48 [ple_mmap.py:101] QWEN_PLE_MMAP language_model.model.layers.1.ple.ple_embedding.ngram_embedding: 106667264 filas x 160 B = 15.89 GiB (rango TP 0 de 3, filas 0..106667264) en /ple/table.u8 [MADV_RANDOM]
+(Worker_TP0 pid=962) INFO 10-13 17:25:48 [ngram_embedding.py:724] Initialized PLE embedding language_model.model.layers.1.ple.ple_embedding.ngram_embedding: quantization_method=Qwen4ExpPLEFp8EmbeddingMethod, weight_dtype=torch.float8_e4m3fn, weight_device=cuda:0, pinned=False
+(Worker_TP0 pid=962) INFO 10-13 17:25:48 [flash_attn.py:898] Using FlashAttention version 2
+(APIServer pid=1) [transformers] Qwen3VL video processing does not apply the per-frame pixel cap the reference implementation (qwen-vl-utils) applies, so some videos cost far more tokens than they would there. In v5.22 the capped behavior will become the default and `cap_pixels_per_frame` will be removed. Pass `cap_pixels_per_frame=True` to adopt the reference behavior now, or `False` to keep the current behavior and silence this warning.
+(APIServer pid=1) INFO 10-13 17:25:49 [base.py:261] Multi-modal warmup completed in 11.234s
+(Worker_TP0 pid=962) INFO 10-13 17:25:49 [weight_utils.py:895] Filesystem type for checkpoints: NFS. Checkpoint size: 132.11 GiB. Available RAM: 69.61 GiB.
+(Worker_TP0 pid=962) WARNING 10-13 17:25:49 [weight_utils.py:908] Network filesystem (NFS) detected but checkpoint total size (132.11 GiB) exceeds 90% of available RAM (69.61 GiB). Skipping auto-prefetch.
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:   0% Completed | 0/36 [00:00<?, ?it/s]
+(APIServer pid=1) INFO 10-13 17:25:50 [base.py:261] Readonly multi-modal warmup completed in 0.623s
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:   3% Completed | 1/36 [00:11<06:34, 11.27s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:   6% Completed | 2/36 [00:11<02:40,  4.71s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:   8% Completed | 3/36 [00:21<03:56,  7.16s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  11% Completed | 4/36 [00:40<06:24, 12.01s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  14% Completed | 5/36 [00:41<03:59,  7.73s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  17% Completed | 6/36 [01:00<05:49, 11.64s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  19% Completed | 7/36 [01:00<03:48,  7.87s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  22% Completed | 8/36 [01:11<04:10,  8.93s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  25% Completed | 9/36 [01:11<02:46,  6.18s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  28% Completed | 10/36 [01:22<03:20,  7.71s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  31% Completed | 11/36 [01:23<02:15,  5.40s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  33% Completed | 12/36 [01:34<02:53,  7.23s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  36% Completed | 13/36 [01:34<01:56,  5.08s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  39% Completed | 14/36 [01:46<02:35,  7.07s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  42% Completed | 15/36 [01:46<01:44,  4.97s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  44% Completed | 16/36 [01:58<02:21,  7.07s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  47% Completed | 17/36 [01:58<01:34,  4.98s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  50% Completed | 18/36 [02:10<02:06,  7.03s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  53% Completed | 19/36 [02:10<01:24,  4.96s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  56% Completed | 20/36 [02:24<02:03,  7.69s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  58% Completed | 21/36 [02:24<01:21,  5.43s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  61% Completed | 22/36 [02:39<01:54,  8.17s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  64% Completed | 23/36 [02:39<01:14,  5.77s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  67% Completed | 24/36 [02:51<01:32,  7.71s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  69% Completed | 25/36 [02:51<00:59,  5.45s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  72% Completed | 26/36 [03:03<01:12,  7.24s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  75% Completed | 27/36 [03:03<00:46,  5.12s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  78% Completed | 28/36 [03:15<00:58,  7.28s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  81% Completed | 29/36 [03:15<00:35,  5.14s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  83% Completed | 30/36 [03:26<00:41,  6.93s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  86% Completed | 31/36 [03:27<00:24,  4.91s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  89% Completed | 32/36 [03:38<00:27,  6.87s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  92% Completed | 33/36 [03:38<00:14,  4.85s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  94% Completed | 34/36 [03:46<00:11,  5.65s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  97% Completed | 35/36 [03:50<00:05,  5.25s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards: 100% Completed | 36/36 [03:59<00:00,  6.50s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards: 100% Completed | 36/36 [03:59<00:00,  6.66s/it]
+(Worker_TP0 pid=962) 
+(Worker_TP0 pid=962) INFO 10-13 17:29:49 [default_loader.py:430] Loading weights took 239.92 seconds
+(Worker_TP0 pid=962) INFO 10-13 17:29:50 [nvfp4.py:613] Using MoEPrepareAndFinalizeNoDPEPModular
+(Worker_TP0 pid=962) WARNING 10-13 17:29:52 [config.py:819] Qwen3.5 model specifies mamba_ssm_dtype='float32' in its config, but --mamba-ssm-cache-dtype='bfloat16' was passed. Using the user-specified value.
+(Worker_TP0 pid=962) INFO 10-13 17:29:52 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+(Worker_TP0 pid=962) WARNING 10-13 17:29:52 [vllm.py:1999] max_num_scheduled_tokens is set to 4096 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increasing max_num_batched_tokens to accommodate the additional draft token slots, or decrease num_speculative_tokens.
+(Worker_TP0 pid=962) INFO 10-13 17:29:52 [compilation.py:329] Enabled custom fusions: norm_quant, act_quant
+(Worker_TP0 pid=962) INFO 10-13 17:29:52 [weight_utils.py:895] Filesystem type for checkpoints: NFS. Checkpoint size: 132.11 GiB. Available RAM: 62.93 GiB.
+(Worker_TP0 pid=962) WARNING 10-13 17:29:52 [weight_utils.py:908] Network filesystem (NFS) detected but checkpoint total size (132.11 GiB) exceeds 90% of available RAM (62.93 GiB). Skipping auto-prefetch.
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:   0% Completed | 0/36 [00:00<?, ?it/s]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:   3% Completed | 1/36 [00:05<03:29,  5.98s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:   8% Completed | 3/36 [00:06<00:54,  1.67s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  11% Completed | 4/36 [00:11<01:28,  2.76s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  17% Completed | 6/36 [00:16<01:22,  2.76s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  22% Completed | 8/36 [00:21<01:16,  2.72s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  28% Completed | 10/36 [00:27<01:10,  2.72s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  33% Completed | 12/36 [00:32<01:03,  2.64s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  39% Completed | 14/36 [00:37<00:57,  2.62s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  44% Completed | 16/36 [00:42<00:50,  2.51s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  50% Completed | 18/36 [00:47<00:46,  2.59s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  56% Completed | 20/36 [00:53<00:43,  2.70s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  61% Completed | 22/36 [00:58<00:37,  2.68s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  67% Completed | 24/36 [00:59<00:23,  2.00s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  72% Completed | 26/36 [00:59<00:14,  1.41s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  78% Completed | 28/36 [00:59<00:08,  1.00s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  83% Completed | 30/36 [01:00<00:04,  1.39it/s]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  89% Completed | 32/36 [01:00<00:02,  1.92it/s]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  94% Completed | 34/36 [01:12<00:04,  2.27s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards:  97% Completed | 35/36 [01:12<00:01,  1.89s/it]
+(Worker_TP0 pid=962) Loading safetensors checkpoint shards: 100% Completed | 36/36 [01:13<00:00,  2.04s/it]
+(Worker_TP0 pid=962) 
+(Worker_TP0 pid=962) INFO 10-13 17:31:06 [default_loader.py:430] Loading weights took 73.57 seconds
+(Worker_TP0 pid=962) WARNING 10-13 17:31:06 [speculator.py:203] Draft model Qwen4ExpMTP does not support external multimodal embeddings. Embeddings from the target model will not be passed to the drafter; using text-only draft inputs instead.
+(Worker_TP0 pid=962) INFO 10-13 17:31:07 [model_runner.py:433] Model loading took 30.14 GiB memory and 319.315711 seconds
+(Worker_TP0 pid=962) INFO 10-13 17:31:07 [topk_topp_sampler.py:62] Using FlashInfer for top-p & top-k sampling.
+(Worker_TP0 pid=962) INFO 10-13 17:31:07 [interface.py:953] Setting attention block size to 832 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP0 pid=962) INFO 10-13 17:31:07 [interface.py:977] Padding mamba page size by 1.71% to ensure that mamba page size and attention page size are exactly equal.
+(EngineCore pid=920) INFO 10-13 17:31:07 [torch_utils.py:280] Reducing Torch threads from 10 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(EngineCore pid=920) INFO 10-13 17:31:07 [utils.py:306] Using BLNHC KV cache layout.
+(Worker_TP0 pid=962) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP0 pid=962) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP0 pid=962) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(Worker_TP0 pid=962) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP0 pid=962) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP0 pid=962) INFO 10-13 17:31:11 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 16384 tokens, and profiled with 1 image items of the maximum feature size.
+(Worker_TP0 pid=962) /usr/local/lib/python3.12/dist-packages/triton/language/core.py:2284: UserWarning: tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.
+(Worker_TP0 pid=962)   warn("tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.")
+(Worker_TP0 pid=962) INFO 10-13 17:32:08 [refusal_projection.py:365] rank1-refusal: 48 sitios 'language_model.model.layers*' verificados
+(Worker_TP0 pid=962) INFO 10-13 17:32:08 [refusal_projection.py:365] rank1-refusal: 48 sitios 'language_model.model.layers*' verificados
+(Worker_TP0 pid=962) INFO 10-13 17:32:08 [refusal_projection.py:365] rank1-refusal: 1 sitios 'language_model.model.layers*' verificados
+(EngineCore pid=920) INFO 10-13 17:32:08 [shm_broadcast.py:801] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization).
+(Worker_TP0 pid=962) INFO 10-13 17:32:09 [gpu_worker.py:568] Initial free memory 101.29 GiB, reserved 48.0 GiB memory for KV Cache as specified by kv_cache_memory_bytes config and skipped memory profiling. This does not respect the gpu_memory_utilization config. Only use kv_cache_memory_bytes config when you want manual control of KV cache memory size. If OOM'ed, check the difference of initial free memory between the current run and the previous run where kv_cache_memory_bytes is suggested and update it correspondingly.
+(EngineCore pid=920) WARNING 10-13 17:32:09 [kv_cache_utils.py:2192] Speculative decoding (method=mtp) is enabled but no KV cache group could be identified as the draft model's, so every group -- including Mamba groups [0, 1, 2, 3] -- will be treated as a draft group. A Mamba group cannot satisfy the widened lookup window that implies, so prefix-cache reuse across requests will be disabled and any external KV offload tier will store without ever serving a hit.
+(EngineCore pid=920) INFO 10-13 17:32:09 [kv_cache_utils.py:2349] GPU KV cache size: 3,551,933 tokens, Maximum concurrency for 262,144 tokens per request: 13.55x
+(Worker_TP0 pid=962) INFO 10-13 17:34:46 [kernel_warmup.py:174] JIT kernel warmup starting.
+(Worker_TP0 pid=962) INFO 10-13 17:34:46 [kernel_warmup.py:184] JIT kernel warmup finished in 0.00s.
+(Worker_TP0 pid=962) INFO 10-13 17:34:46 [qwen_vl_triton_warmup.py:57] Warmed position embedding and vision rotary kernels on grids=[(1, 16, 16), (1, 16, 2), (1, 2, 16), (1, 2, 2)].
+(Worker_TP0 pid=962) INFO 10-13 17:34:46 [qwen_vl_triton_warmup.py:98] Warmed M-RoPE Triton kernels.
+(Worker_TP0 pid=962) INFO 10-13 17:34:46 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(Worker_TP0 pid=962) INFO 10-13 17:34:47 [spec_decode_rejection_warmup.py:64] Warming up spec-decode rejection sampler kernels (vocab=248448, num_spec=2, dtype_pairs=[('torch.bfloat16', 'torch.float32'), ('torch.float32', 'torch.float32'), ('torch.bfloat16', 'torch.bfloat16'), ('torch.float32', 'torch.bfloat16')], block_verify=True).
+(Worker_TP0 pid=962) INFO 10-13 17:34:51 [qwen4_exp_qsa_warmup.py:72] Warmed up Qwen4Exp QSA decode kernels: ((1, 1), (2, 1), (3, 1)).
+(Worker_TP0 pid=962) INFO 10-13 17:34:55 [qwen4_exp_qsa_warmup.py:86] Warmed up Qwen4Exp QSA sparse attention kernels: ((32, 1, 1), (32, 4, 1), (32, 8, 1), (32, 16, 1), (32, 64, 4), (64, 1, 2), (64, 4, 2)).
+(Worker_TP0 pid=962) INFO 10-13 17:34:55 [b12x_warmup.py:85] Warmed up 11 b12x MXFP8 kernel signature(s).
+(Worker_TP0 pid=962) INFO 10-13 17:34:55 [b12x_warmup.py:85] Warmed up 1 b12x MoE kernel signature(s).
+(Worker_TP0 pid=962) INFO 10-13 17:34:55 [kernel_warmup.py:409] Using FlashInfer autotune cache file: /root/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/ff53debea3404a05684acffea0bb311ff151f141a12c2fc9bd207fc638cd3913/autotune_configs.json
+(Worker_TP0 pid=962) 2026-10-13 17:34:55,984 - INFO - autotuner.py:972 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+(Worker_TP0 pid=962) INFO 10-13 17:34:55 [kernel_warmup.py:361] Running FlashInfer autotune with 4096 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096).
+(EngineCore pid=920) INFO 10-13 17:35:46 [shm_broadcast.py:801] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization).
+(EngineCore pid=920) INFO 10-13 17:36:46 [shm_broadcast.py:801] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization).
+(Worker_TP0 pid=962) [AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   0%|          | 0/20 [00:00<?, ?profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   5%|▌         | 1/20 [00:07<02:19,  7.36s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  10%|█         | 2/20 [00:07<00:55,  3.11s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  15%|█▌        | 3/20 [00:07<00:29,  1.75s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  20%|██        | 4/20 [00:07<00:17,  1.11s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  25%|██▌       | 5/20 [00:07<00:11,  1.31profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  30%|███       | 6/20 [00:08<00:07,  1.81profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  35%|███▌      | 7/20 [00:08<00:05,  2.39profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  40%|████      | 8/20 [00:08<00:04,  2.99profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  45%|████▌     | 9/20 [00:08<00:03,  3.49profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  50%|█████     | 10/20 [00:08<00:02,  3.63profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  55%|█████▌    | 11/20 [00:09<00:02,  3.36profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  60%|██████    | 12/20 [00:09<00:02,  3.02profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  65%|██████▌   | 13/20 [00:10<00:02,  2.67profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  70%|███████   | 14/20 [00:10<00:02,  2.31profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  75%|███████▌  | 15/20 [00:14<00:07,  1.59s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  80%|████████  | 16/20 [00:29<00:22,  5.51s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  85%|████████▌ | 17/20 [00:34<00:15,  5.31s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  90%|█████████ | 18/20 [00:57<00:21, 10.75s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  95%|█████████▌| 19/20 [01:32<00:17, 17.98s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm: 100%|██████████| 20/20 [02:31<00:00, 30.26s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm: 100%|██████████| 20/20 [02:31<00:00,  7.57s/profile]
+(Worker_TP0 pid=962) [AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   0%|          | 0/20 [00:00<?, ?profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   5%|▌         | 1/20 [00:00<00:12,  1.56profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  15%|█▌        | 3/20 [00:00<00:03,  4.43profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  25%|██▌       | 5/20 [00:00<00:02,  6.60profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  35%|███▌      | 7/20 [00:01<00:01,  8.31profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  45%|████▌     | 9/20 [00:01<00:01,  9.40profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  55%|█████▌    | 11/20 [00:01<00:00,  9.02profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  65%|██████▌   | 13/20 [00:01<00:00,  7.92profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  70%|███████   | 14/20 [00:02<00:00,  7.19profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  75%|███████▌  | 15/20 [00:02<00:00,  6.45profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  80%|████████  | 16/20 [00:02<00:00,  5.77profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  85%|████████▌ | 17/20 [00:02<00:00,  5.11profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  90%|█████████ | 18/20 [00:03<00:00,  4.54profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  95%|█████████▌| 19/20 [00:03<00:00,  4.02profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm: 100%|██████████| 20/20 [00:03<00:00,  3.56profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm: 100%|██████████| 20/20 [00:03<00:00,  5.38profile/s]
+(Worker_TP0 pid=962) QWEN_KDET activo en _topk
+(Worker_TP0 pid=962) 2026-10-13 17:37:33,781 - INFO - autotuner.py:995 - flashinfer.jit: [Autotuner]: Autotuning process ends
+(Worker_TP0 pid=962) 2026-10-13 17:37:33,800 - INFO - autotuner.py:2652 - flashinfer.jit: [Autotuner]: Saved 40 configs to /root/.cache/vllm/flashinfer_autotune_cache/0.6.18.post1/121a/ff53debea3404a05684acffea0bb311ff151f141a12c2fc9bd207fc638cd3913/autotune_configs.json (40 new, 0 from previous config)
+(EngineCore pid=920) INFO 10-13 17:37:46 [shm_broadcast.py:801] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization).
+(Worker_TP0 pid=962) INFO 10-13 17:38:08 [breakable_cudagraph.py:288] Breakable CUDA graph enabled
+(EngineCore pid=920) INFO 10-13 17:38:46 [shm_broadcast.py:801] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization).
+(EngineCore pid=920) INFO 10-13 17:39:46 [shm_broadcast.py:801] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization).
+(EngineCore pid=920) INFO 10-13 17:40:46 [shm_broadcast.py:801] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization).
+(EngineCore pid=920) INFO 10-13 17:41:46 [shm_broadcast.py:801] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization).
+(EngineCore pid=920) INFO 10-13 17:42:46 [shm_broadcast.py:801] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization).

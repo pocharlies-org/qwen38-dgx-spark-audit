@@ -1,0 +1,4 @@
+14:24:12Z roce-red: tres pods lanzados
+14:24:35Z roce-red: roce-red-dgx1 Succeeded · [rank 1 · dgx1] gloo arriba con 3 rangos [rank 1] hcas=['rocep1s0f0', 'rocep1s0f1'] gid=3 map=0:rocep1s0f0:rocep1s0f0,2:rocep1s0f1:rocep1s0f0 
+14:24:36Z roce-red: roce-red-dgx3 Succeeded · [rank 2 · dgx3] gloo arriba con 3 rangos [rank 2] hcas=['rocep1s0f0', 'rocep1s0f1'] gid=3 map=0:rocep1s0f1:rocep1s0f1,1:rocep1s0f0:rocep1s0f1 
+14:24:36Z roce-red: roce-red-head Succeeded ·   las dos puertas del rango deben traer bytes > 0: una por vecino ROCE_RING_TEST ok en los 3 rangos (14:24:21) 

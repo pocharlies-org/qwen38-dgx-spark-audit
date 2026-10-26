@@ -1,0 +1,27 @@
+17:03:02Z DGX-932: inicio
+17:03:04Z árbitro en sync-paused (dgx-932-b2)
+17:03:06Z auto-sync de root y ai apagado
+17:05:12Z TP=1 de producción a 0
+17:05:19Z caché copiada a /srv/ursu-cache/1x-b2 (2,4G)
+17:05:19Z A: arrancando b2-dgx3
+17:05:21Z   esperando (0 min): 
+17:08:24Z listo en 3 min
+17:08:25Z A KV: GPU KV cache size: 1,372,400 tokens
+17:08:33Z A tools exit=0 {"no-stream": {"ok": true, "errors": [], "cities": ["Madrid", "París"], "n_calls": 2, "final": "\n\
+17:12:54Z A decode c1 47 · c4 102 · c8 137 · acept c1 {'0': 0.74, '1': 0.45, '2': 0.27, '3': 0.15}
+17:17:31Z A prefill frio exit=0 contexto64k exit=0 
+17:17:38Z B2: arrancando b2-dgx3 con autoajuste (tope 9 h)
+17:17:40Z   esperando (0 min): [refusal-probe] sonda cableada: 9 ficheros
+17:27:53Z   esperando (10 min): b12x compiling sequence.gdn_prefill: 8/272 ready, candidates 129/256 prepared, rank 0 batch 32, 383 measured, 6 cached, 823 compilations, 5:
+17:38:06Z   esperando (20 min): b12x compiling sequence.gdn_prefill: 9/272 ready, candidates 174/256 prepared, rank 0 batch 52, 685 measured, 6 cached, 1665 compilations, 1
+17:48:20Z   esperando (30 min): b12x compiling sequence.gdn_prefill: 9/272 ready, candidates 180/256 prepared, rank 0 batch 55, 691 measured, 6 cached, 1699 compilations, 2
+17:58:34Z   esperando (40 min): b12x compiling sequence.gdn_prefill: 9/272 ready, candidates 186/256 prepared, rank 0 batch 58, 697 measured, 6 cached, 1717 compilations, 3
+18:08:49Z   esperando (51 min): b12x compiling sequence.gdn_prefill: 9/272 ready, candidates 193/256 prepared, rank 0 batch 61, 703 measured, 6 cached, 1738 compilations, 4
+18:19:05Z   esperando (61 min): b12x compiling sequence.gdn_prefill: 9/272 ready, candidates 199/256 prepared, rank 0 batch 64, 709 measured, 6 cached, 1756 compilations, 5
+18:29:19Z   esperando (71 min): b12x compiling sequence.gdn_prefill: 9/272 ready, candidates 202/256 prepared, rank 0 batch 66, 713 measured, 6 cached, 1773 compilations, 6
+18:39:32Z   esperando (81 min): b12x compiling sequence.gdn_prefill: 9/272 ready, candidates 208/256 prepared, rank 0 batch 69, 719 measured, 6 cached, 1799 compilations, 7
+18:42:34Z VUELTA: inicio
+18:47:50Z VUELTA: TP=1 de producción listo en 3 min
+18:47:51Z VUELTA: árbitro en ready
+18:47:52Z VUELTA: auto-sync de root y ai restaurado
+18:47:52Z HECHO

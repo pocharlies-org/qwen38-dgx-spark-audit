@@ -1,0 +1,174 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Qwen3.8-Flash-Next en 3 DGX Spark: recetas de ursuciprian frente a nuestro TP=3</title><style>
+:root{--bg:#0f1115;--card:#171a21;--tx:#e6e8ee;--mu:#9aa3b2;--ac:#76b900;--ln:#2a2f3a}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 -apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:980px;margin:auto;padding:28px 18px 60px} h1{font-size:26px;margin:0 0 6px} h2{font-size:19px;border-bottom:2px solid var(--ac);padding-bottom:6px;margin-top:0}
+h3{font-size:16px;margin:22px 0 8px} h4{margin:0 0 6px;font-size:13px;color:var(--mu)} .sub{color:var(--mu);margin-bottom:22px}
+section{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:18px 20px;margin:18px 0;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0} th,td{padding:6px 9px;border-bottom:1px solid var(--ln);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left} th{color:var(--mu);font-weight:600} code{background:#232838;padding:1px 5px;border-radius:4px;font-size:13px}
+pre{background:#0b0d11;padding:12px;border-radius:8px;overflow-x:auto;font-size:12px} .pend{color:#e0a43a} a{color:var(--ac)}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:12px 0}
+.b{display:grid;grid-template-columns:150px 1fr 90px;gap:8px;align-items:center;font-size:12px;margin:3px 0} .bl{color:var(--mu)}
+.bt{background:#232838;border-radius:4px;height:14px} .bf{display:block;height:14px;border-radius:4px;background:#4a5568} .bf.best{background:var(--ac)} .bv{text-align:right}
+</style></head><body><main>
+<h1>Qwen3.8-Flash-Next en 3 DGX Spark</h1>
+<div class="sub">Recetas de ursuciprian (fork de vLLM con kernels b12x, MTP k=4, NVFP4) frente a nuestro qwen38 en TP=3 · DGX-847 · 12-13/10/2026<br>
+<a href="https://github.com/ursuciprian/qwen3.8-flash-next-dgx-spark-tp-2">receta TP=2</a> · <a href="https://github.com/ursuciprian/qwen3.8-flash-next-1x-dgx-spark">receta 1 Spark</a> ·
+<a href="https://www.reddit.com/r/DGX_Spark/s/vPijahNDQS">post</a></div>
+<section><h2>Conclusiones</h2><ol>
+<li><b>Peticiones cortas, una a una: su TP=2 es más rápido.</b> Genera 70 tok/s a c1 frente a nuestros 49 (+43 %), y en llama-benchy
+85 frente a 49. La ventaja viene de su MTP k=4 con kernels b12x: cada token especulado les cuesta muy poco, así que les sale a cuenta
+proponer 4 (aceptación por posición 0,72 · 0,46 · 0,27 · 0,15). Con 8-10 peticiones a la vez empatamos (235-256 tok/s).</li>
+<li><b>Contexto largo ya en caché (64K + 2 048 nuevos): nuestro TP=3 responde antes.</b> La primera respuesta llega en 0,99 s a c1 y 4,7 s
+a c8; ellos tardan 2,2 s y 10,6 s. La causa es el tamaño de bloque de la caché de prefijo, que lo fija la página del estado SSM: con su
+estado en FP32 el bloque es de 2 864 tokens y con el nuestro en BF16 de 832, así que tras 2 048 tokens nuevos ellos recalculan
+4 659 tokens (2,1 s) y nosotros 2 388 (1,0 s; medido el 13-10 en el residente). Sus kernels b12x de GDN exigen el FP32 (la prueba E ni
+arranca).</li>
+<li><b>La palanca que lo arregla en su receta es la E2:</b> estado SSM en BF16 y el GDN estándar (triton) en vez del b12x. El bloque baja a
+1 504 tokens, la primera respuesta mejora un 25 % a c1 y un 15 % a c8, y la generación sube un 6-27 %. El precio es el prefill de 2K, que
+cae un 16 %. El GDN es solo el 1-2,5 % del tiempo de GPU (perfil C), así que dejar b12x ahí aporta poco.</li>
+<li><b>Generación con 64K de contexto y 8 peticiones: nosotros 100 tok/s, ellos 58.</b> En frío (64K sin caché) ellos ganan a c8 (68 s
+frente a 85) y pierden a c10 (103 s frente a 86).</li>
+<li><b>Calidad: empate en las 7 suites</b> (tools, BFCL, GSM8K, MATH, IFEval, HumanEval, NIAH). La única diferencia significativa es
+<code>minerva_math_em</code>, que puntúa el formato exacto de la respuesta; la nota matemática real empata. El castellano no se midió
+aparte.</li>
+<li><b>La tabla PLE en disco les cuesta velocidad</b> (−7 a −29 %) aunque sobre memoria para la caché de páginas (G2). El cuello es el lector
+de CPU que la sirve, no la memoria. En su 1 Spark la PLE no cabe en GPU, así que ahí el disco es obligatorio.</li>
+<li><b>Los ajustes del planificador no ayudan:</b> 4 096 tokens por paso empeora (B), y añadir el tope de 2 048 por petición mejora la
+generación a c8 pero retrasa la primera respuesta un 31 % (F).</li>
+<li><b>MTP más largo en nuestra pila</b> (13-10, misma tarde y sin tráfico real): k=2 genera más que nuestro k=1 (llama-benchy c1 56 frente a
+49 tok/s, c4 123 frente a 97), pero con 64K en caché la primera respuesta tarda más (1,25 s frente a 0,97 a c1). k=3 y k=4 no mejoran a
+k=2: con nuestros kernels cada token propuesto de más cuesta 5-9 ms.</li>
+<li><b>Su 1 Spark</b> da 47 tok/s a c1 y se satura en ~139 tok/s; para un solo usuario es un servidor razonable, pero no para varios.</li>
+</ol>
+<p><b>Lo mejor para seguir</b> es unir las dos pilas: la nuestra (estado en BF16, bloque de caché pequeño, TP=3) con lo que les da velocidad
+a ellos, que es su checkpoint NVFP4, los kernels b12x en el MoE y los GEMM (no en el GDN) y un MTP más largo. Esa combinación se prueba en
+DGX-852.</p>
+</section><section><h2>Generación (decode v4, tok/s totales)</h2><p>Peticiones cortas, 256 tokens de salida, 3 repeticiones de 120 s por concurrencia (mediana).</p><table class=""><thead><tr><th>Receta</th><th>c1</th><th>c4</th><th>c8</th><th>c10</th></tr></thead><tbody><tr><td>Nuestro TP=3 (3 Sparks)</td><td>49.1</td><td>145.1</td><td>236.8</td><td>245.3</td></tr><tr><td>Su TP=2 (dgx1+dgx2)</td><td>70.4</td><td>164.3</td><td>234.7</td><td>256.0</td></tr><tr><td>Su 1 Spark (dgx3)</td><td>46.9</td><td>100.3</td><td>138.7</td><td>138.7</td></tr><tr><td>Su TP=2 con la PLE en disco (prueba G)</td><td>68.3</td><td>142.9</td><td>221.8</td><td>256.0</td></tr><tr><td>Su TP=2 con la PLE en disco y gpu-mem 0,7 (G2; c1/c8 ×2)</td><td>67.2</td><td>—</td><td>176.0</td><td>—</td></tr></tbody></table><div class="charts"><div class="chart"><h4>c1</h4><div class="b"><span class="bl">Nuestro TP=3 (3 Sparks)</span><span class="bt"><span class="bf" style="width:69.7%"></span></span><span class="bv">49.1 tok/s</span></div><div class="b"><span class="bl">Su TP=2 (dgx1+dgx2)</span><span class="bt"><span class="bf best" style="width:100.0%"></span></span><span class="bv">70.4 tok/s</span></div><div class="b"><span class="bl">Su 1 Spark (dgx3)</span><span class="bt"><span class="bf" style="width:66.7%"></span></span><span class="bv">46.9 tok/s</span></div><div class="b"><span class="bl">Su TP=2 con la PLE en disco (prueba G)</span><span class="bt"><span class="bf" style="width:97.0%"></span></span><span class="bv">68.3 tok/s</span></div><div class="b"><span class="bl">Su TP=2 con la PLE en disco y gpu-mem 0,7 (G2; c1/c8 ×2)</span><span class="bt"><span class="bf" style="width:95.5%"></span></span><span class="bv">67.2 tok/s</span></div></div><div class="chart"><h4>c8</h4><div class="b"><span class="bl">Nuestro TP=3 (3 Sparks)</span><span class="bt"><span class="bf best" style="width:100.0%"></span></span><span class="bv">236.8 tok/s</span></div><div class="b"><span class="bl">Su TP=2 (dgx1+dgx2)</span><span class="bt"><span class="bf" style="width:99.1%"></span></span><span class="bv">234.7 tok/s</span></div><div class="b"><span class="bl">Su 1 Spark (dgx3)</span><span class="bt"><span class="bf" style="width:58.6%"></span></span><span class="bv">138.7 tok/s</span></div><div class="b"><span class="bl">Su TP=2 con la PLE en disco (prueba G)</span><span class="bt"><span class="bf" style="width:93.7%"></span></span><span class="bv">221.8 tok/s</span></div><div class="b"><span class="bl">Su TP=2 con la PLE en disco y gpu-mem 0,7 (G2; c1/c8 ×2)</span><span class="bt"><span class="bf" style="width:74.3%"></span></span><span class="bv">176.0 tok/s</span></div></div></div><p>Aceptación del MTP en su TP=2 (k=4, por posición, c1): 0.72 · 0.46 · 0.27 · 0.15</p></section><section><h2>Contexto de 64K en frío (primera respuesta, p50)</h2><table class=""><thead><tr><th>Receta</th><th>c8</th><th>c10</th></tr></thead><tbody><tr><td>Nuestro TP=3 (3 Sparks)</td><td>85.2 s</td><td>85.6 s</td></tr><tr><td>Su TP=2 (dgx1+dgx2)</td><td>67.5 s</td><td>102.8 s</td></tr><tr><td>Su 1 Spark (dgx3)</td><td>90.2 s</td><td>90.6 s</td></tr></tbody></table></section><section><h2>llama-benchy (medium, con caché de prefijo)</h2><table class=""><thead><tr><th>Medida</th><th>Nuestro TP=3 (3 Sparks)</th><th>Su TP=2 (dgx1+dgx2)</th><th>Su 1 Spark (dgx3)</th></tr></thead><tbody><tr><td>Generación c1 (tok/s)</td><td>48.5</td><td>84.7</td><td>58.7</td></tr><tr><td>Generación c4 (tok/s)</td><td>110.0</td><td>158.0</td><td>121.2</td></tr><tr><td>Generación c8 (tok/s)</td><td>125.7</td><td>133.7</td><td>119.2</td></tr><tr><td>Prefill 2K c1 (tok/s)</td><td>2 864.5</td><td>2 946.1</td><td>1 982.0</td></tr><tr><td>64K: generación c1 (tok/s)</td><td>48.8</td><td>86.8</td><td>60.8</td></tr><tr><td>64K: generación c8 (tok/s)</td><td>100.0</td><td>58.4</td><td>63.2</td></tr><tr><td>64K con caché: 1.ª respuesta c1 (s)</td><td>0.99</td><td>2.23</td><td>2.61</td></tr><tr><td>64K con caché: 1.ª respuesta c8 (s)</td><td>4.68</td><td>10.63</td><td>14.74</td></tr></tbody></table></section><section><h2>Calidad (7 suites, pareada ítem a ítem contra nuestro TP=3)</h2><table class=""><thead><tr><th>Suite</th><th>TP=3</th><th>TP=2</th><th>1 Spark</th><th>TP=2 − TP=3</th><th>1 Spark − TP=3</th></tr></thead><tbody><tr><td>bfcl</td><td>322/400 (80.5 %)</td><td>315/400 (78.8 %)</td><td>323/400 (80.8 %)</td><td>-1.8 pp</td><td>+0.2 pp</td></tr><tr><td>gsm8k</td><td>291/300 (97.0 %)</td><td>291/300 (97.0 %)</td><td>293/300 (97.7 %)</td><td>+0.0 pp</td><td>+0.7 pp</td></tr><tr><td>gsm8k_strict</td><td>291/300 (97.0 %)</td><td>291/300 (97.0 %)</td><td>293/300 (97.7 %)</td><td>+0.0 pp</td><td>+0.7 pp</td></tr><tr><td>humaneval</td><td>159/164 (97.0 %)</td><td>160/164 (97.6 %)</td><td>160/164 (97.6 %)</td><td>+0.6 pp</td><td>+0.6 pp</td></tr><tr><td>humaneval_plus</td><td>156/164 (95.1 %)</td><td>155/164 (94.5 %)</td><td>155/164 (94.5 %)</td><td>-0.6 pp</td><td>-0.6 pp</td></tr><tr><td>ifeval</td><td>255/300 (85.0 %)</td><td>260/300 (86.7 %)</td><td>252/300 (84.0 %)</td><td>+1.7 pp</td><td>-1.0 pp</td></tr><tr><td>ifeval_loose</td><td>267/300 (89.0 %)</td><td>271/300 (90.3 %)</td><td>265/300 (88.3 %)</td><td>+1.3 pp</td><td>-0.7 pp</td></tr><tr><td>minerva_math</td><td>263/280 (93.9 %)</td><td>262/280 (93.6 %)</td><td>259/280 (92.5 %)</td><td>-0.4 pp</td><td>-1.4 pp</td></tr><tr><td>minerva_math_em</td><td>36/280 (12.9 %)</td><td>8/280 (2.9 %)</td><td>7/280 (2.5 %)</td><td>-10.0 pp *</td><td>-10.4 pp *</td></tr><tr><td>niah</td><td>10/10 (100.0 %)</td><td>10/10 (100.0 %)</td><td>10/10 (100.0 %)</td><td>+0.0 pp</td><td>+0.0 pp</td></tr><tr><td>niah_4k</td><td>10/10 (100.0 %)</td><td>10/10 (100.0 %)</td><td>10/10 (100.0 %)</td><td>+0.0 pp</td><td>+0.0 pp</td></tr><tr><td>tools12</td><td>56/60 (93.3 %)</td><td>58/60 (96.7 %)</td><td>56/60 (93.3 %)</td><td>+3.3 pp</td><td>+0.0 pp</td></tr></tbody></table><p>* = el intervalo de confianza del 95 % excluye el 0. La única diferencia real es <code>minerva_math_em</code>, que puntúa el formato exacto de la respuesta; la nota matemática (<code>minerva_math</code>, math-verify) empata.</p></section><section><h2>Pruebas de contexto largo y PLE · su TP=2</h2><p><b>Pregunta:</b> ¿por qué nuestro TP=3 responde antes con 64K de contexto ya en caché, y puede la PLE ir a disco sin perder velocidad?</p><h3>A · Reutilización de la caché sobre 64K (su TP=2 tal cual)</h3><table class=""><thead><tr><th>Paso</th><th>Tokens</th><th>Reutilizados</th><th>Recalculados</th><th>1.ª respuesta</th></tr></thead><tbody><tr><td>1 contexto 64K</td><td>65 541</td><td>0</td><td>65 541</td><td>23.47 s</td></tr><tr><td>2 contexto + 2048 nuevos</td><td>67 667</td><td>63 008</td><td>4 659</td><td>2.10 s</td></tr><tr><td>3 repetición exacta de 2</td><td>67 667</td><td>65 872</td><td>1 795</td><td>0.89 s</td></tr></tbody></table><p>La caché guarda el estado en bloques de 2 864 tokens (lo fija el tamaño de página del estado SSM en float32): con 2 048 tokens nuevos sobre 64K reaprovecha 63 008 y recalcula 4 659.</p><h3>B · <code>--max-num-batched-tokens 4096</code> (el nuestro; el suyo es 8192)</h3><table class=""><thead><tr><th>Medida</th><th>Su receta</th><th>Con el cambio</th><th>Δ (en tiempos, − es mejor)</th></tr></thead><tbody><tr><td>64K: generación c1 (tok/s)</td><td>86.80</td><td>76.76</td><td>-12 %</td></tr><tr><td>64K: generación c8 (tok/s)</td><td>58.43</td><td>55.28</td><td>-5 %</td></tr><tr><td>64K con caché: 1.ª respuesta c1 (s)</td><td>2.23</td><td>2.33</td><td>4 %</td></tr><tr><td>64K con caché: 1.ª respuesta c8 (s)</td><td>10.63</td><td>11.06</td><td>4 %</td></tr></tbody></table><h3>E · Estado SSM en BF16 (nuestra palanca más fuerte)</h3><p class='pend'>E no arranca (2 intentos, 06:22-06:30Z): sus kernels b12x exigen el estado SSM en FP32.</p><h3>F · Nuestras palancas del planificador: 4096 por paso + 2048 por petición (sin BF16, imposible con b12x)</h3><table class=""><thead><tr><th>Medida</th><th>Su receta</th><th>Con el cambio</th><th>Δ (en tiempos, − es mejor)</th></tr></thead><tbody><tr><td>64K: generación c1 (tok/s)</td><td>86.80</td><td>82.96</td><td>-4 %</td></tr><tr><td>64K: generación c8 (tok/s)</td><td>58.43</td><td>68.21</td><td>17 %</td></tr><tr><td>64K con caché: 1.ª respuesta c1 (s)</td><td>2.23</td><td>2.29</td><td>3 %</td></tr><tr><td>64K con caché: 1.ª respuesta c8 (s)</td><td>10.63</td><td>13.88</td><td>31 %</td></tr></tbody></table><p>Prueba A con esta configuración: reutiliza 63 008, recalcula 4 659, 1.ª respuesta 2.21 s.</p><h3>E2 · Estado SSM en BF16 con el GDN estándar (triton) en vez de b12x: sin recompilar, bloque de 1 504 tokens</h3><table class=""><thead><tr><th>Medida</th><th>Su receta</th><th>Con el cambio</th><th>Δ (en tiempos, − es mejor)</th></tr></thead><tbody><tr><td>Generación c1 (tok/s)</td><td>84.70</td><td>89.82</td><td>6 %</td></tr><tr><td>Generación c4 (tok/s)</td><td>157.96</td><td>—</td><td>—</td></tr><tr><td>Generación c8 (tok/s)</td><td>133.71</td><td>138.61</td><td>4 %</td></tr><tr><td>Prefill 2K c1 (tok/s)</td><td>2 946.13</td><td>2 480.98</td><td>-16 %</td></tr><tr><td>64K: generación c1 (tok/s)</td><td>86.80</td><td>95.98</td><td>11 %</td></tr><tr><td>64K: generación c8 (tok/s)</td><td>58.43</td><td>74.00</td><td>27 %</td></tr><tr><td>64K con caché: 1.ª respuesta c1 (s)</td><td>2.23</td><td>1.67</td><td>-25 %</td></tr><tr><td>64K con caché: 1.ª respuesta c8 (s)</td><td>10.63</td><td>9.00</td><td>-15 %</td></tr></tbody></table><p>Prueba A con esta configuración: reutiliza 64 672, recalcula 2 995, 1.ª respuesta 1.41 s.</p><h3>G2 · PLE en disco con <code>--gpu-memory-utilization 0.7</code> (memoria de sobra para la caché de páginas)</h3><table class=""><thead><tr><th>Medida</th><th>Su receta</th><th>Con el cambio</th><th>Δ (en tiempos, − es mejor)</th></tr></thead><tbody><tr><td>Generación c1 (tok/s)</td><td>84.70</td><td>76.77</td><td>-9 %</td></tr><tr><td>Generación c4 (tok/s)</td><td>157.96</td><td>—</td><td>—</td></tr><tr><td>Generación c8 (tok/s)</td><td>133.71</td><td>96.21</td><td>-28 %</td></tr><tr><td>Prefill 2K c1 (tok/s)</td><td>2 946.13</td><td>2 102.18</td><td>-29 %</td></tr><tr><td>64K: generación c1 (tok/s)</td><td>86.80</td><td>80.55</td><td>-7 %</td></tr><tr><td>64K: generación c8 (tok/s)</td><td>58.43</td><td>55.97</td><td>-4 %</td></tr><tr><td>64K con caché: 1.ª respuesta c1 (s)</td><td>2.23</td><td>2.35</td><td>5 %</td></tr><tr><td>64K con caché: 1.ª respuesta c8 (s)</td><td>10.63</td><td>10.71</td><td>1 %</td></tr></tbody></table><h3>G · La tabla PLE en disco (su <code>VLLM_PLE_MMAP</code>, el mismo mecanismo que nuestro DGX-773)</h3><p>Decode en la tabla de generación de arriba. Caché KV: 4,849,848 tokens (su receta: 3 419 333).</p><table class=""><thead><tr><th>Medida</th><th>PLE en GPU (su receta)</th><th>PLE en disco</th></tr></thead><tbody><tr><td>Generación c1 (tok/s)</td><td>84.70</td><td>78.45</td></tr><tr><td>Generación c4 (tok/s)</td><td>157.96</td><td>—</td></tr><tr><td>Generación c8 (tok/s)</td><td>133.71</td><td>91.50</td></tr><tr><td>Prefill 2K c1 (tok/s)</td><td>2 946.13</td><td>2 105.79</td></tr><tr><td>64K: generación c1 (tok/s)</td><td>86.80</td><td>87.71</td></tr><tr><td>64K: generación c8 (tok/s)</td><td>58.43</td><td>50.24</td></tr><tr><td>64K con caché: 1.ª respuesta c1 (s)</td><td>2.23</td><td>2.47</td></tr><tr><td>64K con caché: 1.ª respuesta c8 (s)</td><td>10.63</td><td>11.13</td></tr></tbody></table><h3>C · Perfil (dónde se va el tiempo de GPU con 64K en caché + 2 048 nuevos, c1 y c8)</h3><pre>== pruebas/c-perfil/head/dp0_pp0_tp0_dcp0_ep0_rank0.1791877368682362088.pt.trace.json.gz  GPU total 2.18 s
+  atención            0.547 s   25.1%
+  gemm densa          0.405 s   18.5%
+  moe nvfp4           0.341 s   15.6%
+  otros               0.252 s   11.6%
+  muestreo/mtp        0.223 s   10.2%
+  allreduce/nccl      0.191 s    8.8%
+  norm/hiperconexión    0.191 s    8.8%
+  gdn/mamba           0.032 s    1.4%
+     16.2%  kernel_cutlass_kernel_b12xattentionqsa_score_cute_RepresentativeScoreKernel_object_at__cutlasscutecore_Pointer
+     15.1%  kernel_cutlass_kernel_b12xmoe_sharedkernelssiluMoEDynamicKernelSilu_object_at__tensorptrbf16gmemalign16o256025
+      8.5%  ncclDevKernel_AllReduce_bf16_RING(ncclDevKernelArgsStorage&lt;4096ul&gt;)
+      7.9%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      7.8%  kernel_cutlass_kernel_b12xnormhyperconnection_cute_PackedCombineNorm_object_at__ptrbf16gmem_ptrbf16gmem_ptrbf1
+      6.2%  kernel_cutlass_kernel_b12xattentionpaged_selected_forward_SelectedPositionPagedForwardKernel_object_at__ptrbf1
+      4.6%  _gate_mean_kernel
+      3.6%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      3.1%  kernel_cutlass_kernel_b12xsequencemtp_feedback_cute_prefillMTPPrefillBf16GemmKernel_object_at__tensor00o327682
+      2.7%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      2.7%  kernel_cutlass_kernel_b12xattentiondsa_indexertiled_topkDSATiledTopkKernel_object_at__tensorptrf32gmemo1_tenso
+      2.6%  _emit_stable_topk_kernel
+== pruebas/c-perfil/head/dp0_pp0_tp0_dcp0_ep0_rank0.1791877427240766972.pt.trace.json.gz  GPU total 22.77 s
+  allreduce/nccl      7.417 s   32.6%
+  atención            4.426 s   19.4%
+  gemm densa          2.917 s   12.8%
+  moe nvfp4           2.198 s    9.7%
+  otros               2.068 s    9.1%
+  muestreo/mtp        1.926 s    8.5%
+  norm/hiperconexión    1.569 s    6.9%
+  gdn/mamba           0.249 s    1.1%
+     32.4%  ncclDevKernel_AllReduce_bf16_RING(ncclDevKernelArgsStorage&lt;4096ul&gt;)
+     12.6%  kernel_cutlass_kernel_b12xattentionqsa_score_cute_RepresentativeScoreKernel_object_at__cutlasscutecore_Pointer
+      9.3%  kernel_cutlass_kernel_b12xmoe_sharedkernelssiluMoEDynamicKernelSilu_object_at__tensorptrbf16gmemalign16o256025
+      6.1%  kernel_cutlass_kernel_b12xnormhyperconnection_cute_PackedCombineNorm_object_at__ptrbf16gmem_ptrbf16gmem_ptrbf1
+      5.5%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      4.7%  kernel_cutlass_kernel_b12xattentionpaged_selected_forward_SelectedPositionPagedForwardKernel_object_at__ptrbf1
+      3.4%  _gate_mean_kernel
+      2.8%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      2.4%  kernel_cutlass_kernel_b12xsequencemtp_feedback_cute_prefillMTPPrefillBf16GemmKernel_object_at__tensor00o327682
+      2.2%  _emit_stable_topk_kernel
+      2.1%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      2.1%  kernel_cutlass_kernel_b12xattentiondsa_indexertiled_topkDSATiledTopkKernel_object_at__tensorptrf32gmemo1_tenso
+== pruebas/c-perfil/worker/dp0_pp0_tp1_dcp0_ep1_rank1.1791877368725496490.pt.trace.json.gz  GPU total 2.18 s
+  atención            0.551 s   25.3%
+  gemm densa          0.408 s   18.7%
+  moe nvfp4           0.341 s   15.7%
+  otros               0.255 s   11.7%
+  muestreo/mtp        0.228 s   10.5%
+  norm/hiperconexión    0.199 s    9.1%
+  allreduce/nccl      0.164 s    7.5%
+  gdn/mamba           0.032 s    1.5%
+     16.3%  kernel_cutlass_kernel_b12xattentionqsa_score_cute_RepresentativeScoreKernel_object_at__cutlasscutecore_Pointer
+     15.1%  kernel_cutlass_kernel_b12xmoe_sharedkernelssiluMoEDynamicKernelSilu_object_at__tensorptrbf16gmemalign16o256025
+      8.2%  kernel_cutlass_kernel_b12xnormhyperconnection_cute_PackedCombineNorm_object_at__ptrbf16gmem_ptrbf16gmem_ptrbf1
+      8.0%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      7.2%  ncclDevKernel_AllReduce_bf16_RING(ncclDevKernelArgsStorage&lt;4096ul&gt;)
+      6.2%  kernel_cutlass_kernel_b12xattentionpaged_selected_forward_SelectedPositionPagedForwardKernel_object_at__ptrbf1
+      4.6%  _gate_mean_kernel
+      3.6%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      3.3%  kernel_cutlass_kernel_b12xsequencemtp_feedback_cute_prefillMTPPrefillBf16GemmKernel_object_at__tensor00o327682
+      2.7%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      2.7%  kernel_cutlass_kernel_b12xattentiondsa_indexertiled_topkDSATiledTopkKernel_object_at__tensorptrf32gmemo1_tenso
+      2.6%  _emit_stable_topk_kernel
+== pruebas/c-perfil/worker/dp0_pp0_tp1_dcp0_ep1_rank1.1791877427291736879.pt.trace.json.gz  GPU total 18.69 s
+  atención            5.316 s   28.4%
+  gemm densa          3.649 s   19.5%
+  moe nvfp4           2.332 s   12.5%
+  otros               2.240 s   12.0%
+  muestreo/mtp        2.002 s   10.7%
+  norm/hiperconexión    1.731 s    9.3%
+  allreduce/nccl      1.080 s    5.8%
+  gdn/mamba           0.338 s    1.8%
+     17.8%  kernel_cutlass_kernel_b12xattentionqsa_score_cute_RepresentativeScoreKernel_object_at__cutlasscutecore_Pointer
+     12.1%  kernel_cutlass_kernel_b12xmoe_sharedkernelssiluMoEDynamicKernelSilu_object_at__tensorptrbf16gmemalign16o256025
+      8.3%  kernel_cutlass_kernel_b12xnormhyperconnection_cute_PackedCombineNorm_object_at__ptrbf16gmem_ptrbf16gmem_ptrbf1
+      8.0%  kernel_cutlass_kernel_b12xattentionpaged_selected_forward_SelectedPositionPagedForwardKernel_object_at__ptrbf1
+      7.5%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      5.7%  ncclDevKernel_AllReduce_bf16_RING(ncclDevKernelArgsStorage&lt;4096ul&gt;)
+      5.1%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      4.5%  _gate_mean_kernel
+      3.8%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      3.0%  kernel_cutlass_kernel_b12xsequencemtp_feedback_cute_prefillMTPPrefillBf16GemmKernel_object_at__tensor00o327682
+      2.8%  _emit_stable_topk_kernel
+      2.6%  kernel_cutlass_kernel_b12xattentiondsa_indexertiled_topkDSATiledTopkKernel_object_at__tensorptrf32gmemo1_tenso
+</pre></section><section><h2>Las mismas pruebas · su 1 Spark (dgx3, en paralelo)</h2><h3>A · Reutilización de la caché sobre 64K (su 1 Spark tal cual)</h3><table class=""><thead><tr><th>Paso</th><th>Tokens</th><th>Reutilizados</th><th>Recalculados</th><th>1.ª respuesta</th></tr></thead><tbody><tr><td>1 contexto 64K</td><td>65 541</td><td>0</td><td>65 541</td><td>33.06 s</td></tr><tr><td>2 contexto + 2048 nuevos</td><td>67 667</td><td>63 504</td><td>4 163</td><td>2.43 s</td></tr><tr><td>3 repetición exacta de 2</td><td>67 667</td><td>66 528</td><td>1 139</td><td>0.79 s</td></tr></tbody></table><p>La caché guarda el estado en bloques de 3 024 tokens (lo fija el tamaño de página del estado SSM en float32): con 2 048 tokens nuevos sobre 64K reaprovecha 63 504 y recalcula 4 163.</p><h3>B · <code>--max-num-batched-tokens 4096</code> (el nuestro; el suyo es 8192)</h3><table class=""><thead><tr><th>Medida</th><th>Su receta</th><th>Con el cambio</th><th>Δ (en tiempos, − es mejor)</th></tr></thead><tbody><tr><td>64K: generación c1 (tok/s)</td><td>60.76</td><td>63.09</td><td>4 %</td></tr><tr><td>64K: generación c8 (tok/s)</td><td>63.17</td><td>52.99</td><td>-16 %</td></tr><tr><td>64K con caché: 1.ª respuesta c1 (s)</td><td>2.61</td><td>2.63</td><td>1 %</td></tr><tr><td>64K con caché: 1.ª respuesta c8 (s)</td><td>14.74</td><td>13.45</td><td>-9 %</td></tr></tbody></table><p>Prueba A con esta configuración: reutiliza 63 504, recalcula 4 163, 1.ª respuesta 2.40 s.</p><h3>E · Estado SSM en BF16 (nuestra palanca más fuerte)</h3><p class='pend'>E no arranca (07:17Z): «Engine core initialization failed»; el log guardado no trae la causa raíz (en su TP=2 fue que los kernels b12x exigen el estado SSM en FP32).</p><h3>F · Nuestras palancas del planificador: 4096 por paso + 2048 por petición (sin BF16, imposible con b12x)</h3><table class=""><thead><tr><th>Medida</th><th>Su receta</th><th>Con el cambio</th><th>Δ (en tiempos, − es mejor)</th></tr></thead><tbody><tr><td>64K: generación c1 (tok/s)</td><td>60.76</td><td>62.42</td><td>3 %</td></tr><tr><td>64K: generación c8 (tok/s)</td><td>63.17</td><td>70.00</td><td>11 %</td></tr><tr><td>64K con caché: 1.ª respuesta c1 (s)</td><td>2.61</td><td>2.84</td><td>9 %</td></tr><tr><td>64K con caché: 1.ª respuesta c8 (s)</td><td>14.74</td><td>16.65</td><td>13 %</td></tr></tbody></table><p>Prueba A con esta configuración: reutiliza 63 504, recalcula 4 163, 1.ª respuesta 2.46 s.</p><h3>G al revés · La tabla PLE en GPU (su 1 Spark la lleva en disco): lo que cuesta el disco</h3><p class='pend'>no arranca: OOMKilled (exit 137, 07:23:06Z). Con la PLE en GPU los pesos ocupan 102,26 GiB (memoria libre al empezar: 110,23 GiB) y la receta reserva 14 GiB de KV: no cabe en un Spark. Por eso su 1× lleva la PLE en disco.</p><h3>C · Perfil (dónde se va el tiempo de GPU con 64K en caché + 2 048 nuevos, c1 y c8)</h3><pre>== pruebas/1x/c-perfil/dp0_pp0_tp0_dcp0_ep0_rank0.1791876411236688791.pt.trace.json.gz  GPU total 2.32 s
+  atención            0.574 s   24.8%
+  moe nvfp4           0.541 s   23.4%
+  gemm densa          0.495 s   21.4%
+  otros               0.298 s   12.9%
+  norm/hiperconexión    0.178 s    7.7%
+  muestreo/mtp        0.175 s    7.6%
+  gdn/mamba           0.056 s    2.4%
+  allreduce/nccl      0.000 s    0.0%
+     22.6%  kernel_cutlass_kernel_b12xmoe_sharedkernelssiluMoEDynamicKernelSilu_object_at__tensorptrbf16gmemalign16o256025
+     12.9%  kernel_cutlass_kernel_b12xattentionqsa_score_cute_RepresentativeScoreKernel_object_at__cutlasscutecore_Pointer
+      9.7%  kernel_cutlass_kernel_b12xattentionpaged_selected_forward_SelectedPositionPagedForwardKernel_object_at__ptrbf1
+      6.0%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      6.0%  kernel_cutlass_kernel_b12xnormhyperconnection_cute_PackedCombineNorm_object_at__ptrbf16gmem_ptrbf16gmem_ptrbf1
+      5.4%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      3.5%  _gate_mean_kernel
+      2.5%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      2.1%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      2.1%  kernel_cutlass_kernel_b12xattentiondsa_indexertiled_topkDSATiledTopkKernel_object_at__tensorptrf32gmemo1_tenso
+      2.0%  _emit_stable_topk_kernel
+      2.0%  kernel_cutlass_kernel_b12xsequencemtp_feedback_cute_prefillMTPPrefillBf16GemmKernel_object_at__tensor00o327682
+== pruebas/1x/c-perfil/dp0_pp0_tp0_dcp0_ep0_rank0.1791876465204393124.pt.trace.json.gz  GPU total 17.38 s
+  atención            4.677 s   26.9%
+  gemm densa          3.753 s   21.6%
+  moe nvfp4           2.963 s   17.1%
+  otros               2.411 s   13.9%
+  muestreo/mtp        1.632 s    9.4%
+  norm/hiperconexión    1.501 s    8.6%
+  gdn/mamba           0.441 s    2.5%
+  allreduce/nccl      0.000 s    0.0%
+     16.5%  kernel_cutlass_kernel_b12xmoe_sharedkernelssiluMoEDynamicKernelSilu_object_at__tensorptrbf16gmemalign16o256025
+     14.0%  kernel_cutlass_kernel_b12xattentionqsa_score_cute_RepresentativeScoreKernel_object_at__cutlasscutecore_Pointer
+     10.5%  kernel_cutlass_kernel_b12xattentionpaged_selected_forward_SelectedPositionPagedForwardKernel_object_at__ptrbf1
+      6.7%  kernel_cutlass_kernel_b12xnormhyperconnection_cute_PackedCombineNorm_object_at__ptrbf16gmem_ptrbf16gmem_ptrbf1
+      6.3%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      6.0%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      4.7%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      3.7%  _gate_mean_kernel
+      2.7%  kernel_cutlass_kernel_b12xsequencemtp_feedback_cute_prefillMTPPrefillBf16GemmKernel_object_at__tensor00o327682
+      2.4%  _emit_stable_topk_kernel
+      2.4%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      2.3%  kernel_cutlass_kernel_b12xattentiondsa_indexertiled_topkDSATiledTopkKernel_object_at__tensorptrf32gmemo1_tenso
+</pre></section><section><h2>Herramientas</h2><table class=""><thead><tr><th>Receta</th><th>Tools sin stream</th><th>Tools en stream</th><th>/v1/messages</th><th>Claude Code</th></tr></thead><tbody><tr><td>Su TP=2 (dgx1+dgx2)</td><td>sí</td><td>sí</td><td>200</td><td>no</td></tr><tr><td>Su 1 Spark (dgx3)</td><td>sí</td><td>sí</td><td>200</td><td>no</td></tr></tbody></table></section></main></body></html>

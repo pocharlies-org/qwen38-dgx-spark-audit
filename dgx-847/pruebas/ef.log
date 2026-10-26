@@ -1,0 +1,16 @@
+06:22:05Z e-ssm-bf16: inicio (--mamba-ssm-cache-dtype bfloat16)
+06:28:04Z e-ssm-bf16: no arranca: ValueError: deferred checkpoints require an FP32 recurrent state, got torch.bfloat16 (y el prefill b12x exige float32). E cortada.
+06:28:04Z e-ssm-bf16: fin
+06:28:04Z f-nuestros-3: inicio (--max-num-batched-tokens 4096 --long-prefill-token-threshold 2048; sin BF16, imposible con b12x)
+f-nuestros-3: configmap/ursu-recipe unchanged
+f-nuestros-3: 06:28:40Z 2× abajo; memoria libre en dgx y dgx2
+f-nuestros-3: 06:28:42Z reinicio de la 2× con: --max-num-batched-tokens 4096 --long-prefill-token-threshold 2048
+f-nuestros-3: 06:33:50Z 2× lista en 5 min
+f-nuestros-3: (Worker_TP0 pid=172) INFO 10-13 06:30:24 [interface.py:1029] Setting attention block size to 2864 tokens to ensure that attention page size is >= mamba page size.
+f-nuestros-3: (EngineCore pid=151) INFO 10-13 06:33:22 [core.py:371] init engine (profile, create kv cache, warmup model) took 178.42 s (compilation: 0.92 s)
+f-nuestros-3: (EngineCore pid=151) WARNING 10-13 06:33:27 [vllm.py:2068] max_num_scheduled_tokens is set to 4096 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increas
+f-nuestros-3: 06:46:52Z benchy exit=0
+f-nuestros-3 A: {"paso": "1 contexto 64K", "prompt_tokens": 65541, "reutilizados_metricas": 0, "consultados_metricas": 65543, "cached_tokens_usage": null, "recalculados": 65541, "ttft_s": 24.479}
+f-nuestros-3 A: {"paso": "2 contexto + 2048 nuevos", "prompt_tokens": 67667, "reutilizados_metricas": 63008, "consultados_metricas": 67669, "cached_tokens_usage": null, "recalculados": 4659, "ttft_s": 2.212}
+f-nuestros-3 A: {"paso": "3 repetición exacta de 2", "prompt_tokens": 67667, "reutilizados_metricas": 65872, "consultados_metricas": 67669, "cached_tokens_usage": null, "recalculados": 1795, "ttft_s": 0.865}
+06:47:22Z f-nuestros-3: fin

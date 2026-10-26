@@ -1,0 +1,6 @@
+# DGX-847: comprobacion del manifiesto, sin aplicar nada (la ventana decide).
+# $(kubectl apply --dry-run=server -f ursu-3x.yaml)  ·  2026-10-12T21:25:20Z
+deployment.apps/ursu-3x-head created (server dry run)
+deployment.apps/ursu-3x-worker-dgx1 created (server dry run)
+deployment.apps/ursu-3x-worker-dgx3 created (server dry run)
+# despues del dry-run: 0 deployments y 0 pods ursu-3x en ns llm (comprobado)

@@ -1,0 +1,2 @@
+E no arranca (2 intentos, 06:22-06:30Z): sus kernels b12x exigen el estado SSM en FP32.
+b12x/sequence/gdn_prefill/_impl.py: 'state_dtype must be torch.float32' (el prefill tampoco lo acepta)

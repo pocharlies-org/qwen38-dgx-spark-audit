@@ -1,0 +1,170 @@
+Greedy decoding ON (--greedy): setting bs=1, n_samples=1, temperature=0
+Initializing a decoder model: qwen3.8-flash-next ...
+Sanitized code outputs will be saved to /home/user/bench-results/dgx-847/2x/quality/humaneval/shard1/humaneval/qwen3.8-flash-next_openai_temp_0.0.jsonl
+Raw outputs will be saved to /home/user/bench-results/dgx-847/2x/quality/humaneval/shard1/humaneval/qwen3.8-flash-next_openai_temp_0.0.raw.jsonl
+Skipping HumanEval/0 as it is not in (55, 109)
+Skipping HumanEval/1 as it is not in (55, 109)
+Skipping HumanEval/2 as it is not in (55, 109)
+Skipping HumanEval/3 as it is not in (55, 109)
+Skipping HumanEval/4 as it is not in (55, 109)
+Skipping HumanEval/5 as it is not in (55, 109)
+Skipping HumanEval/6 as it is not in (55, 109)
+Skipping HumanEval/7 as it is not in (55, 109)
+Skipping HumanEval/8 as it is not in (55, 109)
+Skipping HumanEval/9 as it is not in (55, 109)
+Skipping HumanEval/10 as it is not in (55, 109)
+Skipping HumanEval/11 as it is not in (55, 109)
+Skipping HumanEval/12 as it is not in (55, 109)
+Skipping HumanEval/13 as it is not in (55, 109)
+Skipping HumanEval/14 as it is not in (55, 109)
+Skipping HumanEval/15 as it is not in (55, 109)
+Skipping HumanEval/16 as it is not in (55, 109)
+Skipping HumanEval/17 as it is not in (55, 109)
+Skipping HumanEval/18 as it is not in (55, 109)
+Skipping HumanEval/19 as it is not in (55, 109)
+Skipping HumanEval/20 as it is not in (55, 109)
+Skipping HumanEval/21 as it is not in (55, 109)
+Skipping HumanEval/22 as it is not in (55, 109)
+Skipping HumanEval/23 as it is not in (55, 109)
+Skipping HumanEval/24 as it is not in (55, 109)
+Skipping HumanEval/25 as it is not in (55, 109)
+Skipping HumanEval/26 as it is not in (55, 109)
+Skipping HumanEval/27 as it is not in (55, 109)
+Skipping HumanEval/28 as it is not in (55, 109)
+Skipping HumanEval/29 as it is not in (55, 109)
+Skipping HumanEval/30 as it is not in (55, 109)
+Skipping HumanEval/31 as it is not in (55, 109)
+Skipping HumanEval/32 as it is not in (55, 109)
+Skipping HumanEval/33 as it is not in (55, 109)
+Skipping HumanEval/34 as it is not in (55, 109)
+Skipping HumanEval/35 as it is not in (55, 109)
+Skipping HumanEval/36 as it is not in (55, 109)
+Skipping HumanEval/37 as it is not in (55, 109)
+Skipping HumanEval/38 as it is not in (55, 109)
+Skipping HumanEval/39 as it is not in (55, 109)
+Skipping HumanEval/40 as it is not in (55, 109)
+Skipping HumanEval/41 as it is not in (55, 109)
+Skipping HumanEval/42 as it is not in (55, 109)
+Skipping HumanEval/43 as it is not in (55, 109)
+Skipping HumanEval/44 as it is not in (55, 109)
+Skipping HumanEval/45 as it is not in (55, 109)
+Skipping HumanEval/46 as it is not in (55, 109)
+Skipping HumanEval/47 as it is not in (55, 109)
+Skipping HumanEval/48 as it is not in (55, 109)
+Skipping HumanEval/49 as it is not in (55, 109)
+Skipping HumanEval/50 as it is not in (55, 109)
+Skipping HumanEval/51 as it is not in (55, 109)
+Skipping HumanEval/52 as it is not in (55, 109)
+Skipping HumanEval/53 as it is not in (55, 109)
+Skipping HumanEval/54 as it is not in (55, 109)
+Codegen: HumanEval/55 @ qwen3.8-flash-next
+Codegen: HumanEval/56 @ qwen3.8-flash-next
+Codegen: HumanEval/57 @ qwen3.8-flash-next
+Codegen: HumanEval/58 @ qwen3.8-flash-next
+Codegen: HumanEval/59 @ qwen3.8-flash-next
+Codegen: HumanEval/60 @ qwen3.8-flash-next
+Codegen: HumanEval/61 @ qwen3.8-flash-next
+Codegen: HumanEval/62 @ qwen3.8-flash-next
+Codegen: HumanEval/63 @ qwen3.8-flash-next
+Codegen: HumanEval/64 @ qwen3.8-flash-next
+Codegen: HumanEval/65 @ qwen3.8-flash-next
+Codegen: HumanEval/66 @ qwen3.8-flash-next
+Codegen: HumanEval/67 @ qwen3.8-flash-next
+Codegen: HumanEval/68 @ qwen3.8-flash-next
+Codegen: HumanEval/69 @ qwen3.8-flash-next
+Codegen: HumanEval/70 @ qwen3.8-flash-next
+Codegen: HumanEval/71 @ qwen3.8-flash-next
+Codegen: HumanEval/72 @ qwen3.8-flash-next
+Codegen: HumanEval/73 @ qwen3.8-flash-next
+Codegen: HumanEval/74 @ qwen3.8-flash-next
+Codegen: HumanEval/75 @ qwen3.8-flash-next
+Codegen: HumanEval/76 @ qwen3.8-flash-next
+Codegen: HumanEval/77 @ qwen3.8-flash-next
+Codegen: HumanEval/78 @ qwen3.8-flash-next
+Codegen: HumanEval/79 @ qwen3.8-flash-next
+Codegen: HumanEval/80 @ qwen3.8-flash-next
+Codegen: HumanEval/81 @ qwen3.8-flash-next
+Codegen: HumanEval/82 @ qwen3.8-flash-next
+Codegen: HumanEval/83 @ qwen3.8-flash-next
+Codegen: HumanEval/84 @ qwen3.8-flash-next
+Codegen: HumanEval/85 @ qwen3.8-flash-next
+Codegen: HumanEval/86 @ qwen3.8-flash-next
+Codegen: HumanEval/87 @ qwen3.8-flash-next
+Codegen: HumanEval/88 @ qwen3.8-flash-next
+Codegen: HumanEval/89 @ qwen3.8-flash-next
+Codegen: HumanEval/90 @ qwen3.8-flash-next
+Codegen: HumanEval/91 @ qwen3.8-flash-next
+Codegen: HumanEval/92 @ qwen3.8-flash-next
+Codegen: HumanEval/93 @ qwen3.8-flash-next
+Codegen: HumanEval/94 @ qwen3.8-flash-next
+Codegen: HumanEval/95 @ qwen3.8-flash-next
+Codegen: HumanEval/96 @ qwen3.8-flash-next
+Codegen: HumanEval/97 @ qwen3.8-flash-next
+Codegen: HumanEval/98 @ qwen3.8-flash-next
+Codegen: HumanEval/99 @ qwen3.8-flash-next
+Codegen: HumanEval/100 @ qwen3.8-flash-next
+Codegen: HumanEval/101 @ qwen3.8-flash-next
+Codegen: HumanEval/102 @ qwen3.8-flash-next
+Codegen: HumanEval/103 @ qwen3.8-flash-next
+Codegen: HumanEval/104 @ qwen3.8-flash-next
+Codegen: HumanEval/105 @ qwen3.8-flash-next
+Codegen: HumanEval/106 @ qwen3.8-flash-next
+Codegen: HumanEval/107 @ qwen3.8-flash-next
+Codegen: HumanEval/108 @ qwen3.8-flash-next
+Skipping HumanEval/109 as it is not in (55, 109)
+Skipping HumanEval/110 as it is not in (55, 109)
+Skipping HumanEval/111 as it is not in (55, 109)
+Skipping HumanEval/112 as it is not in (55, 109)
+Skipping HumanEval/113 as it is not in (55, 109)
+Skipping HumanEval/114 as it is not in (55, 109)
+Skipping HumanEval/115 as it is not in (55, 109)
+Skipping HumanEval/116 as it is not in (55, 109)
+Skipping HumanEval/117 as it is not in (55, 109)
+Skipping HumanEval/118 as it is not in (55, 109)
+Skipping HumanEval/119 as it is not in (55, 109)
+Skipping HumanEval/120 as it is not in (55, 109)
+Skipping HumanEval/121 as it is not in (55, 109)
+Skipping HumanEval/122 as it is not in (55, 109)
+Skipping HumanEval/123 as it is not in (55, 109)
+Skipping HumanEval/124 as it is not in (55, 109)
+Skipping HumanEval/125 as it is not in (55, 109)
+Skipping HumanEval/126 as it is not in (55, 109)
+Skipping HumanEval/127 as it is not in (55, 109)
+Skipping HumanEval/128 as it is not in (55, 109)
+Skipping HumanEval/129 as it is not in (55, 109)
+Skipping HumanEval/130 as it is not in (55, 109)
+Skipping HumanEval/131 as it is not in (55, 109)
+Skipping HumanEval/132 as it is not in (55, 109)
+Skipping HumanEval/133 as it is not in (55, 109)
+Skipping HumanEval/134 as it is not in (55, 109)
+Skipping HumanEval/135 as it is not in (55, 109)
+Skipping HumanEval/136 as it is not in (55, 109)
+Skipping HumanEval/137 as it is not in (55, 109)
+Skipping HumanEval/138 as it is not in (55, 109)
+Skipping HumanEval/139 as it is not in (55, 109)
+Skipping HumanEval/140 as it is not in (55, 109)
+Skipping HumanEval/141 as it is not in (55, 109)
+Skipping HumanEval/142 as it is not in (55, 109)
+Skipping HumanEval/143 as it is not in (55, 109)
+Skipping HumanEval/144 as it is not in (55, 109)
+Skipping HumanEval/145 as it is not in (55, 109)
+Skipping HumanEval/146 as it is not in (55, 109)
+Skipping HumanEval/147 as it is not in (55, 109)
+Skipping HumanEval/148 as it is not in (55, 109)
+Skipping HumanEval/149 as it is not in (55, 109)
+Skipping HumanEval/150 as it is not in (55, 109)
+Skipping HumanEval/151 as it is not in (55, 109)
+Skipping HumanEval/152 as it is not in (55, 109)
+Skipping HumanEval/153 as it is not in (55, 109)
+Skipping HumanEval/154 as it is not in (55, 109)
+Skipping HumanEval/155 as it is not in (55, 109)
+Skipping HumanEval/156 as it is not in (55, 109)
+Skipping HumanEval/157 as it is not in (55, 109)
+Skipping HumanEval/158 as it is not in (55, 109)
+Skipping HumanEval/159 as it is not in (55, 109)
+Skipping HumanEval/160 as it is not in (55, 109)
+Skipping HumanEval/161 as it is not in (55, 109)
+Skipping HumanEval/162 as it is not in (55, 109)
+Skipping HumanEval/163 as it is not in (55, 109)
+humaneval •100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 164/164 • 0:03:32
+/home/user/bench-results/dgx-847/2x/quality/humaneval/shard1/humaneval/qwen3.8-flash-next_openai_temp_0.0.jsonl

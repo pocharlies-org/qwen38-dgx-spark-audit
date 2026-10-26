@@ -1,0 +1,14 @@
+20:11:18Z DGX-932 volcado: espero a DGX-940 (TP=2 con la KV nueva) y al árbitro en ready
+21:03:22Z árbitro en sync-paused (dgx-932-volcado)
+21:03:25Z auto-sync de root y ai apagado
+21:03:32Z voz a 0
+21:03:53Z caché copiada a /srv/ursu-cache/2x-b2 en dgx2 y dgx1
+21:03:55Z B2 sin autoajuste: arrancando head y worker con el volcado en /cache/xdg/b12x-consultas.jsonl
+21:03:56Z   esperando (0 min): (APIServer pid=1) INFO:     Waiting for connections to close. (CTRL+C to force quit)
+21:07:02Z   esperando (3 min): (Worker pid=268) INFO 10-15 21:06:44 [parallel_state.py:1673] world_size=2 rank=0 local_rank=0 distributed_init_method=tcp://10.0.0.2:25000 backend=nc
+21:10:14Z   esperando (6 min): (Worker pid=268) INFO 10-15 21:06:44 [parallel_state.py:1673] world_size=2 rank=0 local_rank=0 distributed_init_method=tcp://10.0.0.2:25000 backend=nc
+21:13:27Z   esperando (9 min): (Worker_TP0 pid=268) INFO 10-15 21:13:12 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 16384 tokens, and profiled with 1 
+21:16:42Z   esperando (12 min): (Worker_TP0 pid=268) INFO 10-15 21:13:35 [gpu_worker.py:862] Cleared 2.08 GiB of cached CUDA allocator memory before KV cache allocation.
+21:19:56Z   esperando (16 min): (Worker_TP0 pid=268) INFO 10-15 21:13:35 [gpu_worker.py:862] Cleared 2.08 GiB of cached CUDA allocator memory before KV cache allocation.
+21:21:01Z ABORTADO a mano: la sync de DGX-940 seguía reintentando y reaplicó head y worker en A (sin 2x-b2); sin vuelta automática
+21:22:35Z auto-sync de root y ai restaurado a mano

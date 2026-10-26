@@ -1,0 +1,18 @@
+18:54:24Z build 38614727017 ok
+18:54:25Z dgx-dashboard-backend ci-9079555a2ae99d581b9b020b40900672356998b6 1/1/1 0
+18:54:25Z dgx-dashboard-worker ci-9079555a2ae99d581b9b020b40900672356998b6 1/1/1 0
+18:54:26Z "vision-deep" en compute_mode.py: backend=4 worker=4
+18:54:57Z dgx-dashboard-backend ci-9079555a2ae99d581b9b020b40900672356998b6 1/1/1 0
+18:54:57Z dgx-dashboard-worker ci-9079555a2ae99d581b9b020b40900672356998b6 1/1/1 0
+18:54:59Z "vision-deep" en compute_mode.py: backend=4 worker=4
+18:55:29Z dgx-dashboard-backend ci-9079555a2ae99d581b9b020b40900672356998b6 1/1/1 0
+18:55:29Z dgx-dashboard-worker ci-9079555a2ae99d581b9b020b40900672356998b6 1/1/1 0
+18:55:31Z "vision-deep" en compute_mode.py: backend=4 worker=4
+18:56:01Z dgx-dashboard-backend ci-f958a9117b4f128288f33bbe8f35c662610f5bbe 1/1/1 1
+18:56:02Z dgx-dashboard-worker ci-f958a9117b4f128288f33bbe8f35c662610f5bbe 1/1/0 1
+18:56:32Z dgx-dashboard-backend ci-f958a9117b4f128288f33bbe8f35c662610f5bbe 1/1/1 1
+18:56:32Z dgx-dashboard-worker ci-f958a9117b4f128288f33bbe8f35c662610f5bbe 1/1/0 1
+18:57:03Z dgx-dashboard-backend ci-f958a9117b4f128288f33bbe8f35c662610f5bbe 1/1/1 0
+18:57:03Z dgx-dashboard-worker ci-f958a9117b4f128288f33bbe8f35c662610f5bbe 1/1/1 0
+18:57:05Z "vision-deep" en compute_mode.py: backend=0 worker=0
+18:57:05Z LISTO

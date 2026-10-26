@@ -1,0 +1,9 @@
+20:15:35 vigilando pocharlies-org/k8s-infra-pocharlies#287 (tope 14400s, vuelta cada 30s, once=0, epic=0)
+20:15:36 pend=15 fail=0 pass=7 total=22 estado=open
+20:16:07 pend=4 fail=0 pass=19 total=23 estado=open
+20:16:38 pend=2 fail=0 pass=22 total=24 estado=open
+20:17:08 pend=1 fail=0 pass=23 total=24 estado=open
+20:17:39 pend=1 fail=0 pass=23 total=24 estado=open
+20:18:10 pend=0 fail=0 pass=24 total=24 estado=open
+null
+20:18:18 VERDE y fusionada (9dd9f245d31f95f1d6c6174410df89ab1e832226)

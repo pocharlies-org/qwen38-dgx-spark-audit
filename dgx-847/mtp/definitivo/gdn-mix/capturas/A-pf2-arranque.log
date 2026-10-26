@@ -1,0 +1,552 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 13.0.2
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+QWEN_GDN_MIX=A aplicado: vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py#QWEN_GDN_MIX_SELECTION
+QWEN_GDN_MIX=A: imagen parcheada
+QWEN_GDN_MIX=A decode=b12x prefill=triton ssm=bf16 deferred=0 compact=0 autotune=1 tp=2
+cp: warning: behavior of -n is non-portable and may change in future; use --update=none instead
+INFO 10-14 16:39:45 [__init__.py:109] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+WARNING 10-14 16:39:45 [argparse_utils.py:441] Found duplicate keys --gpu-memory-utilization, --gdn-decode-kernel
+(APIServer pid=1) INFO 10-14 16:39:45 [api_utils.py:347] 
+(APIServer pid=1) INFO 10-14 16:39:45 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=1) INFO 10-14 16:39:45 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 20260926.dev28+g884b4ff68.d20261002
+(APIServer pid=1) INFO 10-14 16:39:45 [api_utils.py:347]   █▄█▀ █     █     █     █  model   ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE
+(APIServer pid=1) INFO 10-14 16:39:45 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=1) INFO 10-14 16:39:45 [api_utils.py:347] 
+(APIServer pid=1) INFO 10-14 16:39:45 [api_utils.py:286] non-default args: {'model_tag': 'ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE', 'default_chat_template_kwargs': {'reasoning_effort': 'medium'}, 'enable_auto_tool_choice': True, 'tool_call_parser': 'qwen3_xml', 'host': '0.0.0.0', 'model': 'ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE', 'trust_remote_code': True, 'dtype': 'bfloat16', 'revision': '16c9bd54788d12390838a65ce4a4ecda97fa5f1d', 'max_model_len': 262144, 'quantization': 'modelopt_mixed', 'served_model_name': ['qwen3.8-flash-next', 'ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE'], 'load_format': 'b12x', 'reasoning_parser': 'qwen3', 'master_addr': '10.0.0.2', 'master_port': 25000, 'nnodes': 2, 'tensor_parallel_size': 2, 'block_size': 16, 'gpu_memory_utilization': 0.75, 'kv_cache_dtype': 'fp8', 'enable_prefix_caching': True, 'mamba_ssm_cache_dtype': 'bfloat16', 'mamba_cache_mode': 'align', 'mm_encoder_tp_mode': 'data', 'max_num_batched_tokens': 8192, 'max_num_seqs': 16, 'enable_chunked_prefill': True, 'max_parallel_prefills': 4, 'prefill_policy': 'decode-aware', 'enable_flashinfer_autotune': False, 'moe_backend': 'b12x', 'linear_backend': 'b12x', 'speculative_config': {'method': 'mtp', 'num_speculative_tokens': 4, 'draft_sample_method': 'probabilistic'}, 'compilation_config': {'mode': None, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': [], 'ir_enable_torch_wrap': None, 'splitting_ops': None, 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': None, 'compile_ranges_endpoints': None, 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': None, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': None, 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': None, 'pass_config': {'fuse_act_quant': True}, 'max_cudagraph_capture_size': None, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': None, 'static_all_moe_layers': []}, 'additional_config': {'gdn_prefill_backend': 'triton'}, 'gdn_decode_kernel': 'b12x'}
+(APIServer pid=1) INFO 10-14 16:39:45 [arg_utils.py:905] HF_HUB_OFFLINE is True, replace model_id [ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE] to model_path [/cache/huggingface/hub/models--ursuciprian--Qwen3.8-Flash-Next-NVFP4-GDN-MSE/snapshots/16c9bd54788d12390838a65ce4a4ecda97fa5f1d]
+(APIServer pid=1) WARNING 10-14 16:39:45 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_PORT_8000_TCP
+(APIServer pid=1) WARNING 10-14 16:39:45 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_PORT_8000_TCP_PORT
+(APIServer pid=1) WARNING 10-14 16:39:45 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_PORT_8000_TCP_ADDR
+(APIServer pid=1) WARNING 10-14 16:39:45 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_SERVICE_PORT_HTTP
+(APIServer pid=1) WARNING 10-14 16:39:45 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_PORT_8000_TCP_PROTO
+(APIServer pid=1) WARNING 10-14 16:39:45 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_PORT
+(APIServer pid=1) WARNING 10-14 16:39:45 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_SERVICE_HOST
+(APIServer pid=1) WARNING 10-14 16:39:45 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_SERVICE_PORT
+(APIServer pid=1) WARNING 10-14 16:39:45 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_BASE_DIR
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) INFO 10-14 16:39:45 [model.py:686] Resolved architecture: Qwen4ExpForConditionalGeneration
+(APIServer pid=1) INFO 10-14 16:39:45 [model.py:2043] Using max model len 262144
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) INFO 10-14 16:39:46 [cache.py:356] Using fp8 data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(APIServer pid=1) INFO 10-14 16:39:46 [arg_utils.py:2351] Inferred data_parallel_rank 0 from node_rank 0
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) INFO 10-14 16:39:46 [model.py:686] Resolved architecture: Qwen3_8FlashNextMTP
+(APIServer pid=1) INFO 10-14 16:39:46 [model.py:2043] Using max model len 262144
+(APIServer pid=1) WARNING 10-14 16:39:46 [speculative.py:1366] Enabling num_speculative_tokens > 1 will run multiple times of forward on same MTP layer,which may result in lower acceptance rate
+(APIServer pid=1) INFO 10-14 16:39:46 [scheduler.py:339] Chunked prefill is enabled with max_num_batched_tokens=8192.
+(APIServer pid=1) WARNING 10-14 16:39:46 [config.py:890] Qwen3.5 model specifies mamba_ssm_dtype='float32' in its config, but --mamba-ssm-cache-dtype='bfloat16' was passed. Using the user-specified value.
+(APIServer pid=1) WARNING 10-14 16:39:46 [modelopt.py:379] Detected ModelOpt fp8 checkpoint (quant_algo=FP8). Please note that the format is experimental and could change.
+(APIServer pid=1) WARNING 10-14 16:39:46 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=NVFP4). Please note that the format is experimental and could change in future.
+(APIServer pid=1) WARNING 10-14 16:39:46 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=W4A16_NVFP4). Please note that the format is experimental and could change in future.
+(APIServer pid=1) WARNING 10-14 16:39:46 [modelopt.py:1723] Detected ModelOpt MXFP8 checkpoint. Please note that the format is experimental and could change in future.
+(APIServer pid=1) INFO 10-14 16:39:46 [kernel.py:376] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(APIServer pid=1) INFO 10-14 16:39:46 [compilation.py:329] Enabled custom fusions: act_quant
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=152) INFO 10-14 16:39:57 [__init__.py:109] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+(EngineCore pid=152) INFO 10-14 16:39:57 [core.py:123] Initializing a V1 LLM engine (v20260926.dev28+g884b4ff68.d20261002) with config: model='/cache/huggingface/hub/models--ursuciprian--Qwen3.8-Flash-Next-NVFP4-GDN-MSE/snapshots/16c9bd54788d12390838a65ce4a4ecda97fa5f1d', speculative_config=SpeculativeConfig(method='mtp', model='/cache/huggingface/hub/models--ursuciprian--Qwen3.8-Flash-Next-NVFP4-GDN-MSE/snapshots/16c9bd54788d12390838a65ce4a4ecda97fa5f1d', num_spec_tokens=4), tokenizer='/cache/huggingface/hub/models--ursuciprian--Qwen3.8-Flash-Next-NVFP4-GDN-MSE/snapshots/16c9bd54788d12390838a65ce4a4ecda97fa5f1d', skip_tokenizer_init=False, tokenizer_mode=auto, revision=16c9bd54788d12390838a65ce4a4ecda97fa5f1d, tokenizer_revision=16c9bd54788d12390838a65ce4a4ecda97fa5f1d, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=262144, download_dir=None, load_format=b12x, tensor_parallel_size=2, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=modelopt_mixed, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=fp8, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='qwen3', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=qwen3.8-flash-next, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 160, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=False, enable_b12x_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='b12x', linear_backend='b12x')
+(EngineCore pid=152) INFO 10-14 16:39:57 [multiproc_executor.py:153] DP group leader: node_rank=0, node_rank_within_dp=0, master_addr=10.0.0.2, mq_connect_ip=10.0.0.2 (local), world_size=2, local_world_size=1
+INFO 10-14 16:40:00 [__init__.py:109] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker pid=172) INFO 10-14 16:40:01 [parallel_state.py:1673] world_size=2 rank=0 local_rank=0 distributed_init_method=tcp://10.0.0.2:25000 backend=nccl
+(Worker pid=172) INFO 10-14 16:40:04 [pynccl.py:113] vLLM is using nccl==2.32.3
+(Worker pid=172) INFO 10-14 16:40:05 [b12x_roce_all_reduce.py:124] Using RoCEnante (b12x one-shot RoCE collectives): world=2, hcas=rocep1s0f0,roceP2p1s0f0, all-reduce max=2097152 bytes, all-gather shard max=16777216 bytes.
+(Worker pid=172) WARNING 10-14 16:40:05 [symm_mem.py:67] SymmMemCommunicator: Device capability 12.1 not supported, communicator is not available.
+(Worker pid=172) INFO 10-14 16:40:05 [cuda_communicator.py:316] Using ['B12X_ROCENANTE', 'PYNCCL'] all-reduce backends (in dispatch order) for group 'tp:0' out of potential backends: ['B12X_PCIE', 'B12X_ROCENANTE', 'FLASHINFER', 'NCCL_SYMM_MEM', 'QUICK_REDUCE', 'AITER_CUSTOM', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=172) INFO 10-14 16:40:06 [cuda_communicator.py:316] Using ['PYNCCL'] all-reduce backends (in dispatch order) for group 'ep:0' out of potential backends: ['B12X_PCIE', 'B12X_ROCENANTE', 'FLASHINFER', 'NCCL_SYMM_MEM', 'QUICK_REDUCE', 'AITER_CUSTOM', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=172) INFO 10-14 16:40:06 [parallel_state.py:2017] rank 0 in world size 2 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank 0, EPLB rank N/A
+(Worker pid=172) INFO 10-14 16:40:06 [gpu_worker.py:455] Using V2 Model Runner
+(Worker_TP0 pid=172) INFO 10-14 16:40:07 [model_runner.py:395] Loading model from scratch...
+(Worker_TP0 pid=172) INFO 10-14 16:40:07 [__init__.py:869] Using B12xMxfp8LinearKernel for MXFP8 GEMM
+(Worker_TP0 pid=172) INFO 10-14 16:40:07 [cuda.py:551] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(Worker_TP0 pid=172) INFO 10-14 16:40:07 [mm_encoder_attention.py:375] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(Worker_TP0 pid=172) INFO 10-14 16:40:07 [__init__.py:1101] Using B12xNvFp4LinearKernel for NVFP4 GEMM
+(Worker_TP0 pid=172) INFO 10-14 16:40:07 [qwen_gdn_linear_attn.py:449] Using Triton/FLA GDN prefill kernel (requested=triton, head_k_dim=128).
+(Worker_TP0 pid=172) INFO 10-14 16:40:07 [qwen_gdn_linear_attn.py:861] GDN decode kernel: b12x
+(Worker_TP0 pid=172) INFO 10-14 16:40:07 [nvfp4.py:271] Using 'B12X' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CUTLASS', 'VLLM_CUTLASS', 'MARLIN', 'HUMMING', 'EMULATION'].
+(Worker_TP0 pid=172) INFO 10-14 16:40:08 [mamba_utils.py:37] VLLM_SSM_CONV_STATE_LAYOUT env detected. Setting SSM conv state layout to DS.
+(Worker_TP0 pid=172) INFO 10-14 16:40:16 [vocab_parallel_embedding.py:417] Quantizing LM head shards to MXFP8 with BF16 activations.
+b12x routing checkpoint shards: 0/36 shards routed, 0.00 GB selected on rank 0, 0:00
+b12x routing checkpoint shards: 9/36 shards routed, 13.69 GB selected on rank 0, 0:12
+b12x routing checkpoint shards: 19/36 shards routed, 28.38 GB selected on rank 0, 0:22
+b12x routing checkpoint shards: 27/36 shards routed, 41.69 GB selected on rank 0, 0:32
+b12x routing checkpoint shards: 32/36 shards routed, 47.74 GB selected on rank 0, 0:44
+b12x routing checkpoint shards: 36/36 shards routed, 52.56 GB selected on rank 0, 0:47
+b12x reading and scattering weights: 36/36 shards routed, 52.56 GB selected on rank 0, 0:47
+b12x weights loaded: 52.56 GB selected on rank 0 · 65.31 GB physical reads; 47.43 s total loading; ROUTE 47.43s · SETUP 0.00s · PLAN 0.00s · READ 0.00s · SYNC 0.00s
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [default_loader.py:510] Loading weights took 47.43 seconds
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.0.linear_attn.in_proj_qkv+model.language_model.layers.0.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.0.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0911)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [nvfp4.py:628] Using MoEPrepareAndFinalizeNoDPEPModular
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [hyperconnection.py:172] qwen38 HC MXFP8: target=hc shape=[336,10240] -> mxfp8 g32, activation_mode=auto, 6.88 MB -> 3.56 MB per instance
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [hyperconnection.py:172] qwen38 HC MXFP8: target=hc shape=[10240,320] -> mxfp8 g32, activation_mode=auto, 6.55 MB -> 4.06 MB per instance
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.1.linear_attn.in_proj_qkv+model.language_model.layers.1.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.1.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.2.linear_attn.in_proj_qkv+model.language_model.layers.2.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0914)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.2.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0923)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.4.linear_attn.in_proj_qkv+model.language_model.layers.4.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.4.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0923)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.5.linear_attn.in_proj_qkv+model.language_model.layers.5.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.5.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.6.linear_attn.in_proj_qkv+model.language_model.layers.6.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0916)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.6.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.8.linear_attn.in_proj_qkv+model.language_model.layers.8.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.8.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0925)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.9.linear_attn.in_proj_qkv+model.language_model.layers.9.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0910)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.9.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0920)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.10.linear_attn.in_proj_qkv+model.language_model.layers.10.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.10.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0909)
+(Worker_TP0 pid=172) INFO 10-14 16:41:04 [b12x.py:152] model.language_model.layers.12.linear_attn.in_proj_qkv+model.language_model.layers.12.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.12.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0920)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.13.linear_attn.in_proj_qkv+model.language_model.layers.13.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0920)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.13.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.14.linear_attn.in_proj_qkv+model.language_model.layers.14.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.14.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0923)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.16.linear_attn.in_proj_qkv+model.language_model.layers.16.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0921)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.16.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.17.linear_attn.in_proj_qkv+model.language_model.layers.17.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.17.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.18.linear_attn.in_proj_qkv+model.language_model.layers.18.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.18.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0921)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.20.linear_attn.in_proj_qkv+model.language_model.layers.20.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0908)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.20.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.21.linear_attn.in_proj_qkv+model.language_model.layers.21.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0916)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.21.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0916)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.22.linear_attn.in_proj_qkv+model.language_model.layers.22.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.22.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0911)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.24.linear_attn.in_proj_qkv+model.language_model.layers.24.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0914)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.24.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0927)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.25.linear_attn.in_proj_qkv+model.language_model.layers.25.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0914)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.25.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0921)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.26.linear_attn.in_proj_qkv+model.language_model.layers.26.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0909)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.26.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.28.linear_attn.in_proj_qkv+model.language_model.layers.28.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.28.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.29.linear_attn.in_proj_qkv+model.language_model.layers.29.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.29.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0922)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.30.linear_attn.in_proj_qkv+model.language_model.layers.30.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.30.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.32.linear_attn.in_proj_qkv+model.language_model.layers.32.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.32.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0909)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.33.linear_attn.in_proj_qkv+model.language_model.layers.33.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0910)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.33.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0924)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.34.linear_attn.in_proj_qkv+model.language_model.layers.34.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.34.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0920)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.36.linear_attn.in_proj_qkv+model.language_model.layers.36.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0911)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.36.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0921)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.37.linear_attn.in_proj_qkv+model.language_model.layers.37.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.37.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0921)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.38.linear_attn.in_proj_qkv+model.language_model.layers.38.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0906)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.38.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0923)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.40.linear_attn.in_proj_qkv+model.language_model.layers.40.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0914)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.40.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.41.linear_attn.in_proj_qkv+model.language_model.layers.41.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.41.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.42.linear_attn.in_proj_qkv+model.language_model.layers.42.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.42.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0916)
+(Worker_TP0 pid=172) INFO 10-14 16:41:05 [b12x.py:152] model.language_model.layers.44.linear_attn.in_proj_qkv+model.language_model.layers.44.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP0 pid=172) INFO 10-14 16:41:06 [b12x.py:152] model.language_model.layers.44.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0923)
+(Worker_TP0 pid=172) INFO 10-14 16:41:06 [b12x.py:152] model.language_model.layers.45.linear_attn.in_proj_qkv+model.language_model.layers.45.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP0 pid=172) INFO 10-14 16:41:06 [b12x.py:152] model.language_model.layers.45.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP0 pid=172) INFO 10-14 16:41:06 [b12x.py:152] model.language_model.layers.46.linear_attn.in_proj_qkv+model.language_model.layers.46.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0908)
+(Worker_TP0 pid=172) INFO 10-14 16:41:06 [b12x.py:152] model.language_model.layers.46.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0916)
+(Worker_TP0 pid=172) INFO 10-14 16:41:06 [hyperconnection.py:172] qwen38 HC MXFP8: target=hc shape=[320,10240] -> mxfp8 g32, activation_mode=auto, 6.55 MB -> 3.40 MB per instance
+(Worker_TP0 pid=172) INFO 10-14 16:41:06 [kernel.py:376] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(Worker_TP0 pid=172) INFO 10-14 16:41:06 [compilation.py:329] Enabled custom fusions: act_quant
+(Worker_TP0 pid=172) WARNING 10-14 16:41:06 [modelopt.py:379] Detected ModelOpt fp8 checkpoint (quant_algo=FP8). Please note that the format is experimental and could change.
+(Worker_TP0 pid=172) WARNING 10-14 16:41:06 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=NVFP4). Please note that the format is experimental and could change in future.
+(Worker_TP0 pid=172) WARNING 10-14 16:41:06 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=W4A16_NVFP4). Please note that the format is experimental and could change in future.
+(Worker_TP0 pid=172) WARNING 10-14 16:41:06 [modelopt.py:1723] Detected ModelOpt MXFP8 checkpoint. Please note that the format is experimental and could change in future.
+(Worker_TP0 pid=172) WARNING 10-14 16:41:06 [config.py:890] Qwen3.5 model specifies mamba_ssm_dtype='float32' in its config, but --mamba-ssm-cache-dtype='bfloat16' was passed. Using the user-specified value.
+(Worker_TP0 pid=172) INFO 10-14 16:41:06 [kernel.py:376] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(Worker_TP0 pid=172) INFO 10-14 16:41:06 [vocab_parallel_embedding.py:417] Quantizing LM head shards to NVFP4 with BF16 activations.
+(Worker_TP0 pid=172) INFO 10-14 16:41:06 [mtp.py:833] MTP draft vocab: 131072 of 248320 ids from /opt/mtp-vocab-es/ids-es-K131072.txt.gz
+(Worker_TP0 pid=172) INFO 10-14 16:41:07 [weight_utils.py:667] Safetensors index filter selected 1/36 checkpoint shards.
+b12x routing checkpoint shards: 0/1 shards routed, 0.00 GB selected on rank 0, 0:00
+b12x routing checkpoint shards: 1/1 shards routed, 1.81 GB selected on rank 0, 0:00
+b12x reading and scattering weights: 1/1 shards routed, 1.81 GB selected on rank 0, 0:00
+b12x weights loaded: 1.81 GB selected on rank 0 · 2.09 GB physical reads; 1.10 s total loading; ROUTE 0.51s · SETUP 0.00s · PLAN 0.00s · READ 0.59s · SYNC 0.00s
+(Worker_TP0 pid=172) INFO 10-14 16:41:08 [default_loader.py:510] Loading weights took 1.10 seconds
+(Worker_TP0 pid=172) WARNING 10-14 16:41:08 [speculator.py:196] Draft model Qwen3_8FlashNextMTP does not support external multimodal embeddings. Embeddings from the target model will not be passed to the drafter; using text-only draft inputs instead.
+(Worker_TP0 pid=172) INFO 10-14 16:41:09 [model_runner.py:417] Model loading took 53.1 GiB memory and 62.019845 seconds
+(Worker_TP0 pid=172) INFO 10-14 16:41:09 [topk_topp_sampler.py:64] Using FlashInfer for top-p & top-k sampling.
+(Worker_TP0 pid=172) INFO 10-14 16:41:09 [interface.py:1029] Setting attention block size to 1504 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP0 pid=172) INFO 10-14 16:41:09 [interface.py:1062] Padding mamba page size by 0.95% to ensure that mamba page size and attention page size are exactly equal.
+(EngineCore pid=152) WARNING 10-14 16:41:09 [torch_utils.py:266] OMP_NUM_THREADS=4 is set; leaving Torch threads at 4 for serving. Multi-threaded torch CPU ops during serving can degrade performance through spin-wait contention and cgroup CPU-quota throttling.
+(EngineCore pid=152) INFO 10-14 16:41:09 [utils.py:381] Using BLHNC KV cache layout.
+(Worker_TP0 pid=172) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP0 pid=172) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP0 pid=172) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(Worker_TP0 pid=172) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP0 pid=172) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+b12x planning gemm.blockscaled_precision: 0/489 ready, 0 measured, 1 cached, 0 compilations, 0:00
+b12x planning moe.decode: 0/489 ready, 0 measured, 233 cached, 0 compilations, 0:00
+b12x selecting gemm.blockscaled_precision: 34/489 ready, 0 measured, 456 cached, 0 compilations, 0:01
+b12x compiling gemm.blockscaled_precision: 34/489 ready, 0 measured, 456 cached, 0 compilations, 0:01
+b12x compiling moe.decode: 205/489 ready, 0 measured, 456 cached, 6 compilations, 0:04
+b12x priming moe.decode: 205/489 ready, 0 measured, 456 cached, 8 compilations, 0:04
+b12x compiling norm.hyperconnection: 238/489 ready, 0 measured, 456 cached, 12 compilations, 0:11
+b12x priming gemm.blockscaled_precision: 413/489 ready, 0 measured, 456 cached, 18 compilations, 0:12
+b12x compiling sequence.mtp_feedback: 421/489 ready, 0 measured, 456 cached, 18 compilations, 0:13
+b12x priming sequence.mtp_feedback: 421/489 ready, 0 measured, 456 cached, 21 compilations, 0:13
+b12x priming comm.roce: 489/489 ready, candidates 0/1 prepared, 0 measured, 456 cached, 100 compilations, 0:16
+b12x ready comm.roce: 489/489 ready, candidates 0/1 prepared, 0 measured, 456 cached, 100 compilations, 0:17
+b12x warming heuristics gemm.blockscaled_precision: 2/39 ready, 0 measured, 0 cached, 0 compilations, 0:17
+b12x warming heuristics sequence.ple_embedding: 6/39 ready, 0 measured, 0 cached, 0 compilations, 0:17
+(Worker_TP0 pid=172) 2026-10-14 16:41:35,081 [b12x-trace] GOT rank=0 round=0 key=round-0/0 waited=0.0s
+(Worker_TP0 pid=172) 2026-10-14 16:41:35,081 [b12x-trace] GOT rank=0 round=0 key=round-0/1 waited=0.0s
+(Worker_TP0 pid=172) 2026-10-14 16:41:35,082 [b12x-trace] GOT rank=0 round=0 key=round-0/decision waited=0.0s
+b12x ready sequence.ple_embedding: 39/39 ready, 0 measured, 0 cached, 0 compilations, 0:21
+(Worker_TP0 pid=172) INFO 10-14 16:41:35 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 16384 tokens, and profiled with 1 image items of the maximum feature size.
+(Worker_TP0 pid=172) INFO 10-14 16:41:53 [caching.py:343] reconstructed serializable fn from standalone compile artifacts. num_artifacts=52 num_submods=52
+(Worker_TP0 pid=172) INFO 10-14 16:41:53 [decorators.py:313] Directly load AOT compilation from path /cache/xdg/vllm/torch_compile_cache/torch_aot_compile/bc3e942ae492c022941a48fb226d9b6ac289f9abc40925ae13b129ef680ba7e6/rank_0_0/model
+(Worker_TP0 pid=172) INFO 10-14 16:41:53 [monitor.py:53] torch.compile took 0.92 s in total
+(Worker_TP0 pid=172) INFO 10-14 16:41:55 [monitor.py:81] Initial profiling/warmup run took 2.11 s
+(Worker_TP0 pid=172) INFO 10-14 16:41:55 [caching.py:343] reconstructed serializable fn from standalone compile artifacts. num_artifacts=2 num_submods=2
+(Worker_TP0 pid=172) INFO 10-14 16:41:55 [decorators.py:313] Directly load AOT compilation from path /cache/xdg/vllm/torch_compile_cache/torch_aot_compile/42583fd30715085d49a95c2dceb3718621b3b47ff39755427495a27579b5d5c8/rank_0_0/model
+(Worker_TP0 pid=172) INFO 10-14 16:41:55 [monitor.py:53] torch.compile took 0.05 s in total
+(Worker_TP0 pid=172) INFO 10-14 16:41:56 [monitor.py:81] Initial profiling/warmup run took 0.19 s
+(Worker_TP0 pid=172) INFO 10-14 16:41:56 [b12x_roce_all_reduce.py:287] RoCEnante all-gather is live: first routed shard is (16, 65536) bfloat16 along dim 1.
+(Worker_TP0 pid=172) INFO 10-14 16:41:56 [b12x_roce_all_reduce.py:269] RoCEnante all-reduce is live: first routed all-reduce is 81920 bytes (bfloat16); NCCL remains the fallback above 2MB.
+(Worker_TP0 pid=172) 2026-10-14 16:42:01,696 [b12x-trace] GOT rank=0 round=0 key=round-0/0 waited=0.0s
+(Worker_TP0 pid=172) 2026-10-14 16:42:01,813 [b12x-trace] GOT rank=0 round=0 key=round-0/1 waited=0.1s
+(Worker_TP0 pid=172) 2026-10-14 16:42:01,815 [b12x-trace] GOT rank=0 round=0 key=round-0/decision waited=0.0s
+(Worker_TP0 pid=172) Capturing CUDA graphs (PIECEWISE):   0%|          | 0/23 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 1/23 [00:00<00:11,  1.95it/s]Capturing CUDA graphs (PIECEWISE):   9%|▊         | 2/23 [00:00<00:09,  2.17it/s]Capturing CUDA graphs (PIECEWISE):  13%|█▎        | 3/23 [00:01<00:08,  2.26it/s]Capturing CUDA graphs (PIECEWISE):  17%|█▋        | 4/23 [00:01<00:08,  2.32it/s]Capturing CUDA graphs (PIECEWISE):  22%|██▏       | 5/23 [00:02<00:07,  2.30it/s]Capturing CUDA graphs (PIECEWISE):  26%|██▌       | 6/23 [00:02<00:07,  2.29it/s]Capturing CUDA graphs (PIECEWISE):  30%|███       | 7/23 [00:03<00:06,  2.33it/s]Capturing CUDA graphs (PIECEWISE):  35%|███▍      | 8/23 [00:03<00:06,  2.34it/s]Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 9/23 [00:03<00:05,  2.36it/s]Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 10/23 [00:04<00:05,  2.38it/s]Capturing CUDA graphs (PIECEWISE):  48%|████▊     | 11/23 [00:04<00:05,  2.39it/s]Capturing CUDA graphs (PIECEWISE):  52%|█████▏    | 12/23 [00:05<00:04,  2.40it/s]Capturing CUDA graphs (PIECEWISE):  57%|█████▋    | 13/23 [00:05<00:04,  2.43it/s]Capturing CUDA graphs (PIECEWISE):  61%|██████    | 14/23 [00:05<00:03,  2.43it/s]Capturing CUDA graphs (PIECEWISE):  65%|██████▌   | 15/23 [00:06<00:03,  2.46it/s]Capturing CUDA graphs (PIECEWISE):  70%|██████▉   | 16/23 [00:06<00:02,  2.49it/s]Capturing CUDA graphs (PIECEWISE):  74%|███████▍  | 17/23 [00:07<00:02,  2.49it/s]Capturing CUDA graphs (PIECEWISE):  78%|███████▊  | 18/23 [00:07<00:01,  2.56it/s]Capturing CUDA graphs (PIECEWISE):  83%|████████▎ | 19/23 [00:07<00:01,  2.73it/s]Capturing CUDA graphs (PIECEWISE):  87%|████████▋ | 20/23 [00:08<00:01,  2.87it/s]Capturing CUDA graphs (PIECEWISE):  91%|█████████▏| 21/23 [00:08<00:00,  2.98it/s]Capturing CUDA graphs (PIECEWISE):  96%|█████████▌| 22/23 [00:08<00:00,  3.07it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 23/23 [00:09<00:00,  2.99it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 23/23 [00:09<00:00,  2.53it/s]
+(Worker_TP0 pid=172) Capturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):  50%|█████     | 1/2 [00:00<00:00,  3.17it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00,  3.22it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00,  3.21it/s]
+(Worker_TP0 pid=172) INFO 10-14 16:42:11 [speculator.py:187] Capturing model for speculator...
+(Worker_TP0 pid=172) Capturing prefill CUDA graphs (PIECEWISE):   0%|          | 0/23 [00:00<?, ?it/s]Capturing prefill CUDA graphs (PIECEWISE):  26%|██▌       | 6/23 [00:00<00:00, 58.16it/s]Capturing prefill CUDA graphs (PIECEWISE):  57%|█████▋    | 13/23 [00:00<00:00, 62.55it/s]Capturing prefill CUDA graphs (PIECEWISE):  87%|████████▋ | 20/23 [00:00<00:00, 64.90it/s]Capturing prefill CUDA graphs (PIECEWISE): 100%|██████████| 23/23 [00:00<00:00, 63.13it/s]
+(Worker_TP0 pid=172) Capturing prefill CUDA graphs (FULL):   0%|          | 0/5 [00:00<?, ?it/s]Capturing prefill CUDA graphs (FULL): 100%|██████████| 5/5 [00:00<00:00, 62.30it/s]
+(Worker_TP0 pid=172) Capturing decode CUDA graphs (FULL):   0%|          | 0/5 [00:00<?, ?it/s]Capturing decode CUDA graphs (FULL):  80%|████████  | 4/5 [00:00<00:00, 35.35it/s]Capturing decode CUDA graphs (FULL): 100%|██████████| 5/5 [00:00<00:00, 35.70it/s]
+(Worker_TP0 pid=172) INFO 10-14 16:42:12 [model_runner.py:1106] Graph capturing finished in 11 secs, took 0.20 GiB
+(Worker_TP0 pid=172) INFO 10-14 16:42:13 [gpu_worker.py:753] Available KV cache memory: 24.39 GiB
+(Worker_TP0 pid=172) INFO 10-14 16:42:13 [gpu_worker.py:768] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.7500 is equivalent to --gpu-memory-utilization=0.7478 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.7522. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(EngineCore pid=152) INFO 10-14 16:42:13 [kv_cache_utils.py:2258] GPU KV cache size: 3,173,863 tokens, Maximum concurrency for 262,144 tokens per request: 12.11x
+(Worker_TP0 pid=172) INFO 10-14 16:42:13 [gpu_worker.py:850] Cleared 1.03 GiB of cached CUDA allocator memory before KV cache allocation.
+b12x planning attention.gdn: 0/424 ready, candidates 0/1 prepared, 0 measured, 0 cached, 0 compilations, 0:00
+b12x priming attention.qsa: 1/424 ready, candidates 0/1 prepared, 0 measured, 0 cached, 0 compilations, 0:00
+(Worker_TP0 pid=172) 2026-10-14 16:45:58,060 [b12x-trace] GOT rank=0 round=0 key=round-0/0 waited=0.0s
+b12x warming heuristics sequence.ple: 32/66 ready, 0 measured, 0 cached, 0 compilations, 0:04
+b12x warming heuristics sequence.ple: 32/66 ready, 0 measured, 0 cached, 0 compilations, 0:14
+b12x warming heuristics sequence.ple: 32/66 ready, 0 measured, 0 cached, 0 compilations, 0:24
+b12x warming heuristics sequence.ple: 32/66 ready, 0 measured, 0 cached, 0 compilations, 0:34
+b12x warming heuristics sequence.ple: 32/66 ready, 0 measured, 0 cached, 0 compilations, 0:44
+b12x warming heuristics sequence.ple: 32/66 ready, 0 measured, 0 cached, 0 compilations, 0:54
+(EngineCore pid=152) INFO 10-14 16:46:55 [shm_broadcast.py:801] No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization).
+b12x warming heuristics sequence.ple: 32/66 ready, 0 measured, 0 cached, 0 compilations, 1:04
+(Worker_TP0 pid=172) 2026-10-14 16:47:02,289 [b12x-trace] GOT rank=0 round=0 key=round-0/1 waited=64.2s
+(Worker_TP0 pid=172) 2026-10-14 16:47:02,291 [b12x-trace] GOT rank=0 round=0 key=round-0/decision waited=0.0s
+b12x ready sequence.ple_embedding: 66/66 ready, 0 measured, 0 cached, 0 compilations, 1:08
+(Worker_TP0 pid=172) INFO 10-14 16:47:02 [kernel_warmup.py:123] JIT kernel warmup starting.
+(Worker_TP0 pid=172) INFO 10-14 16:47:02 [kernel_warmup.py:133] JIT kernel warmup finished in 0.00s.
+(Worker_TP0 pid=172) INFO 10-14 16:47:03 [kernel_warmup.py:192] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP0 pid=172) Capturing CUDA graphs (PIECEWISE):   0%|          | 0/23 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 1/23 [00:00<00:11,  1.91it/s]Capturing CUDA graphs (PIECEWISE):   9%|▊         | 2/23 [00:00<00:09,  2.19it/s]Capturing CUDA graphs (PIECEWISE):  13%|█▎        | 3/23 [00:01<00:08,  2.23it/s]Capturing CUDA graphs (PIECEWISE):  17%|█▋        | 4/23 [00:01<00:08,  2.30it/s]Capturing CUDA graphs (PIECEWISE):  22%|██▏       | 5/23 [00:02<00:07,  2.29it/s]Capturing CUDA graphs (PIECEWISE):  26%|██▌       | 6/23 [00:02<00:07,  2.30it/s]Capturing CUDA graphs (PIECEWISE):  30%|███       | 7/23 [00:03<00:06,  2.33it/s]Capturing CUDA graphs (PIECEWISE):  35%|███▍      | 8/23 [00:03<00:06,  2.34it/s]Capturing CUDA graphs (PIECEWISE):  39%|███▉      | 9/23 [00:03<00:06,  2.33it/s]Capturing CUDA graphs (PIECEWISE):  43%|████▎     | 10/23 [00:04<00:05,  2.35it/s]Capturing CUDA graphs (PIECEWISE):  48%|████▊     | 11/23 [00:04<00:05,  2.36it/s]Capturing CUDA graphs (PIECEWISE):  52%|█████▏    | 12/23 [00:05<00:04,  2.37it/s]Capturing CUDA graphs (PIECEWISE):  57%|█████▋    | 13/23 [00:05<00:04,  2.37it/s]Capturing CUDA graphs (PIECEWISE):  61%|██████    | 14/23 [00:06<00:03,  2.40it/s]Capturing CUDA graphs (PIECEWISE):  65%|██████▌   | 15/23 [00:06<00:03,  2.43it/s]Capturing CUDA graphs (PIECEWISE):  70%|██████▉   | 16/23 [00:06<00:02,  2.47it/s]Capturing CUDA graphs (PIECEWISE):  74%|███████▍  | 17/23 [00:07<00:02,  2.47it/s]Capturing CUDA graphs (PIECEWISE):  78%|███████▊  | 18/23 [00:07<00:01,  2.52it/s]Capturing CUDA graphs (PIECEWISE):  83%|████████▎ | 19/23 [00:07<00:01,  2.70it/s]Capturing CUDA graphs (PIECEWISE):  87%|████████▋ | 20/23 [00:08<00:01,  2.81it/s]Capturing CUDA graphs (PIECEWISE):  91%|█████████▏| 21/23 [00:08<00:00,  2.89it/s]Capturing CUDA graphs (PIECEWISE):  96%|█████████▌| 22/23 [00:08<00:00,  2.93it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 23/23 [00:09<00:00,  2.98it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 23/23 [00:09<00:00,  2.50it/s]
+(Worker_TP0 pid=172) Capturing CUDA graphs (FULL):   0%|          | 0/11 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):   9%|▉         | 1/11 [00:00<00:03,  2.98it/s]Capturing CUDA graphs (FULL):  18%|█▊        | 2/11 [00:00<00:02,  3.02it/s]Capturing CUDA graphs (FULL):  27%|██▋       | 3/11 [00:00<00:02,  3.04it/s]Capturing CUDA graphs (FULL):  36%|███▋      | 4/11 [00:01<00:02,  3.04it/s]Capturing CUDA graphs (FULL):  45%|████▌     | 5/11 [00:01<00:01,  3.06it/s]Capturing CUDA graphs (FULL):  55%|█████▍    | 6/11 [00:01<00:01,  3.11it/s]Capturing CUDA graphs (FULL):  64%|██████▎   | 7/11 [00:02<00:01,  3.12it/s]Capturing CUDA graphs (FULL):  73%|███████▎  | 8/11 [00:02<00:00,  3.13it/s]Capturing CUDA graphs (FULL):  82%|████████▏ | 9/11 [00:02<00:00,  3.14it/s]Capturing CUDA graphs (FULL):  91%|█████████ | 10/11 [00:03<00:00,  3.12it/s]Capturing CUDA graphs (FULL): 100%|██████████| 11/11 [00:03<00:00,  3.09it/s]Capturing CUDA graphs (FULL): 100%|██████████| 11/11 [00:03<00:00,  3.09it/s]
+(Worker_TP0 pid=172) INFO 10-14 16:47:16 [speculator.py:187] Capturing model for speculator...
+(Worker_TP0 pid=172) Capturing prefill CUDA graphs (PIECEWISE):   0%|          | 0/23 [00:00<?, ?it/s]Capturing prefill CUDA graphs (PIECEWISE):  22%|██▏       | 5/23 [00:00<00:00, 47.55it/s]Capturing prefill CUDA graphs (PIECEWISE):  48%|████▊     | 11/23 [00:00<00:00, 53.51it/s]Capturing prefill CUDA graphs (PIECEWISE):  78%|███████▊  | 18/23 [00:00<00:00, 57.73it/s]Capturing prefill CUDA graphs (PIECEWISE): 100%|██████████| 23/23 [00:00<00:00, 58.13it/s]
+(Worker_TP0 pid=172) Capturing prefill CUDA graphs (FULL):   0%|          | 0/5 [00:00<?, ?it/s]Capturing prefill CUDA graphs (FULL): 100%|██████████| 5/5 [00:00<00:00, 56.47it/s]
+(Worker_TP0 pid=172) Capturing decode CUDA graphs (FULL):   0%|          | 0/5 [00:00<?, ?it/s]Capturing decode CUDA graphs (FULL):  80%|████████  | 4/5 [00:00<00:00, 32.88it/s]Capturing decode CUDA graphs (FULL): 100%|██████████| 5/5 [00:00<00:00, 33.17it/s]
+(Worker_TP0 pid=172) INFO 10-14 16:47:17 [model_runner.py:1106] Graph capturing finished in 14 secs, took 0.20 GiB
+(Worker_TP0 pid=172) INFO 10-14 16:47:17 [gpu_worker.py:962] CUDA graph pool memory: 0.2 GiB (actual), 0.26 GiB (estimated), difference: 0.06 GiB (29.6%).
+(Worker_TP0 pid=172) INFO 10-14 16:47:17 [gpu_worker.py:1025] Free memory on device (99.28/119.57 GiB) on startup. Desired GPU memory utilization is (0.75, 89.68 GiB). Actual usage is 63.02 GiB for consumed memory (weights + non-torch), 2.0 GiB for peak activation, and 0.2 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=26097430016` (24.31 GiB) to fit into requested memory, or `--kv-cache-memory=36408159744` (33.91 GiB) to fully utilize gpu memory. Current kv cache memory in use is 24.39 GiB.
+(Worker_TP0 pid=172) INFO 10-14 16:47:18 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP0 pid=172) WARNING 10-14 16:47:19 [torch_utils.py:266] OMP_NUM_THREADS=4 is set; leaving Torch threads at 4 for serving. Multi-threaded torch CPU ops during serving can degrade performance through spin-wait contention and cgroup CPU-quota throttling.
+(EngineCore pid=152) INFO 10-14 16:47:19 [core.py:371] init engine (profile, create kv cache, warmup model) took 370.05 s (compilation: 0.97 s)
+(EngineCore pid=152) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=152) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=152) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=152) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=152) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=152) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=152) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=152) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(EngineCore pid=152) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=152) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=152) INFO 10-14 16:47:24 [kv_cache_coordinator.py:735] VLLM_PREFIX_DROP_EXACT resolved on.
+(EngineCore pid=152) INFO 10-14 16:47:24 [kernel.py:376] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(EngineCore pid=152) INFO 10-14 16:47:24 [compilation.py:329] Enabled custom fusions: act_quant
+(APIServer pid=1) INFO 10-14 16:47:24 [entry.py:135] Supported tasks: ['generate']
+(APIServer pid=1) INFO 10-14 16:47:24 [parser_manager.py:58] "auto" tool choice has been enabled.
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) INFO 10-14 16:47:24 [hf.py:547] Detected the chat template content format to be 'openai'. You can set `--chat-template-content-format` to override this.
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(APIServer pid=1) [transformers] Qwen3VL video processing does not apply the per-frame pixel cap the reference implementation (qwen-vl-utils) applies, so some videos cost far more tokens than they would there. In v5.22 the capped behavior will become the default and `cap_pixels_per_frame` will be removed. Pass `cap_pixels_per_frame=True` to adopt the reference behavior now, or `False` to keep the current behavior and silence this warning.
+(APIServer pid=1) INFO 10-14 16:47:35 [base.py:235] Multi-modal warmup completed in 11.121s
+(APIServer pid=1) INFO 10-14 16:47:36 [base.py:235] Readonly multi-modal warmup completed in 0.635s
+(APIServer pid=1) WARNING 10-14 16:47:36 [model.py:1781] Default vLLM sampling parameters have been overridden by the model's `generation_config.json`: `{'temperature': 1.0, 'top_k': 20, 'top_p': 0.95}`. If this is not intended, please relaunch vLLM instance with `--generation-config vllm`.
+(APIServer pid=1) INFO 10-14 16:47:36 [entry.py:139] Starting vLLM server on http://0.0.0.0:8000
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:61] Available routes are:
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /openapi.json, Methods: HEAD, GET
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /docs, Methods: HEAD, GET
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /redoc, Methods: HEAD, GET
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /load, Methods: GET
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /version, Methods: GET
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /health, Methods: GET
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /metrics, Methods: GET
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /tokenize, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /detokenize, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /v1/models, Methods: GET
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /ping, Methods: GET
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /ping, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /invocations, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /v1/chat/completions, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /v1/chat/completions/batch, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /v1/responses, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /v1/responses/{response_id}, Methods: GET
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /v1/responses/{response_id}/cancel, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /v1/completions, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /v1/messages, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /v1/messages/count_tokens, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /generative_scoring, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /scale_elastic_ep, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /is_scaling_elastic_ep, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /v1/chat/completions/render, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /v1/completions/render, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /v1/chat/completions/derender, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /v1/completions/derender, Methods: POST
+(APIServer pid=1) INFO 10-14 16:47:36 [launcher.py:70] Route: /inference/v1/generate, Methods: POST
+(APIServer pid=1) INFO:     Started server process [1]
+(APIServer pid=1) INFO:     Waiting for application startup.
+(APIServer pid=1) INFO:     Application startup complete.
+(APIServer pid=1) INFO:     tailnet-node:34114 - "GET /health HTTP/1.1" 200 OK
+(APIServer pid=1) INFO:     spark3:41822 - "GET /health HTTP/1.1" 200 OK
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 13.0.2
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+QWEN_GDN_MIX=A aplicado: vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py#QWEN_GDN_MIX_SELECTION
+QWEN_GDN_MIX=A: imagen parcheada
+QWEN_GDN_MIX=A decode=b12x prefill=triton ssm=bf16 deferred=0 compact=0 autotune=1 tp=2
+cp: warning: behavior of -n is non-portable and may change in future; use --update=none instead
+INFO 10-14 16:39:47 [__init__.py:109] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+WARNING 10-14 16:39:47 [argparse_utils.py:441] Found duplicate keys --gdn-decode-kernel, --gpu-memory-utilization
+INFO 10-14 16:39:47 [arg_utils.py:905] HF_HUB_OFFLINE is True, replace model_id [ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE] to model_path [/cache/huggingface/hub/models--ursuciprian--Qwen3.8-Flash-Next-NVFP4-GDN-MSE/snapshots/16c9bd54788d12390838a65ce4a4ecda97fa5f1d]
+WARNING 10-14 16:39:47 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_PORT_8000_TCP
+WARNING 10-14 16:39:47 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_PORT_8000_TCP_PORT
+WARNING 10-14 16:39:47 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_PORT_8000_TCP_ADDR
+WARNING 10-14 16:39:47 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_SERVICE_PORT_HTTP
+WARNING 10-14 16:39:47 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_PORT_8000_TCP_PROTO
+WARNING 10-14 16:39:47 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_PORT
+WARNING 10-14 16:39:47 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_SERVICE_HOST
+WARNING 10-14 16:39:47 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_VISION_DEEP_SERVICE_PORT
+WARNING 10-14 16:39:47 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_BASE_DIR
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+INFO 10-14 16:39:47 [model.py:686] Resolved architecture: Qwen4ExpForConditionalGeneration
+INFO 10-14 16:39:47 [model.py:2043] Using max model len 262144
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+INFO 10-14 16:39:49 [cache.py:356] Using fp8 data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+INFO 10-14 16:39:49 [arg_utils.py:2351] Inferred data_parallel_rank 0 from node_rank 1
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+INFO 10-14 16:39:49 [model.py:686] Resolved architecture: Qwen3_8FlashNextMTP
+INFO 10-14 16:39:49 [model.py:2043] Using max model len 262144
+WARNING 10-14 16:39:49 [speculative.py:1366] Enabling num_speculative_tokens > 1 will run multiple times of forward on same MTP layer,which may result in lower acceptance rate
+INFO 10-14 16:39:49 [scheduler.py:339] Chunked prefill is enabled with max_num_batched_tokens=8192.
+WARNING 10-14 16:39:49 [config.py:890] Qwen3.5 model specifies mamba_ssm_dtype='float32' in its config, but --mamba-ssm-cache-dtype='bfloat16' was passed. Using the user-specified value.
+WARNING 10-14 16:39:49 [modelopt.py:379] Detected ModelOpt fp8 checkpoint (quant_algo=FP8). Please note that the format is experimental and could change.
+WARNING 10-14 16:39:49 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=NVFP4). Please note that the format is experimental and could change in future.
+WARNING 10-14 16:39:49 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=W4A16_NVFP4). Please note that the format is experimental and could change in future.
+WARNING 10-14 16:39:49 [modelopt.py:1723] Detected ModelOpt MXFP8 checkpoint. Please note that the format is experimental and could change in future.
+INFO 10-14 16:39:49 [kernel.py:376] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+INFO 10-14 16:39:49 [compilation.py:329] Enabled custom fusions: act_quant
+INFO 10-14 16:39:49 [serve.py:242] Launching vLLM (v20260926.dev28+g884b4ff68.d20261002) headless multiproc executor, with head node address 10.0.0.2:25000 for torch.distributed process group.
+INFO 10-14 16:39:52 [__init__.py:109] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker pid=143) INFO 10-14 16:39:53 [parallel_state.py:1673] world_size=2 rank=1 local_rank=0 distributed_init_method=tcp://10.0.0.2:25000 backend=nccl
+(Worker pid=143) WARNING 10-14 16:40:05 [symm_mem.py:67] SymmMemCommunicator: Device capability 12.1 not supported, communicator is not available.
+(Worker pid=143) INFO 10-14 16:40:06 [parallel_state.py:2017] rank 1 in world size 2 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 1, EP rank 1, EPLB rank N/A
+(Worker pid=143) INFO 10-14 16:40:06 [gpu_worker.py:455] Using V2 Model Runner
+(Worker_TP1 pid=143) INFO 10-14 16:40:07 [model_runner.py:395] Loading model from scratch...
+(Worker_TP1 pid=143) INFO 10-14 16:40:07 [__init__.py:869] Using B12xMxfp8LinearKernel for MXFP8 GEMM
+(Worker_TP1 pid=143) INFO 10-14 16:40:07 [cuda.py:551] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(Worker_TP1 pid=143) INFO 10-14 16:40:07 [mm_encoder_attention.py:375] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(Worker_TP1 pid=143) INFO 10-14 16:40:07 [__init__.py:1101] Using B12xNvFp4LinearKernel for NVFP4 GEMM
+(Worker_TP1 pid=143) INFO 10-14 16:40:07 [qwen_gdn_linear_attn.py:449] Using Triton/FLA GDN prefill kernel (requested=triton, head_k_dim=128).
+(Worker_TP1 pid=143) INFO 10-14 16:40:07 [qwen_gdn_linear_attn.py:861] GDN decode kernel: b12x
+(Worker_TP1 pid=143) INFO 10-14 16:40:07 [nvfp4.py:271] Using 'B12X' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CUTLASS', 'VLLM_CUTLASS', 'MARLIN', 'HUMMING', 'EMULATION'].
+(Worker_TP1 pid=143) INFO 10-14 16:40:08 [mamba_utils.py:37] VLLM_SSM_CONV_STATE_LAYOUT env detected. Setting SSM conv state layout to DS.
+(Worker_TP1 pid=143) INFO 10-14 16:40:16 [vocab_parallel_embedding.py:417] Quantizing LM head shards to MXFP8 with BF16 activations.
+(Worker_TP1 pid=143) INFO 10-14 16:40:50 [default_loader.py:510] Loading weights took 34.22 seconds
+(Worker_TP1 pid=143) INFO 10-14 16:40:51 [b12x.py:152] model.language_model.layers.0.linear_attn.in_proj_qkv+model.language_model.layers.0.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=143) INFO 10-14 16:40:51 [b12x.py:152] model.language_model.layers.0.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0910)
+(Worker_TP1 pid=143) INFO 10-14 16:40:51 [nvfp4.py:628] Using MoEPrepareAndFinalizeNoDPEPModular
+(Worker_TP1 pid=143) INFO 10-14 16:40:51 [hyperconnection.py:172] qwen38 HC MXFP8: target=hc shape=[336,10240] -> mxfp8 g32, activation_mode=auto, 6.88 MB -> 3.56 MB per instance
+(Worker_TP1 pid=143) INFO 10-14 16:40:51 [hyperconnection.py:172] qwen38 HC MXFP8: target=hc shape=[10240,320] -> mxfp8 g32, activation_mode=auto, 6.55 MB -> 4.06 MB per instance
+(Worker_TP1 pid=143) INFO 10-14 16:40:51 [b12x.py:152] model.language_model.layers.1.linear_attn.in_proj_qkv+model.language_model.layers.1.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0908)
+(Worker_TP1 pid=143) INFO 10-14 16:40:51 [b12x.py:152] model.language_model.layers.1.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP1 pid=143) INFO 10-14 16:40:51 [b12x.py:152] model.language_model.layers.2.linear_attn.in_proj_qkv+model.language_model.layers.2.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=143) INFO 10-14 16:40:51 [b12x.py:152] model.language_model.layers.2.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0922)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.4.linear_attn.in_proj_qkv+model.language_model.layers.4.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0910)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.4.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0924)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.5.linear_attn.in_proj_qkv+model.language_model.layers.5.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0911)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.5.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.6.linear_attn.in_proj_qkv+model.language_model.layers.6.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.6.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.8.linear_attn.in_proj_qkv+model.language_model.layers.8.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0911)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.8.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0921)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.9.linear_attn.in_proj_qkv+model.language_model.layers.9.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0909)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.9.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.10.linear_attn.in_proj_qkv+model.language_model.layers.10.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0922)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.10.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0911)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.12.linear_attn.in_proj_qkv+model.language_model.layers.12.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=143) INFO 10-14 16:40:52 [b12x.py:152] model.language_model.layers.12.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.13.linear_attn.in_proj_qkv+model.language_model.layers.13.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.13.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.14.linear_attn.in_proj_qkv+model.language_model.layers.14.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.14.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0924)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.16.linear_attn.in_proj_qkv+model.language_model.layers.16.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.16.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.17.linear_attn.in_proj_qkv+model.language_model.layers.17.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0908)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.17.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0910)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.18.linear_attn.in_proj_qkv+model.language_model.layers.18.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.18.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0921)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.20.linear_attn.in_proj_qkv+model.language_model.layers.20.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0909)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.20.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.21.linear_attn.in_proj_qkv+model.language_model.layers.21.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.21.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.22.linear_attn.in_proj_qkv+model.language_model.layers.22.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.22.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.24.linear_attn.in_proj_qkv+model.language_model.layers.24.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=143) INFO 10-14 16:40:53 [b12x.py:152] model.language_model.layers.24.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0924)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.25.linear_attn.in_proj_qkv+model.language_model.layers.25.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0916)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.25.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0916)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.26.linear_attn.in_proj_qkv+model.language_model.layers.26.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.26.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.28.linear_attn.in_proj_qkv+model.language_model.layers.28.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.28.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0920)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.29.linear_attn.in_proj_qkv+model.language_model.layers.29.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.29.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0922)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.30.linear_attn.in_proj_qkv+model.language_model.layers.30.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0911)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.30.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.32.linear_attn.in_proj_qkv+model.language_model.layers.32.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.32.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.33.linear_attn.in_proj_qkv+model.language_model.layers.33.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.33.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0927)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.34.linear_attn.in_proj_qkv+model.language_model.layers.34.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.34.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0920)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.36.linear_attn.in_proj_qkv+model.language_model.layers.36.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.36.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0921)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.37.linear_attn.in_proj_qkv+model.language_model.layers.37.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.37.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0923)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.38.linear_attn.in_proj_qkv+model.language_model.layers.38.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0905)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.38.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0921)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.40.linear_attn.in_proj_qkv+model.language_model.layers.40.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.40.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.41.linear_attn.in_proj_qkv+model.language_model.layers.41.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=143) INFO 10-14 16:40:54 [b12x.py:152] model.language_model.layers.41.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=143) INFO 10-14 16:40:55 [b12x.py:152] model.language_model.layers.42.linear_attn.in_proj_qkv+model.language_model.layers.42.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP1 pid=143) INFO 10-14 16:40:55 [b12x.py:152] model.language_model.layers.42.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=143) INFO 10-14 16:40:55 [b12x.py:152] model.language_model.layers.44.linear_attn.in_proj_qkv+model.language_model.layers.44.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP1 pid=143) INFO 10-14 16:40:55 [b12x.py:152] model.language_model.layers.44.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0925)
+(Worker_TP1 pid=143) INFO 10-14 16:40:55 [b12x.py:152] model.language_model.layers.45.linear_attn.in_proj_qkv+model.language_model.layers.45.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP1 pid=143) INFO 10-14 16:40:55 [b12x.py:152] model.language_model.layers.45.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0920)
+(Worker_TP1 pid=143) INFO 10-14 16:40:55 [b12x.py:152] model.language_model.layers.46.linear_attn.in_proj_qkv+model.language_model.layers.46.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0909)
+(Worker_TP1 pid=143) INFO 10-14 16:40:55 [b12x.py:152] model.language_model.layers.46.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=143) INFO 10-14 16:40:55 [hyperconnection.py:172] qwen38 HC MXFP8: target=hc shape=[320,10240] -> mxfp8 g32, activation_mode=auto, 6.55 MB -> 3.40 MB per instance
+(Worker_TP1 pid=143) INFO 10-14 16:40:55 [kernel.py:376] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(Worker_TP1 pid=143) WARNING 10-14 16:40:55 [modelopt.py:379] Detected ModelOpt fp8 checkpoint (quant_algo=FP8). Please note that the format is experimental and could change.
+(Worker_TP1 pid=143) WARNING 10-14 16:40:55 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=NVFP4). Please note that the format is experimental and could change in future.
+(Worker_TP1 pid=143) WARNING 10-14 16:40:55 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=W4A16_NVFP4). Please note that the format is experimental and could change in future.
+(Worker_TP1 pid=143) WARNING 10-14 16:40:55 [modelopt.py:1723] Detected ModelOpt MXFP8 checkpoint. Please note that the format is experimental and could change in future.
+(Worker_TP1 pid=143) WARNING 10-14 16:40:55 [config.py:890] Qwen3.5 model specifies mamba_ssm_dtype='float32' in its config, but --mamba-ssm-cache-dtype='bfloat16' was passed. Using the user-specified value.
+(Worker_TP1 pid=143) INFO 10-14 16:40:55 [kernel.py:376] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(Worker_TP1 pid=143) INFO 10-14 16:40:55 [vocab_parallel_embedding.py:417] Quantizing LM head shards to NVFP4 with BF16 activations.
+(Worker_TP1 pid=143) INFO 10-14 16:40:55 [mtp.py:833] MTP draft vocab: 131072 of 248320 ids from /opt/mtp-vocab-es/ids-es-K131072.txt.gz
+(Worker_TP1 pid=143) INFO 10-14 16:40:56 [weight_utils.py:667] Safetensors index filter selected 1/36 checkpoint shards.
+(Worker_TP1 pid=143) INFO 10-14 16:40:57 [default_loader.py:510] Loading weights took 1.57 seconds
+(Worker_TP1 pid=143) WARNING 10-14 16:40:58 [speculator.py:196] Draft model Qwen3_8FlashNextMTP does not support external multimodal embeddings. Embeddings from the target model will not be passed to the drafter; using text-only draft inputs instead.
+(Worker_TP1 pid=143) INFO 10-14 16:40:58 [model_runner.py:417] Model loading took 53.1 GiB memory and 51.658698 seconds
+(Worker_TP1 pid=143) INFO 10-14 16:40:58 [interface.py:1029] Setting attention block size to 1504 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP1 pid=143) INFO 10-14 16:40:58 [interface.py:1062] Padding mamba page size by 0.95% to ensure that mamba page size and attention page size are exactly equal.
+WARNING 10-14 16:41:09 [torch_utils.py:266] OMP_NUM_THREADS=4 is set; leaving Torch threads at 4 for serving. Multi-threaded torch CPU ops during serving can degrade performance through spin-wait contention and cgroup CPU-quota throttling.
+(Worker_TP1 pid=143) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP1 pid=143) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP1 pid=143) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(Worker_TP1 pid=143) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP1 pid=143) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP1 pid=143) 2026-10-14 16:41:35,083 [b12x-trace] GOT rank=1 round=0 key=round-0/decision waited=0.1s
+(Worker_TP1 pid=143) INFO 10-14 16:41:35 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 16384 tokens, and profiled with 1 image items of the maximum feature size.
+(Worker_TP1 pid=143) INFO 10-14 16:41:53 [caching.py:343] reconstructed serializable fn from standalone compile artifacts. num_artifacts=52 num_submods=52
+(Worker_TP1 pid=143) INFO 10-14 16:41:53 [decorators.py:313] Directly load AOT compilation from path /cache/xdg/vllm/torch_compile_cache/torch_aot_compile/bc3e942ae492c022941a48fb226d9b6ac289f9abc40925ae13b129ef680ba7e6/rank_1_0/model
+(Worker_TP1 pid=143) INFO 10-14 16:41:53 [monitor.py:53] torch.compile took 0.87 s in total
+(Worker_TP1 pid=143) INFO 10-14 16:41:55 [monitor.py:81] Initial profiling/warmup run took 2.12 s
+(Worker_TP1 pid=143) INFO 10-14 16:41:55 [caching.py:343] reconstructed serializable fn from standalone compile artifacts. num_artifacts=2 num_submods=2
+(Worker_TP1 pid=143) INFO 10-14 16:41:55 [decorators.py:313] Directly load AOT compilation from path /cache/xdg/vllm/torch_compile_cache/torch_aot_compile/42583fd30715085d49a95c2dceb3718621b3b47ff39755427495a27579b5d5c8/rank_1_0/model
+(Worker_TP1 pid=143) INFO 10-14 16:41:55 [monitor.py:53] torch.compile took 0.05 s in total
+(Worker_TP1 pid=143) INFO 10-14 16:41:56 [monitor.py:81] Initial profiling/warmup run took 0.20 s
+(Worker_TP1 pid=143) 2026-10-14 16:42:01,815 [b12x-trace] GOT rank=1 round=0 key=round-0/decision waited=0.0s
+(Worker_TP1 pid=143) INFO 10-14 16:42:11 [speculator.py:187] Capturing model for speculator...
+(Worker_TP1 pid=143) INFO 10-14 16:42:12 [model_runner.py:1106] Graph capturing finished in 11 secs, took 0.12 GiB
+(Worker_TP1 pid=143) INFO 10-14 16:42:13 [gpu_worker.py:753] Available KV cache memory: 27.09 GiB
+(Worker_TP1 pid=143) INFO 10-14 16:42:13 [gpu_worker.py:768] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.7500 is equivalent to --gpu-memory-utilization=0.7485 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.7515. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP1 pid=143) INFO 10-14 16:42:13 [gpu_worker.py:850] Cleared 1.19 GiB of cached CUDA allocator memory before KV cache allocation.
+(Worker_TP1 pid=143) 2026-10-14 16:47:02,290 [b12x-trace] GOT rank=1 round=0 key=round-0/decision waited=0.0s
+(Worker_TP1 pid=143) INFO 10-14 16:47:02 [kernel_warmup.py:123] JIT kernel warmup starting.
+(Worker_TP1 pid=143) INFO 10-14 16:47:02 [kernel_warmup.py:133] JIT kernel warmup finished in 0.00s.
+(Worker_TP1 pid=143) INFO 10-14 16:47:03 [kernel_warmup.py:192] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP1 pid=143) INFO 10-14 16:47:16 [speculator.py:187] Capturing model for speculator...
+(Worker_TP1 pid=143) INFO 10-14 16:47:17 [model_runner.py:1106] Graph capturing finished in 14 secs, took 0.38 GiB
+(Worker_TP1 pid=143) INFO 10-14 16:47:17 [gpu_worker.py:962] CUDA graph pool memory: 0.38 GiB (actual), 0.18 GiB (estimated), difference: 0.2 GiB (53.2%).
+(Worker_TP1 pid=143) INFO 10-14 16:47:17 [gpu_worker.py:1025] Free memory on device (105.77/119.63 GiB) on startup. Desired GPU memory utilization is (0.75, 89.72 GiB). Actual usage is 61.61 GiB for consumed memory (weights + non-torch), 0.85 GiB for peak activation, and 0.38 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=28707162112` (26.74 GiB) to fit into requested memory, or `--kv-cache-memory=45938964480` (42.78 GiB) to fully utilize gpu memory. Current kv cache memory in use is 27.09 GiB.
+(Worker_TP1 pid=143) INFO 10-14 16:47:18 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP1 pid=143) WARNING 10-14 16:47:19 [torch_utils.py:266] OMP_NUM_THREADS=4 is set; leaving Torch threads at 4 for serving. Multi-threaded torch CPU ops during serving can degrade performance through spin-wait contention and cgroup CPU-quota throttling.

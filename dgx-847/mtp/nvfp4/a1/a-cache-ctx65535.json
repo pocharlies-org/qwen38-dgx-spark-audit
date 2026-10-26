@@ -1,0 +1,33 @@
+{
+ "base": "http://tailnet-node:8000",
+ "model": "qwen38-flash-next",
+ "pasos": [
+  {
+   "paso": "1 contexto 64K",
+   "prompt_tokens": 65542,
+   "reutilizados_metricas": 1664,
+   "consultados_metricas": 67453,
+   "cached_tokens_usage": 0,
+   "recalculados": 63878,
+   "ttft_s": 21.298
+  },
+  {
+   "paso": "2 contexto + 2048 nuevos",
+   "prompt_tokens": 67668,
+   "reutilizados_metricas": 64896,
+   "consultados_metricas": 67628,
+   "cached_tokens_usage": 64896,
+   "recalculados": 2772,
+   "ttft_s": 1.222
+  },
+  {
+   "paso": "3 repetición exacta de 2",
+   "prompt_tokens": 67668,
+   "reutilizados_metricas": 67392,
+   "consultados_metricas": 67628,
+   "cached_tokens_usage": 67392,
+   "recalculados": 276,
+   "ttft_s": 0.351
+  }
+ ]
+}

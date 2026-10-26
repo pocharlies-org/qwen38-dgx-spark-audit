@@ -1,0 +1,7 @@
+# tools12: rc=0
+# gsm8k: rc=0
+# minerva_math: rc=0
+# ifeval: rc=0
+# bfcl: rc=0
+# humaneval: rc=0
+# 1x: {'niah131072': 0, 'tools12': 0, 'gsm8k': 0, 'minerva_math': 0, 'ifeval': 0, 'bfcl': 0, 'humaneval': 0}

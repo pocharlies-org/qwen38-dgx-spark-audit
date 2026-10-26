@@ -1,0 +1,12 @@
+244 ficheros .py del paquete b12x -> 8 modulos de terceros
+
+  ok    import cuda           <- cuda-python        (48 ficheros)
+  ok    import cutlass        <- nvidia-cutlass-dsl (376 ficheros)
+  ?       import exllamav3_ext  (sin mapa a distribucion; 1 ficheros)
+  ?       import flashinfer     (sin mapa a distribucion; 4 ficheros)
+  ok    import safetensors    <- safetensors        (12 ficheros)
+  ok    import torch          <- torch              (148 ficheros)
+  ok    import triton         <- triton             (22 ficheros)
+  ?       import vllm           (sin mapa a distribucion; 17 ficheros)
+
+FALTAN: exllamav3_ext, flashinfer, vllm

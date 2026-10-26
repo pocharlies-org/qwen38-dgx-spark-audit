@@ -1,0 +1,113 @@
+# DGX-847: las recetas de ursuciprian tal cual (v2.0.0 2× TP=2 y v2.2.0 1×), lanzadas como lo hace sparkrun 0.3.6
+# (docker privileged, ipc=host, red host, shm 25 GB, HF_HUB_OFFLINE=1, XDG_CACHE_HOME en un montaje, vllm_distributed:
+# --nnodes/--node-rank/--master-addr/--master-port y --headless en el worker). Script y env de cada receta en los
+# ConfigMaps ursu-recipe / ursu-env-{2x,1x} (los crea ventana.sh desde recipe/). Solo para la ventana con el residente
+# parado; etiquetas propias para que ningún Service de producción las seleccione.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: ursu-2x-head, namespace: llm, labels: {app: ursu-2x-head, dgx-847: prueba}}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector: {matchLabels: {app: ursu-2x-head}}
+  template:
+    metadata: {labels: {app: ursu-2x-head, dgx-847: prueba}}
+    spec:
+      nodeSelector: {kubernetes.io/hostname: gx10-ec3d}
+      tolerations: [{operator: Exists}]
+      hostNetwork: true
+      hostIPC: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: vllm
+        image: ghcr.io/ursuciprian/spark-vllm-b12x@sha256:1346035488a5c8a0f405ade8e74febf68c66b8df1e026b7e3a6fb83cb9f4ce13
+        securityContext: {privileged: true}
+        args: [bash, /etc/ursu/serve-2x.sh]
+        envFrom: [{configMapRef: {name: ursu-env-2x}}]
+        env:
+        - {name: NODE_RANK, value: "0"}
+        - {name: HEADLESS, value: ""}
+        - {name: VLLM_HOST_IP, value: 10.0.0.2}
+        resources: {requests: {memory: 16Gi}, limits: {nvidia.com/gpu: 1, memory: 112Gi}}
+        readinessProbe: {httpGet: {path: /health, port: 8000}, periodSeconds: 10}
+        volumeMounts:
+        - {name: recipe, mountPath: /etc/ursu}
+        - {name: hf, mountPath: /cache/huggingface, readOnly: true}
+        - {name: xdg, mountPath: /cache/xdg}
+        - {name: shm, mountPath: /dev/shm}
+      volumes:
+      - {name: recipe, configMap: {name: ursu-recipe}}
+      - {name: hf, persistentVolumeClaim: {claimName: hf-cache-nvidia-dgx-ro, readOnly: true}}
+      - {name: xdg, hostPath: {path: /srv/ursu-cache/2x, type: DirectoryOrCreate}}
+      - {name: shm, emptyDir: {medium: Memory, sizeLimit: 25Gi}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: ursu-2x-worker, namespace: llm, labels: {app: ursu-2x-worker, dgx-847: prueba}}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector: {matchLabels: {app: ursu-2x-worker}}
+  template:
+    metadata: {labels: {app: ursu-2x-worker, dgx-847: prueba}}
+    spec:
+      nodeSelector: {kubernetes.io/hostname: nvidia-dgx}
+      tolerations: [{operator: Exists}]
+      hostNetwork: true
+      hostIPC: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: vllm
+        image: ghcr.io/ursuciprian/spark-vllm-b12x@sha256:1346035488a5c8a0f405ade8e74febf68c66b8df1e026b7e3a6fb83cb9f4ce13
+        securityContext: {privileged: true}
+        args: [bash, /etc/ursu/serve-2x.sh]
+        envFrom: [{configMapRef: {name: ursu-env-2x}}]
+        env:
+        - {name: NODE_RANK, value: "1"}
+        - {name: HEADLESS, value: --headless}
+        - {name: VLLM_HOST_IP, value: 10.0.0.1}
+        resources: {requests: {memory: 16Gi}, limits: {nvidia.com/gpu: 1, memory: 112Gi}}
+        volumeMounts:
+        - {name: recipe, mountPath: /etc/ursu}
+        - {name: hf, mountPath: /cache/huggingface, readOnly: true}
+        - {name: xdg, mountPath: /cache/xdg}
+        - {name: shm, mountPath: /dev/shm}
+      volumes:
+      - {name: recipe, configMap: {name: ursu-recipe}}
+      - {name: hf, hostPath: {path: /home/dibanerz/.cache/huggingface, type: Directory}}
+      - {name: xdg, hostPath: {path: /srv/ursu-cache/2x, type: DirectoryOrCreate}}
+      - {name: shm, emptyDir: {medium: Memory, sizeLimit: 25Gi}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: ursu-1x, namespace: llm, labels: {app: ursu-1x, dgx-847: prueba}}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector: {matchLabels: {app: ursu-1x}}
+  template:
+    metadata: {labels: {app: ursu-1x, dgx-847: prueba}}
+    spec:
+      nodeSelector: {kubernetes.io/hostname: dgx3}
+      tolerations: [{operator: Exists}]
+      hostNetwork: true
+      hostIPC: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: vllm
+        image: ghcr.io/ursuciprian/spark-vllm-b12x@sha256:58e86bffedd500f8180daebfa52d6a55f80d596428153d2e5bff5112bbfeaf24
+        securityContext: {privileged: true}
+        args: [bash, /etc/ursu/serve-1x.sh]
+        envFrom: [{configMapRef: {name: ursu-env-1x}}]
+        resources: {requests: {memory: 16Gi}, limits: {nvidia.com/gpu: 1, memory: 112Gi}}
+        readinessProbe: {httpGet: {path: /health, port: 8000}, periodSeconds: 10}
+        volumeMounts:
+        - {name: recipe, mountPath: /etc/ursu}
+        - {name: hf, mountPath: /cache/huggingface}
+        - {name: xdg, mountPath: /cache/xdg}
+        - {name: shm, mountPath: /dev/shm}
+      volumes:
+      - {name: recipe, configMap: {name: ursu-recipe}}
+      - {name: hf, hostPath: {path: /srv/models/hf-ursu, type: Directory}}
+      - {name: xdg, hostPath: {path: /srv/ursu-cache/1x, type: DirectoryOrCreate}}
+      - {name: shm, emptyDir: {medium: Memory, sizeLimit: 25Gi}}

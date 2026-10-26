@@ -1,0 +1,4 @@
+No resources found in llm namespace.
+12:27:26Z tp21-B2: TP=3 abajo; arrancan TP=2 y TP=1 con B2
+12:34:11Z gdn-mix: compare exit=1 # escrito /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/B2-tp1-vs-e2.json
+12:38:40Z tp21-B2: sin los dos arriba no hay prueba conjunta (TP=2 143, TP=1 0; ver /home/user/bench-results/dgx-847/mtp/definitivo/tp21-B2/dos.log y uno.log)

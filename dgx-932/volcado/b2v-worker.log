@@ -1,0 +1,331 @@
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 13.0.2
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+[b12x-rank1] anclaje aplicado sobre qwen3_8_flash_next: 4 sitios en el target (embed, ple, attn_out, mlp_out) + 2 en el drafter (embed, feedback)
+[qwen38next-runtime] lambda por peticion conectado: 5 ficheros
+[refusal-probe] sonda cableada: 9 ficheros
+1) un writer                       err_max=4.768e-06
+2) suma de 5 writers, 1 proyeccion err_max=9.537e-06
+3) embed_tokens (project_in)       err_max=2.384e-07
+4) apply_hc por stream             err_max=2.384e-07
+5) lambda=0 identidad bit a bit    True
+6) set_lambda muta in-place        True
+7) forma incorrecta -> RuntimeError True
+
+TODO OK
+OK   buffer por token: [0,0,1.5,1.5] -> [0.0, 0.0, 1.5, 1.5]
+OK   tramo lam=0 sale bit-exacto 
+OK   tramo lam=1.5 sale corregido 
+OK   tramo lam=1.5 == algebra del autor (W-lam*v(vW)) err_max=8.030e-03 (suelo bf16 sobre |y|~1)
+OK   sello 0.0 explicito != ausencia (pide base) 
+OK   slot reusado sin sello usa el global 
+OK   global 1.5 mueve a quien no trae sello 
+OK   sello con basura alrededor 
+OK   sello fuera de cota -> None 
+OK   sin sello -> None 
+TODO OK
+rank1-refusal: cache_salt pide lambda 99.0, fuera de [-1.0, 4.0]; se usa el global
+PASS  literal 'refusal:1.0' -> 1.0  -> 1.0
+PASS  otro valor 'refusal:1.5' -> 1.5  -> 1.5
+PASS  'refusal:0' -> 0.0 y no None  -> 0.0
+PASS  sin sello -> None (cae al global)  
+PASS  salt ajeno 'otra-cosa' -> None  -> None
+PASS  salt ajeno 'prefix-cache-v2' -> None  -> None
+PASS  salt ajeno 'refusal' -> None  -> None
+PASS  salt ajeno 'refusal:' -> None  -> None
+WARNING 10-15 22:03:44 [refusal_projection.py:138] rank1-refusal: cache_salt pide lambda 99.0, fuera de [-1.0, 4.0]; se usa el global
+PASS  'refusal:99' no cuela  -> None
+PASS  'refusal:-99' no cuela  -> None
+PASS  'refusal:abc' no cuela  -> None
+PASS  Worker.set_refusal_lambda alcanzable por collective_rpc  
+PASS  Worker.get_refusal_lambda alcanzable por collective_rpc  
+
+FALLOS: ninguno
+INFO 10-15 22:03:50 [refusal_projection.py:183] rank1-refusal: ACTIVA dir=/opt/refusal/refusal_direction_flashnext.npy hidden=2560 lambda=1.0000 device=cpu
+PASS  hay estado (si no, esto no probaria nada)  
+PASS  la forma separada se rechaza  -> rank1-refusal(hc): separado esperaba ultimo eje 10240, visto
+PASS  aplanar+project_hc == proyeccion por stream  max|delta|=0.00e+00
+PASS  no es un no-op  max|x-y|=0.2631
+
+FALLOS: ninguno
+INFO 10-15 22:03:52 [refusal_projection.py:157] rank1-refusal: sin VLLM_REFUSAL_DIRECTION, proyeccion DESACTIVADA
+PASS  A1 sin variable no hay estado  
+PASS  A2 identidad exacta torch.bfloat16  
+PASS  A2 identidad exacta torch.float16  
+PASS  A2 identidad exacta torch.float32  
+INFO 10-15 22:03:52 [refusal_projection.py:183] rank1-refusal: ACTIVA dir=/opt/refusal/refusal_direction_flashnext.npy hidden=2560 lambda=0.0000 device=cpu
+PASS  B1 con variable hay estado  
+PASS  B2 lambda es 0.0 exacto  lambda=0.0
+PASS  B3 max|delta| == 0 torch.bfloat16  max|delta|=0.0
+PASS  B4 bit-exact torch.bfloat16  
+PASS  B3 max|delta| == 0 torch.float16  max|delta|=0.0
+PASS  B4 bit-exact torch.float16  
+PASS  B3 max|delta| == 0 torch.float32  max|delta|=0.0
+PASS  B4 bit-exact torch.float32  
+PASS  C1 control negativo: lambda=1.5 mueve  max|delta|=0.3906
+PASS  C2 volver a 0 restaura la identidad  
+
+FALLOS: ninguno
+ok   models/qwen3_8_flash_next/model.py
+ok   models/qwen3_8_flash_next/mtp.py
+ok   v1/worker/gpu/refusal_utils.py
+
+gate de ambito OK: 3 ficheros, todos los nombres ligados
+--- produccion: 48 capas, ple en [2] (98 sitios registrados)
+  ok   verify_consumed('language_model.model.layers', 48, suffix='attn_out') -> registrados=48
+  ok   verify_consumed('language_model.model.layers', 48, suffix='mlp_out') -> registrados=48
+  ok   verify_consumed('language_model.model.layers', 1, suffix='ple') -> registrados=1
+--- control: 4 capas, ple en [1, 3] (11 sitios registrados)
+  ok   verify_consumed('language_model.model.layers', 4, suffix='attn_out') -> registrados=4
+  ok   verify_consumed('language_model.model.layers', 4, suffix='mlp_out') -> registrados=4
+  ok   verify_consumed('language_model.model.layers', 2, suffix='ple') -> registrados=2
+
+gate de cuentas OK: las 3 verificaciones casan en 2 topologias
+PASS  el runner llama al estado de refusal  5 llamadas
+PASS  nada arrasa el buffer tras fill_target  
+PASS  la neutralizacion del drafter sigue existiendo  lineas [2258]
+PASS  y esta pegada a speculator.propose()  draft=[2258] propose=[867, 2268]
+INFO 10-15 22:03:57 [refusal_projection.py:183] rank1-refusal: ACTIVA dir=/opt/refusal/refusal_direction_flashnext.npy hidden=2560 lambda=1.0000 device=cpu
+PASS  fill_target escribe lambda por peticion  tok[:6]=[0.0, 0.0, 0.0, 1.0, 1.0, 1.0]
+
+FALLOS: ninguno
+refusal-probe: calibracion /tmp/tmpsw_bxj2t/cal.json invalida: {'id': 't3', 'feature': 'inventada', 'threshold': 1}
+refusal-probe: DESACTIVADA: model.layers.16: forma (3, 1280), se esperaba (N, 1x2560)
+OK   probe no modifica el tensor del forward 
+OK   capa 16 -> columna 0, coseno exacto 
+OK   capa 24 -> columna 1, invariante a escala 
+OK   hc=4: coseno de la suma de streams, tensor intacto 
+OK   el drafter MTP no pisa la capa 16 del target 
+OK   req 0: max/suma/n de SUS tres tokens 
+OK   req 1: max/suma/n de SUS dos tokens 
+OK   ultimo token por capa de cada peticion [0.20000000298023224, 0.20000000298023224] [0.6000000238418579, 0.800000011920929]
+OK   prefill por peticion 
+OK   prompt: max de todos los tramos 
+OK   prompt: ultimo token = el del ULTIMO tramo 
+OK   generacion cortada en GEN_WINDOW g_n=64.0
+OK   sin cal: score = prompt_last_mean {'v': 1, 'score': 0.3, 'feature': 'prompt_last_mean', 'flag': None, 'cal': None, 'layers': [16, 24], 'prompt_last': [0.2, 0.4], 'prompt_max': 0.9, 'prompt_mean': 0.26667, 'gen_max': 0.05, 'gen_mean': 0.02, 'prompt_last_mean': 0.3, 'prompt_n': 6, 'gen_n': 64}
+OK   sin cal: flag None y cal None 
+OK   finalize limpia el acumulador 
+OK   finalize sin tokens -> None 
+OK   gen_mean correcto 0.02
+OK   cal: por encima del umbral -> flag True 
+OK   cal: por debajo -> flag False 
+OK   cal releida por mtime sin reiniciar {'v': 1, 'score': 0.1, 'feature': 'prompt_last_mean', 'flag': True, 'cal': 't2', 'layers': [16, 24], 'prompt_last': [0.1, 0.1], 'prompt_max': 0.0, 'prompt_mean': 0.0, 'gen_max': None, 'gen_mean': None, 'prompt_last_mean': 0.1, 'prompt_n': 1, 'gen_n': 0}
+OK   cal invalida -> sin flag (nunca un veredicto inventado) {'v': 1, 'score': 0.9, 'feature': 'prompt_last_mean', 'flag': None, 'cal': None, 'layers': [16, 24], 'prompt_last': [0.9, 0.9], 'prompt_max': 0.0, 'prompt_mean': 0.0, 'gen_max': None, 'gen_mean': None, 'prompt_last_mean': 0.9, 'prompt_n': 1, 'gen_n': 0}
+OK   forma inesperada desactiva la sonda 
+OK   desactivada: step_stats -> None 
+OK   sin VLLM_REFUSAL_PROBE no se activa 
+OK   capas por entorno 
+OK   nan/inf no viajan como numero 
+
+0 fallos
+b12x refusal mod applied and CPU contracts passed
+QWEN_GDN_MIX=B2 aplicado: b12x/sequence/gdn_decode/_impl.py#QWEN_GDN_MIX_CAPS, b12x/sequence/gdn_decode/_cute_kernels.py#QWEN_GDN_MIX_CUTEDEC, b12x/sequence/gdn_decode/_cute_kernels.py#QWEN_GDN_MIX_CUTECOMMIT, b12x/sequence/gdn_decode/_tuning.py#QWEN_GDN_MIX_DECTUNE, b12x/sequence/gdn_prefill/_impl.py#QWEN_GDN_MIX_PREFCAPS, b12x/sequence/gdn_prefill/_tuning.py#QWEN_GDN_MIX_PREFTUNE, b12x/sequence/_shared/delta_prefill/preparation.py#QWEN_GDN_MIX_PREFPREP, b12x/sequence/_shared/delta_prefill/preparation.py#QWEN_GDN_MIX_PREFINNER, b12x/sequence/gdn_prefill/_parallel.py#QWEN_GDN_MIX_PREFPOOL, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFRT, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFRTSTORE, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFSTORE, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFKEY, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFCT, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFCARG, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFCFAKE, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFCPTR, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFCOMMIT, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFCOMMITSTORE, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFCOMMITCKPT, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFAXKEY, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFAXARG, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFAXFAKE, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFAXBND, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFAXCOMMIT
+QWEN_GDN_MIX=B2: imagen parcheada
+QWEN_GDN_MIX=B2 decode=b12x prefill=b12x ssm=bf16 deferred=1 compact=1 autotune=0 tp=2
+cp: warning: behavior of -n is non-portable and may change in future; use --update=none instead
+INFO 10-15 22:04:04 [__init__.py:109] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+WARNING 10-15 22:04:04 [argparse_utils.py:441] Found duplicate keys --gdn-decode-kernel
+INFO 10-15 22:04:04 [arg_utils.py:905] HF_HUB_OFFLINE is True, replace model_id [ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE] to model_path [/cache/huggingface/hub/models--ursuciprian--Qwen3.8-Flash-Next-NVFP4-GDN-MSE/snapshots/03f4a0570496bbe741189f4a2a7d611679e85406]
+WARNING 10-15 22:04:04 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_REFUSAL_LAMBDA
+WARNING 10-15 22:04:04 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_REFUSAL_DIRECTION
+WARNING 10-15 22:04:04 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_REFUSAL_PROBE_CAL
+WARNING 10-15 22:04:04 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_REFUSAL_PROBE_LAYERS
+WARNING 10-15 22:04:04 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_REFUSAL_PROBE
+WARNING 10-15 22:04:04 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_B12X_DUMP_QUERIES
+WARNING 10-15 22:04:04 [envs.py:2519] Unknown vLLM environment variable detected: VLLM_BASE_DIR
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+INFO 10-15 22:04:04 [model.py:686] Resolved architecture: Qwen4ExpForConditionalGeneration
+INFO 10-15 22:04:04 [model.py:2043] Using max model len 262144
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+INFO 10-15 22:04:05 [cache.py:356] Using fp8 data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+INFO 10-15 22:04:05 [arg_utils.py:2351] Inferred data_parallel_rank 0 from node_rank 1
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+INFO 10-15 22:04:05 [model.py:686] Resolved architecture: Qwen3_8FlashNextMTP
+INFO 10-15 22:04:05 [model.py:2043] Using max model len 262144
+WARNING 10-15 22:04:05 [speculative.py:1366] Enabling num_speculative_tokens > 1 will run multiple times of forward on same MTP layer,which may result in lower acceptance rate
+INFO 10-15 22:04:05 [scheduler.py:339] Chunked prefill is enabled with max_num_batched_tokens=8192.
+WARNING 10-15 22:04:05 [config.py:890] Qwen3.5 model specifies mamba_ssm_dtype='float32' in its config, but --mamba-ssm-cache-dtype='bfloat16' was passed. Using the user-specified value.
+WARNING 10-15 22:04:05 [modelopt.py:379] Detected ModelOpt fp8 checkpoint (quant_algo=FP8). Please note that the format is experimental and could change.
+WARNING 10-15 22:04:05 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=NVFP4). Please note that the format is experimental and could change in future.
+WARNING 10-15 22:04:05 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=W4A16_NVFP4). Please note that the format is experimental and could change in future.
+WARNING 10-15 22:04:05 [modelopt.py:1723] Detected ModelOpt MXFP8 checkpoint. Please note that the format is experimental and could change in future.
+INFO 10-15 22:04:05 [kernel.py:376] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+INFO 10-15 22:04:05 [compilation.py:329] Enabled custom fusions: act_quant
+INFO 10-15 22:04:05 [serve.py:242] Launching vLLM (v20260926.dev28+g884b4ff68.d20261002) headless multiproc executor, with head node address 10.0.0.2:25000 for torch.distributed process group.
+INFO 10-15 22:04:09 [__init__.py:109] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(Worker pid=239) INFO 10-15 22:04:10 [parallel_state.py:1673] world_size=2 rank=1 local_rank=0 distributed_init_method=tcp://10.0.0.2:25000 backend=nccl
+(Worker pid=239) WARNING 10-15 22:04:28 [symm_mem.py:67] SymmMemCommunicator: Device capability 12.1 not supported, communicator is not available.
+(Worker pid=239) INFO 10-15 22:04:29 [parallel_state.py:2017] rank 1 in world size 2 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 1, EP rank 1, EPLB rank N/A
+(Worker pid=239) INFO 10-15 22:04:29 [gpu_worker.py:467] Using V2 Model Runner
+(Worker_TP1 pid=239) INFO 10-15 22:04:29 [model_runner.py:404] Loading model from scratch...
+(Worker_TP1 pid=239) INFO 10-15 22:04:29 [__init__.py:869] Using B12xMxfp8LinearKernel for MXFP8 GEMM
+(Worker_TP1 pid=239) INFO 10-15 22:04:29 [cuda.py:551] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(Worker_TP1 pid=239) INFO 10-15 22:04:29 [mm_encoder_attention.py:375] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(Worker_TP1 pid=239) INFO 10-15 22:04:29 [__init__.py:1101] Using B12xNvFp4LinearKernel for NVFP4 GEMM
+(Worker_TP1 pid=239) INFO 10-15 22:04:30 [refusal_projection.py:183] rank1-refusal: ACTIVA dir=/opt/refusal/refusal_direction_flashnext.npy hidden=2560 lambda=0.0000 device=cuda:0
+(Worker_TP1 pid=239) INFO 10-15 22:04:30 [refusal_probe.py:159] refusal-probe: ACTIVA capas=[16, 20, 24, 28, 32] hidden=2560 device=cuda:0
+(Worker_TP1 pid=239) INFO 10-15 22:04:30 [qwen_gdn_linear_attn.py:439] Using b12x CuTeDSL GDN prefill kernel (requested=b12x, head_k_dim=128).
+(Worker_TP1 pid=239) INFO 10-15 22:04:30 [gdn_deferred_commit.py:224] GDN deferred checkpoints enabled: the b12x decode kernel writes one base checkpoint plus per-token records, and block-boundary copies go through an accepted-prefix commit.
+(Worker_TP1 pid=239) INFO 10-15 22:04:30 [gdn_deferred_commit.py:190] GDN compact records enabled: deferred records live in per-layer side buffers indexed by request slot; mamba groups hold no speculative blocks.
+(Worker_TP1 pid=239) INFO 10-15 22:04:30 [qwen_gdn_linear_attn.py:851] GDN decode kernel: b12x
+(Worker_TP1 pid=239) INFO 10-15 22:04:30 [nvfp4.py:271] Using 'B12X' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CUTLASS', 'VLLM_CUTLASS', 'MARLIN', 'HUMMING', 'EMULATION'].
+(Worker_TP1 pid=239) INFO 10-15 22:04:30 [mamba_utils.py:37] VLLM_SSM_CONV_STATE_LAYOUT env detected. Setting SSM conv state layout to DS.
+(Worker_TP1 pid=239) INFO 10-15 22:04:38 [vocab_parallel_embedding.py:417] Quantizing LM head shards to MXFP8 with BF16 activations.
+(Worker_TP1 pid=239) INFO 10-15 22:05:13 [default_loader.py:510] Loading weights took 34.63 seconds
+(Worker_TP1 pid=239) INFO 10-15 22:05:14 [b12x.py:152] model.language_model.layers.0.linear_attn.in_proj_qkv+model.language_model.layers.0.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=239) INFO 10-15 22:05:14 [b12x.py:152] model.language_model.layers.0.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0910)
+(Worker_TP1 pid=239) INFO 10-15 22:05:14 [nvfp4.py:628] Using MoEPrepareAndFinalizeNoDPEPModular
+(Worker_TP1 pid=239) INFO 10-15 22:05:14 [hyperconnection.py:172] qwen38 HC MXFP8: target=hc shape=[336,10240] -> mxfp8 g32, activation_mode=auto, 6.88 MB -> 3.56 MB per instance
+(Worker_TP1 pid=239) INFO 10-15 22:05:14 [hyperconnection.py:172] qwen38 HC MXFP8: target=hc shape=[10240,320] -> mxfp8 g32, activation_mode=auto, 6.55 MB -> 4.06 MB per instance
+(Worker_TP1 pid=239) INFO 10-15 22:05:14 [b12x.py:152] model.language_model.layers.1.linear_attn.in_proj_qkv+model.language_model.layers.1.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0908)
+(Worker_TP1 pid=239) INFO 10-15 22:05:14 [b12x.py:152] model.language_model.layers.1.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP1 pid=239) INFO 10-15 22:05:14 [b12x.py:152] model.language_model.layers.2.linear_attn.in_proj_qkv+model.language_model.layers.2.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=239) INFO 10-15 22:05:14 [b12x.py:152] model.language_model.layers.2.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0922)
+(Worker_TP1 pid=239) INFO 10-15 22:05:14 [b12x.py:152] model.language_model.layers.4.linear_attn.in_proj_qkv+model.language_model.layers.4.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0910)
+(Worker_TP1 pid=239) INFO 10-15 22:05:14 [b12x.py:152] model.language_model.layers.4.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0924)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.5.linear_attn.in_proj_qkv+model.language_model.layers.5.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0911)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.5.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.6.linear_attn.in_proj_qkv+model.language_model.layers.6.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.6.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.8.linear_attn.in_proj_qkv+model.language_model.layers.8.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0911)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.8.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0921)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.9.linear_attn.in_proj_qkv+model.language_model.layers.9.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0909)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.9.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.10.linear_attn.in_proj_qkv+model.language_model.layers.10.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0922)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.10.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0911)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.12.linear_attn.in_proj_qkv+model.language_model.layers.12.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.12.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.13.linear_attn.in_proj_qkv+model.language_model.layers.13.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=239) INFO 10-15 22:05:15 [b12x.py:152] model.language_model.layers.13.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP1 pid=239) INFO 10-15 22:05:16 [b12x.py:152] model.language_model.layers.14.linear_attn.in_proj_qkv+model.language_model.layers.14.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=239) INFO 10-15 22:05:16 [b12x.py:152] model.language_model.layers.14.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0924)
+(Worker_TP1 pid=239) INFO 10-15 22:05:16 [b12x.py:152] model.language_model.layers.16.linear_attn.in_proj_qkv+model.language_model.layers.16.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=239) INFO 10-15 22:05:16 [b12x.py:152] model.language_model.layers.16.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.17.linear_attn.in_proj_qkv+model.language_model.layers.17.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0908)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.17.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0910)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.18.linear_attn.in_proj_qkv+model.language_model.layers.18.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.18.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0921)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.20.linear_attn.in_proj_qkv+model.language_model.layers.20.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0909)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.20.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.21.linear_attn.in_proj_qkv+model.language_model.layers.21.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.21.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.22.linear_attn.in_proj_qkv+model.language_model.layers.22.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.22.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.24.linear_attn.in_proj_qkv+model.language_model.layers.24.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.24.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0924)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.25.linear_attn.in_proj_qkv+model.language_model.layers.25.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0916)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.25.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0916)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.26.linear_attn.in_proj_qkv+model.language_model.layers.26.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.26.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.28.linear_attn.in_proj_qkv+model.language_model.layers.28.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.28.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0920)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.29.linear_attn.in_proj_qkv+model.language_model.layers.29.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.29.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0922)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.30.linear_attn.in_proj_qkv+model.language_model.layers.30.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0911)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.30.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.32.linear_attn.in_proj_qkv+model.language_model.layers.32.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.32.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.33.linear_attn.in_proj_qkv+model.language_model.layers.33.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=239) INFO 10-15 22:05:17 [b12x.py:152] model.language_model.layers.33.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0927)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.34.linear_attn.in_proj_qkv+model.language_model.layers.34.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.34.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0920)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.36.linear_attn.in_proj_qkv+model.language_model.layers.36.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.36.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0921)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.37.linear_attn.in_proj_qkv+model.language_model.layers.37.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.37.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0923)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.38.linear_attn.in_proj_qkv+model.language_model.layers.38.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0905)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.38.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0921)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.40.linear_attn.in_proj_qkv+model.language_model.layers.40.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0919)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.40.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.41.linear_attn.in_proj_qkv+model.language_model.layers.41.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.41.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0912)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.42.linear_attn.in_proj_qkv+model.language_model.layers.42.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.42.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0917)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.44.linear_attn.in_proj_qkv+model.language_model.layers.44.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0913)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.44.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0925)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.45.linear_attn.in_proj_qkv+model.language_model.layers.45.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0918)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.45.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0920)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.46.linear_attn.in_proj_qkv+model.language_model.layers.46.linear_attn.in_proj_z: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0909)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [b12x.py:152] model.language_model.layers.46.linear_attn.out_proj: MXFP8 copy serves rows >= 41 (relative L2 vs NVFP4 0.0915)
+(Worker_TP1 pid=239) INFO 10-15 22:05:18 [hyperconnection.py:172] qwen38 HC MXFP8: target=hc shape=[320,10240] -> mxfp8 g32, activation_mode=auto, 6.55 MB -> 3.40 MB per instance
+(Worker_TP1 pid=239) INFO 10-15 22:05:19 [kernel.py:376] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(Worker_TP1 pid=239) WARNING 10-15 22:05:19 [modelopt.py:379] Detected ModelOpt fp8 checkpoint (quant_algo=FP8). Please note that the format is experimental and could change.
+(Worker_TP1 pid=239) WARNING 10-15 22:05:19 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=NVFP4). Please note that the format is experimental and could change in future.
+(Worker_TP1 pid=239) WARNING 10-15 22:05:19 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=W4A16_NVFP4). Please note that the format is experimental and could change in future.
+(Worker_TP1 pid=239) WARNING 10-15 22:05:19 [modelopt.py:1723] Detected ModelOpt MXFP8 checkpoint. Please note that the format is experimental and could change in future.
+(Worker_TP1 pid=239) WARNING 10-15 22:05:19 [config.py:890] Qwen3.5 model specifies mamba_ssm_dtype='float32' in its config, but --mamba-ssm-cache-dtype='bfloat16' was passed. Using the user-specified value.
+(Worker_TP1 pid=239) INFO 10-15 22:05:19 [kernel.py:376] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(Worker_TP1 pid=239) INFO 10-15 22:05:19 [vocab_parallel_embedding.py:417] Quantizing LM head shards to NVFP4 with BF16 activations.
+(Worker_TP1 pid=239) INFO 10-15 22:05:19 [mtp.py:877] MTP draft vocab: 131072 of 248320 ids from /opt/mtp-vocab-es/ids-es-K131072.txt.gz
+(Worker_TP1 pid=239) INFO 10-15 22:05:19 [weight_utils.py:667] Safetensors index filter selected 1/36 checkpoint shards.
+(Worker_TP1 pid=239) INFO 10-15 22:05:21 [default_loader.py:510] Loading weights took 1.42 seconds
+(Worker_TP1 pid=239) WARNING 10-15 22:05:22 [speculator.py:196] Draft model Qwen3_8FlashNextMTP does not support external multimodal embeddings. Embeddings from the target model will not be passed to the drafter; using text-only draft inputs instead.
+(Worker_TP1 pid=239) INFO 10-15 22:05:22 [model_runner.py:426] Model loading took 53.1 GiB memory and 53.026201 seconds
+(Worker_TP1 pid=239) INFO 10-15 22:05:22 [interface.py:1029] Setting attention block size to 1504 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP1 pid=239) INFO 10-15 22:05:22 [interface.py:1062] Padding mamba page size by 0.95% to ensure that mamba page size and attention page size are exactly equal.
+WARNING 10-15 22:05:31 [torch_utils.py:266] OMP_NUM_THREADS=4 is set; leaving Torch threads at 4 for serving. Multi-threaded torch CPU ops during serving can degrade performance through spin-wait contention and cgroup CPU-quota throttling.
+(Worker_TP1 pid=239) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(Worker_TP1 pid=239) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(Worker_TP1 pid=239) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(Worker_TP1 pid=239) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(Worker_TP1 pid=239) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(Worker_TP1 pid=239) 2026-10-15 22:05:54,684 [b12x-trace] GOT rank=1 round=0 key=round-0/decision waited=0.0s
+(Worker_TP1 pid=239) INFO 10-15 22:05:55 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 16384 tokens, and profiled with 1 image items of the maximum feature size.
+(Worker_TP1 pid=239) INFO 10-15 22:06:21 [backends.py:1094] Using cache directory: /cache/xdg/vllm/torch_compile_cache/27a18b2238/rank_1_0/backbone for vLLM's torch.compile
+(Worker_TP1 pid=239) INFO 10-15 22:06:21 [backends.py:1155] Dynamo bytecode transform time: 9.64 s
+(Worker_TP1 pid=239) [rank1]:W1015 22:06:24.053000 239 torch/_inductor/utils.py:1953] Not enough SMs to use max_autotune_gemm mode
+(Worker_TP1 pid=239) INFO 10-15 22:06:59 [backends.py:393] Compiling a graph for compile range (1, 8192) takes 37.31 s
+(Worker_TP1 pid=239) INFO 10-15 22:07:04 [backends.py:920] collected artifacts: 52 entries, 52 artifacts, 58719120 bytes total
+(Worker_TP1 pid=239) INFO 10-15 22:07:05 [decorators.py:710] saved AOT compiled function to /cache/xdg/vllm/torch_compile_cache/torch_aot_compile/ebe7d7d52c312765a835d245e8dc1ebb4fcc512f4aa4b5238d79d81853beb4ec/rank_1_0/model
+(Worker_TP1 pid=239) INFO 10-15 22:07:05 [monitor.py:53] torch.compile took 52.90 s in total
+(Worker_TP1 pid=239) INFO 10-15 22:07:06 [monitor.py:81] Initial profiling/warmup run took 1.57 s
+(Worker_TP1 pid=239) INFO 10-15 22:07:07 [backends.py:1094] Using cache directory: /cache/xdg/vllm/torch_compile_cache/27a18b2238/rank_1_0/eagle_head for vLLM's torch.compile
+(Worker_TP1 pid=239) INFO 10-15 22:07:07 [backends.py:1155] Dynamo bytecode transform time: 0.48 s
+(Worker_TP1 pid=239) INFO 10-15 22:07:14 [backends.py:393] Compiling a graph for compile range (1, 8192) takes 6.39 s
+(Worker_TP1 pid=239) INFO 10-15 22:07:14 [backends.py:920] collected artifacts: 2 entries, 2 artifacts, 5670033 bytes total
+(Worker_TP1 pid=239) INFO 10-15 22:07:14 [decorators.py:710] saved AOT compiled function to /cache/xdg/vllm/torch_compile_cache/torch_aot_compile/e7e7d3c3bad7c688e504880c53897a0c786a71b493b1c49c9ee8ea22689369e9/rank_1_0/model
+(Worker_TP1 pid=239) INFO 10-15 22:07:14 [monitor.py:53] torch.compile took 7.27 s in total
+(Worker_TP1 pid=239) INFO 10-15 22:07:14 [monitor.py:81] Initial profiling/warmup run took 0.20 s
+(Worker_TP1 pid=239) INFO 10-15 22:07:16 [gpu_worker.py:622] Initial free memory 104.96 GiB, reserved 26.54 GiB memory for KV Cache as specified by kv_cache_memory_bytes config and skipped memory profiling. This does not respect the gpu_memory_utilization config. Only use kv_cache_memory_bytes config when you want manual control of KV cache memory size. If OOM'ed, check the difference of initial free memory between the current run and the previous run where kv_cache_memory_bytes is suggested and update it correspondingly.
+(Worker_TP1 pid=239) INFO 10-15 22:07:17 [gpu_worker.py:862] Cleared 2.13 GiB of cached CUDA allocator memory before KV cache allocation.
+(Worker_TP1 pid=239) INFO 10-15 22:36:33 [qwen_gdn_linear_attn.py:967] GDN compact records: 4.2 MiB side buffer per GDN layer, outside the KV budget
+(Worker_TP1 pid=239) 2026-10-15 22:36:42,307 [b12x-trace] GOT rank=1 round=0 key=round-0/decision waited=0.0s
+(Worker_TP1 pid=239) INFO 10-15 22:36:42 [kernel_warmup.py:123] JIT kernel warmup starting.
+(Worker_TP1 pid=239) INFO 10-15 22:36:42 [kernel_warmup.py:133] JIT kernel warmup finished in 0.00s.
+(Worker_TP1 pid=239) INFO 10-15 22:36:43 [kernel_warmup.py:192] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP1 pid=239) INFO 10-15 22:36:43 [mamba_utils.py:1435] GDN deferred checkpoints: 37 mamba block-table groups: [{'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'GDN_ATTN': 1}, {'SHORT_CONV': 1}]
+(Worker_TP1 pid=239) INFO 10-15 22:36:43 [mamba_utils.py:1492] GDN deferred checkpoints: 37 mamba block-table groups, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0] deferred GDN layers per group
+(Worker_TP1 pid=239) INFO 10-15 22:37:05 [speculator.py:187] Capturing model for speculator...
+(Worker_TP1 pid=239) INFO 10-15 22:37:07 [model_runner.py:1115] Graph capturing finished in 25 secs, took 0.65 GiB
+(Worker_TP1 pid=239) INFO 10-15 22:37:19 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP1 pid=239) WARNING 10-15 22:37:19 [torch_utils.py:266] OMP_NUM_THREADS=4 is set; leaving Torch threads at 4 for serving. Multi-threaded torch CPU ops during serving can degrade performance through spin-wait contention and cgroup CPU-quota throttling.

@@ -1,0 +1,21 @@
+12:09:41Z gdn-mix: B2 en TP=1 (http://spark3:8000) arrancando
+12:15:04Z gdn-mix: B2 se reinicio
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 13.0.2
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+QWEN_GDN_MIX=B2 aplicado: b12x/sequence/gdn_decode/_impl.py#QWEN_GDN_MIX_CAPS, b12x/sequence/gdn_decode/_cute_kernels.py#QWEN_GDN_MIX_CUTEDEC, b12x/sequence/gdn_decode/_cute_kernels.py#QWEN_GDN_MIX_CUTECOMMIT, b12x/sequence/gdn_prefill/_impl.py#QWEN_GDN_MIX_PREFCAPS, b12x/sequence/gdn_prefill/_tuning.py#QWEN_GDN_MIX_PREFTUNE, b12x/sequence/_shared/delta_prefill/preparation.py#QWEN_GDN_MIX_PREFPREP, b12x/sequence/_shared/delta_prefill/preparation.py#QWEN_GDN_MIX_PREFINNER, b12x/sequence/gdn_prefill/_parallel.py#QWEN_GDN_MIX_PREFPOOL, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFRT, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFRTSTORE, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFSTORE, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFKEY, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFCT, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFCARG, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFCFAKE, b12x/sequence/_shared/delta_prefill/_cute_kernels.py#QWEN_GDN_MIX_PREFCPTR, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFCOMMIT, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFCOMMITSTORE, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFCOMMITCKPT, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFAXKEY, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFAXARG, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFAXFAKE, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFAXBND, b12x/sequence/gdn_prefill/_parallel_kernels.py#QWEN_GDN_MIX_PREFAXCOMMIT
+QWEN_GDN_MIX=B2: imagen parcheada
+QWEN_GDN_MIX=B2 decode=b12x prefill=b12x ssm=bf16 deferred=1 compact=1 tp=1
+cp: warning: behavior of -n is non-portable and may change in future; use --update=none instead

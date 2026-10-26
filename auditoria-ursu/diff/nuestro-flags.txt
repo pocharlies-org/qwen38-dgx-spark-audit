@@ -1,0 +1,43 @@
+--additional-config {"gdn_prefill_backend":"triton"}
+--block-size 16
+--compilation-config {"pass_config":{"fuse_act_quant":true}}
+--decode-refill-target auto
+--default-chat-template-kwargs {"reasoning_effort":"medium"}
+--disable-access-log-for-endpoints /metrics,/health
+--dtype bfloat16
+--enable-auto-tool-choice
+--enable-chunked-prefill
+--enable-prefix-caching
+--enable-prompt-tokens-details
+--gdn-decode-kernel b12x
+--gpu-memory-utilization 0.01
+--host 0.0.0.0
+--kv-cache-dtype fp8
+--kv-cache-memory-bytes 29500000000
+--linear-backend b12x
+--load-format b12x
+--mamba-cache-mode align
+--mamba-ssm-cache-dtype bfloat16
+--master-addr 10.0.0.2
+--master-port 25000
+--max-model-len 262144
+--max-num-batched-tokens 8192
+--max-num-seqs 10
+--max-parallel-prefills 4
+--mm-encoder-tp-mode data
+--moe-backend b12x
+--nnodes 2
+--node-rank 0
+--no-enable-flashinfer-autotune
+--pipeline-parallel-size 1
+--port 8000
+--prefill-policy decode-aware
+--quantization modelopt_mixed
+--reasoning-parser qwen3
+--revision 03f4a0570496bbe741189f4a2a7d611679e85406
+--scheduling-policy priority
+--served-model-name qwen38-flash-next
+--speculative-config {"method":"mtp","num_speculative_tokens":4,"draft_sample_method":"probabilistic"}
+--tensor-parallel-size 2
+--tool-call-parser qwen3_xml
+--trust-remote-code

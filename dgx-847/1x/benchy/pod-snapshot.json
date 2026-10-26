@@ -1,0 +1,337 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "creationTimestamp": "2026-10-12T19:11:52Z",
+                "generateName": "ursu-1x-5bd6748958-",
+                "generation": 1,
+                "labels": {
+                    "app": "ursu-1x",
+                    "dgx-847": "prueba",
+                    "pod-template-hash": "5bd6748958"
+                },
+                "name": "ursu-1x-5bd6748958-687wh",
+                "namespace": "llm",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "ursu-1x-5bd6748958",
+                        "uid": "0c717693-14b9-4c98-9169-d4f7cefe5a21"
+                    }
+                ],
+                "resourceVersion": "267557283",
+                "uid": "c7825e90-4e18-4745-abaf-dd719adb81aa"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "bash",
+                            "/etc/ursu/serve-1x.sh"
+                        ],
+                        "envFrom": [
+                            {
+                                "configMapRef": {
+                                    "name": "ursu-env-1x"
+                                }
+                            }
+                        ],
+                        "image": "ghcr.io/ursuciprian/spark-vllm-b12x@sha256:1c191c0a5f816750145e19e104ed812e9b3e63148b00fac901892f310a96a438",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "vllm",
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/health",
+                                "port": 8000,
+                                "scheme": "HTTP"
+                            },
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "resources": {
+                            "limits": {
+                                "memory": "112Gi",
+                                "nvidia.com/gpu": "1"
+                            },
+                            "requests": {
+                                "memory": "16Gi",
+                                "nvidia.com/gpu": "1"
+                            }
+                        },
+                        "securityContext": {
+                            "privileged": true
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/etc/ursu",
+                                "name": "recipe"
+                            },
+                            {
+                                "mountPath": "/cache/huggingface",
+                                "name": "hf"
+                            },
+                            {
+                                "mountPath": "/cache/xdg",
+                                "name": "xdg"
+                            },
+                            {
+                                "mountPath": "/dev/shm",
+                                "name": "shm"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-zdhc7",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirstWithHostNet",
+                "enableServiceLinks": true,
+                "hostIPC": true,
+                "hostNetwork": true,
+                "nodeName": "dgx3",
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "dgx3"
+                },
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "operator": "Exists"
+                    }
+                ],
+                "volumes": [
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "ursu-recipe"
+                        },
+                        "name": "recipe"
+                    },
+                    {
+                        "hostPath": {
+                            "path": "/srv/models/hf-ursu",
+                            "type": "Directory"
+                        },
+                        "name": "hf"
+                    },
+                    {
+                        "hostPath": {
+                            "path": "/srv/ursu-cache/1x",
+                            "type": "DirectoryOrCreate"
+                        },
+                        "name": "xdg"
+                    },
+                    {
+                        "emptyDir": {
+                            "medium": "Memory",
+                            "sizeLimit": "25Gi"
+                        },
+                        "name": "shm"
+                    },
+                    {
+                        "name": "kube-api-access-zdhc7",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "allocatedResources": {
+                    "memory": "16Gi",
+                    "nvidia.com/gpu": "1"
+                },
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-12T19:11:53Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-12T19:11:52Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-12T19:25:13Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-12T19:25:13Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-12T19:11:52Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "allocatedResources": {
+                            "memory": "16Gi",
+                            "nvidia.com/gpu": "1"
+                        },
+                        "allocatedResourcesStatus": [
+                            {
+                                "name": "nvidia.com/gpu",
+                                "resources": [
+                                    {
+                                        "health": "Healthy",
+                                        "resourceID": "GPU-0dcf3af5-e825-4434-788c-4745e8d5b1e5::1"
+                                    }
+                                ]
+                            }
+                        ],
+                        "containerID": "containerd://c48c38f5c62993da9a30452f06650752b491e74911b2210c8657f34d5f2d54b7",
+                        "image": "sha256:64f8d5584b8bd87fced9194b8aca8e41ceed0f66affb3a2430e6f4ec1b48964a",
+                        "imageID": "ghcr.io/ursuciprian/spark-vllm-b12x@sha256:1c191c0a5f816750145e19e104ed812e9b3e63148b00fac901892f310a96a438",
+                        "lastState": {},
+                        "name": "vllm",
+                        "ready": true,
+                        "resources": {
+                            "limits": {
+                                "memory": "112Gi",
+                                "nvidia.com/gpu": "1"
+                            },
+                            "requests": {
+                                "memory": "16Gi",
+                                "nvidia.com/gpu": "1"
+                            }
+                        },
+                        "restartCount": 0,
+                        "started": true,
+                        "state": {
+                            "running": {
+                                "startedAt": "2026-10-12T19:19:55Z"
+                            }
+                        },
+                        "user": {
+                            "linux": {
+                                "gid": 0,
+                                "supplementalGroups": [
+                                    0
+                                ],
+                                "uid": 0
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/etc/ursu",
+                                "name": "recipe"
+                            },
+                            {
+                                "mountPath": "/cache/huggingface",
+                                "name": "hf"
+                            },
+                            {
+                                "mountPath": "/cache/xdg",
+                                "name": "xdg"
+                            },
+                            {
+                                "mountPath": "/dev/shm",
+                                "name": "shm"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-zdhc7",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "tailnet-node",
+                "hostIPs": [
+                    {
+                        "ip": "tailnet-node"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Running",
+                "podIP": "tailnet-node",
+                "podIPs": [
+                    {
+                        "ip": "tailnet-node"
+                    }
+                ],
+                "qosClass": "Burstable",
+                "resources": {
+                    "limits": {
+                        "memory": "112Gi"
+                    },
+                    "requests": {
+                        "memory": "16Gi"
+                    }
+                },
+                "startTime": "2026-10-12T19:11:52Z"
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}

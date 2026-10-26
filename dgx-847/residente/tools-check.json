@@ -1,0 +1,25 @@
+{
+ "no-stream": {
+  "ok": true,
+  "errors": [],
+  "cities": [
+   "Madrid",
+   "París"
+  ],
+  "n_calls": 2,
+  "final": "\n\nConsulté el tiempo de ambas ciudades (una llamada cada una):\n\n- **Madrid**: 21 °C, cielo despejado ☀️\n- **París**: 22 °C, cielo despejado ☀️\n\nPrácticamente igual de temperatura, con un día claro en las dos.",
+  "s": 4.9
+ },
+ "stream": {
+  "ok": true,
+  "errors": [],
+  "cities": [
+   "Madrid",
+   "París"
+  ],
+  "n_calls": 2,
+  "final": "\n\nTiempo actual (en °C):\n\n- **Madrid:** 21 °C, cielo despejado ☀️\n- **París:** 22 °C, cielo despejado ☀️\n\nBásicamente igual en las dos ciudades, con París un grado más cálida.",
+  "s": 4.6
+ },
+ "anthropic_messages": 200
+}

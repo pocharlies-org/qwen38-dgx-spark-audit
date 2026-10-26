@@ -1,0 +1,33 @@
+18:21:38Z espero a las descargas
+job.batch/ursu-descarga-dgx1 condition met
+job.batch/ursu-descarga-dgx3 condition met
+OK ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE 16c9bd54788d12390838a65ce4a4ecda97fa5f1d /cache/huggingface/hub/models--ursuciprian--Qwen3.8-Flash-Next-NVFP4-GDN-MSE/snapshots/16c9bd54788d12390838a65ce4a4ecda97fa5f1d
+OK local-inference-lab/Qwen3.8-Flash-Next-NVFP4 7c4f1bc1a2d6847e0cbc01ac6b823f00251de8dd /cache/huggingface/hub/models--local-inference-lab--Qwen3.8-Flash-Next-NVFP4/snapshots/7c4f1bc1a2d6847e0cbc01ac6b823f00251de8dd
+OK ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE 03f4a0570496bbe741189f4a2a7d611679e85406 /cache/huggingface/hub/models--ursuciprian--Qwen3.8-Flash-Next-NVFP4-GDN-MSE/snapshots/03f4a0570496bbe741189f4a2a7d611679e85406
+OK local-inference-lab/Qwen3.8-Flash-Next-NVFP4 7c4f1bc1a2d6847e0cbc01ac6b823f00251de8dd /cache/huggingface/hub/models--local-inference-lab--Qwen3.8-Flash-Next-NVFP4/snapshots/7c4f1bc1a2d6847e0cbc01ac6b823f00251de8dd
+19:09:13Z ArgoCD: guardo y quito auto-sync de root y ai
+application.argoproj.io/root patched
+application.argoproj.io/ai patched
+19:09:14Z pausa del árbitro y de la voz
+job.batch "llm-deploy-pause" deleted from llm namespace
+job.batch/llm-deploy-pause created
+job.batch/llm-deploy-pause condition met
+19:09:39Z qwen38 a 0
+deployment.apps/qwen38-flash-next-head scaled
+deployment.apps/qwen38-flash-next-worker scaled
+deployment.apps/qwen38-flash-next-worker-dgx3 scaled
+19:11:45Z drop_caches en los tres Sparks
+Mem:             119           7         113           0           0         112
+Mem:             119           7         113           0           0         111
+Mem:             121           7         115           0           0         114
+19:11:49Z recetas de ursu
+configmap/ursu-recipe created
+configmap/ursu-env-2x created
+configmap/ursu-env-1x created
+configmap/ursu-recipe labeled
+configmap/ursu-env-2x labeled
+configmap/ursu-env-1x labeled
+deployment.apps/ursu-2x-head created
+deployment.apps/ursu-2x-worker created
+deployment.apps/ursu-1x created
+19:11:52Z VENTANA ABIERTA

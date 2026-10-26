@@ -1,0 +1,25 @@
+{
+ "no-stream": {
+  "ok": true,
+  "errors": [],
+  "cities": [
+   "Madrid",
+   "París"
+  ],
+  "n_calls": 2,
+  "final": "\n\nEsto es el tiempo ahora mismo:\n\n- **Madrid**: 21 °C, despejado ☀️\n- **París**: 22 °C, despejado ☀️\n\nLos dos días están soleados y con temperaturas muy parecidas.",
+  "s": 2.3
+ },
+ "stream": {
+  "ok": true,
+  "errors": [],
+  "cities": [
+   "Madrid",
+   "París"
+  ],
+  "n_calls": 2,
+  "final": "\n\nEsto es lo que me informa la herramienta:\n\n- **Madrid**: 21 °C, despejado ☀️\n- **París**: 22 °C, despejado ☀️\n\nEn resumen, un día agradable y soleado en ambas ciudades, con temperaturas muy similares.",
+  "s": 2.6
+ },
+ "anthropic_messages": 200
+}

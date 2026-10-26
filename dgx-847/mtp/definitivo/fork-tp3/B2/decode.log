@@ -1,0 +1,13 @@
+C=1 rep=1/1 agg=63.991 tok/s server=65.057 p50=67.407 p10=63.795 ttft_p50=0.158 ttft_p95=0.182 running=1.0 reqs=15 err=0 contaminado=False
+C=4 rep=1/1 agg=157.842 tok/s server=161.608 p50=42.149 p10=38.128 ttft_p50=0.246 ttft_p95=0.269 running=3.923 reqs=37 err=0 contaminado=False
+C=8 rep=1/1 agg=238.894 tok/s server=239.26 p50=30.422 p10=28.441 ttft_p50=0.303 ttft_p95=0.385 running=7.615 reqs=56 err=0 contaminado=False
+C=10 rep=1/1 agg=255.96 tok/s server=257.277 p50=26.853 p10=24.886 ttft_p50=0.343 ttft_p95=0.431 running=9.769 reqs=60 err=0 contaminado=False
+C=16 rep=1/1 agg=345.542 tok/s server=337.143 p50=21.932 p10=20.245 ttft_p50=0.446 ttft_p95=0.53 running=15.615 reqs=81 err=0 contaminado=False
+
+# mediana entre repeticiones (agg_tok_s min..max, dispersion relativa)
+C=  1 agg_median=63.991 [63.991..63.991] spread=0.0 ttft_p50=0.158 contaminados=0/1
+C=  4 agg_median=157.842 [157.842..157.842] spread=0.0 ttft_p50=0.246 contaminados=0/1
+C=  8 agg_median=238.894 [238.894..238.894] spread=0.0 ttft_p50=0.303 contaminados=0/1
+C= 10 agg_median=255.96 [255.96..255.96] spread=0.0 ttft_p50=0.343 contaminados=0/1
+C= 16 agg_median=345.542 [345.542..345.542] spread=0.0 ttft_p50=0.446 contaminados=0/1
+# escrito /home/user/bench-results/dgx-847/mtp/definitivo/fork-tp3/B2/decode.json

@@ -1,0 +1,118 @@
+07:38:41Z 2× abajo; memoria libre en dgx y dgx2
+07:38:43Z C: reinicio de la 2× con el perfilador (recompila)
+07:42:18Z 2× lista en 3 min
+(APIServer pid=1) INFO 10-13 07:38:57 [api_utils.py:286] non-default args: {'model_tag': 'ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE', 'default_chat_template_kwargs': {'reasoning_effort': 'medium'},
+(Worker_TP0 pid=171) INFO 10-13 07:40:21 [interface.py:1029] Setting attention block size to 2864 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP0 pid=171) INFO 10-13 07:40:48 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 16384 tokens, and profiled with 1 image items of the maximum feature size.
+(Worker_TP0 pid=171) INFO 10-13 07:41:07 [monitor.py:81] Initial profiling/warmup run took 1.23 s
+(Worker_TP0 pid=171) INFO 10-13 07:41:08 [monitor.py:81] Initial profiling/warmup run took 0.20 s
+(Worker_TP0 pid=171) INFO 10-13 07:41:26 [gpu_worker.py:768] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8000 is equivalent to --gpu-memory-u
+(EngineCore pid=151) INFO 10-13 07:41:55 [core.py:371] init engine (profile, create kv cache, warmup model) took 93.88 s (compilation: 0.92 s)
+(APIServer pid=1) INFO 10-13 07:41:59 [async_llm.py:186] Torch profiler enabled. AsyncLLM CPU traces will be collected under /cache/xdg/perfil-c
+(APIServer pid=1) WARNING 10-13 07:41:59 [api_router.py:41] Profiler with mode 'torch' is enabled in the API server. This should ONLY be used for local development!
+(APIServer pid=1) INFO 10-13 07:42:12 [launcher.py:70] Route: /start_profile, Methods: POST
+(APIServer pid=1) INFO 10-13 07:42:12 [launcher.py:70] Route: /stop_profile, Methods: POST
+{"c1": {"ttft_s": [2.203], "total_s": [2.274], "ventana_s": 7.0}}
+{"c8": {"ttft_s": [2.233, 22.968, 19.864, 19.863, 11.312, 11.311, 21.981, 16.796], "total_s": [11.316, 23.046, 22.966, 21.984, 19.859, 16.797, 22.962, 19.858], "ventana_s": 42.6}}
+07:44:35Z carga exit=0
+head: total 12804
+head: drwxr-xr-x 2 root root     4096 oct 13 09:43 .
+head: drwxr-xr-x 6 root root     4096 oct 13 09:42 ..
+head: -rw-r--r-- 1 root root      744 oct 13 09:42 dgx2_1.async_llm.1791877368401979382.pt.trace.json.gz
+head: -rw-r--r-- 1 root root      743 oct 13 09:43 dgx2_1.async_llm.1791877426190506368.pt.trace.json.gz
+head: -rw-r--r-- 1 root root  2770728 oct 13 09:42 dp0_pp0_tp0_dcp0_ep0_rank0.1791877368682362088.pt.trace.json.gz
+head: -rw-r--r-- 1 root root 10294017 oct 13 09:43 dp0_pp0_tp0_dcp0_ep0_rank0.1791877427240766972.pt.trace.json.gz
+head: -rw-r--r-- 1 root root    20653 oct 13 09:44 profiler_out_0.txt
+worker: total 12832
+worker: drwxr-xr-x 2 root root     4096 Oct 13 09:43 .
+worker: drwxr-xr-x 6 root root     4096 Oct 13 09:42 ..
+worker: -rw-r--r-- 1 root root  2778516 Oct 13 09:42 dp0_pp0_tp1_dcp0_ep1_rank1.1791877368725496490.pt.trace.json.gz
+worker: -rw-r--r-- 1 root root 10325958 Oct 13 09:43 dp0_pp0_tp1_dcp0_ep1_rank1.1791877427291736879.pt.trace.json.gz
+worker: -rw-r--r-- 1 root root    20653 Oct 13 09:44 profiler_out_0.txt
+07:45:45Z resumen exit=0
+== /home/user/bench-results/dgx-847/pruebas/c-perfil/head/dp0_pp0_tp0_dcp0_ep0_rank0.1791877368682362088.pt.trace.json.gz  GPU total 2.18 s
+  atención            0.547 s   25.1%
+  gemm densa          0.405 s   18.5%
+  moe nvfp4           0.341 s   15.6%
+  otros               0.252 s   11.6%
+  muestreo/mtp        0.223 s   10.2%
+  allreduce/nccl      0.191 s    8.8%
+  norm/hiperconexión    0.191 s    8.8%
+  gdn/mamba           0.032 s    1.4%
+     16.2%  kernel_cutlass_kernel_b12xattentionqsa_score_cute_RepresentativeScoreKernel_object_at__cutlasscutecore_Pointer
+     15.1%  kernel_cutlass_kernel_b12xmoe_sharedkernelssiluMoEDynamicKernelSilu_object_at__tensorptrbf16gmemalign16o256025
+      8.5%  ncclDevKernel_AllReduce_bf16_RING(ncclDevKernelArgsStorage<4096ul>)
+      7.9%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      7.8%  kernel_cutlass_kernel_b12xnormhyperconnection_cute_PackedCombineNorm_object_at__ptrbf16gmem_ptrbf16gmem_ptrbf1
+      6.2%  kernel_cutlass_kernel_b12xattentionpaged_selected_forward_SelectedPositionPagedForwardKernel_object_at__ptrbf1
+      4.6%  _gate_mean_kernel
+      3.6%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      3.1%  kernel_cutlass_kernel_b12xsequencemtp_feedback_cute_prefillMTPPrefillBf16GemmKernel_object_at__tensor00o327682
+      2.7%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      2.7%  kernel_cutlass_kernel_b12xattentiondsa_indexertiled_topkDSATiledTopkKernel_object_at__tensorptrf32gmemo1_tenso
+      2.6%  _emit_stable_topk_kernel
+== /home/user/bench-results/dgx-847/pruebas/c-perfil/head/dp0_pp0_tp0_dcp0_ep0_rank0.1791877427240766972.pt.trace.json.gz  GPU total 22.77 s
+  allreduce/nccl      7.417 s   32.6%
+  atención            4.426 s   19.4%
+  gemm densa          2.917 s   12.8%
+  moe nvfp4           2.198 s    9.7%
+  otros               2.068 s    9.1%
+  muestreo/mtp        1.926 s    8.5%
+  norm/hiperconexión    1.569 s    6.9%
+  gdn/mamba           0.249 s    1.1%
+     32.4%  ncclDevKernel_AllReduce_bf16_RING(ncclDevKernelArgsStorage<4096ul>)
+     12.6%  kernel_cutlass_kernel_b12xattentionqsa_score_cute_RepresentativeScoreKernel_object_at__cutlasscutecore_Pointer
+      9.3%  kernel_cutlass_kernel_b12xmoe_sharedkernelssiluMoEDynamicKernelSilu_object_at__tensorptrbf16gmemalign16o256025
+      6.1%  kernel_cutlass_kernel_b12xnormhyperconnection_cute_PackedCombineNorm_object_at__ptrbf16gmem_ptrbf16gmem_ptrbf1
+      5.5%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      4.7%  kernel_cutlass_kernel_b12xattentionpaged_selected_forward_SelectedPositionPagedForwardKernel_object_at__ptrbf1
+      3.4%  _gate_mean_kernel
+      2.8%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      2.4%  kernel_cutlass_kernel_b12xsequencemtp_feedback_cute_prefillMTPPrefillBf16GemmKernel_object_at__tensor00o327682
+      2.2%  _emit_stable_topk_kernel
+      2.1%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      2.1%  kernel_cutlass_kernel_b12xattentiondsa_indexertiled_topkDSATiledTopkKernel_object_at__tensorptrf32gmemo1_tenso
+== /home/user/bench-results/dgx-847/pruebas/c-perfil/worker/dp0_pp0_tp1_dcp0_ep1_rank1.1791877368725496490.pt.trace.json.gz  GPU total 2.18 s
+  atención            0.551 s   25.3%
+  gemm densa          0.408 s   18.7%
+  moe nvfp4           0.341 s   15.7%
+  otros               0.255 s   11.7%
+  muestreo/mtp        0.228 s   10.5%
+  norm/hiperconexión    0.199 s    9.1%
+  allreduce/nccl      0.164 s    7.5%
+  gdn/mamba           0.032 s    1.5%
+     16.3%  kernel_cutlass_kernel_b12xattentionqsa_score_cute_RepresentativeScoreKernel_object_at__cutlasscutecore_Pointer
+     15.1%  kernel_cutlass_kernel_b12xmoe_sharedkernelssiluMoEDynamicKernelSilu_object_at__tensorptrbf16gmemalign16o256025
+      8.2%  kernel_cutlass_kernel_b12xnormhyperconnection_cute_PackedCombineNorm_object_at__ptrbf16gmem_ptrbf16gmem_ptrbf1
+      8.0%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      7.2%  ncclDevKernel_AllReduce_bf16_RING(ncclDevKernelArgsStorage<4096ul>)
+      6.2%  kernel_cutlass_kernel_b12xattentionpaged_selected_forward_SelectedPositionPagedForwardKernel_object_at__ptrbf1
+      4.6%  _gate_mean_kernel
+      3.6%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      3.3%  kernel_cutlass_kernel_b12xsequencemtp_feedback_cute_prefillMTPPrefillBf16GemmKernel_object_at__tensor00o327682
+      2.7%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      2.7%  kernel_cutlass_kernel_b12xattentiondsa_indexertiled_topkDSATiledTopkKernel_object_at__tensorptrf32gmemo1_tenso
+      2.6%  _emit_stable_topk_kernel
+== /home/user/bench-results/dgx-847/pruebas/c-perfil/worker/dp0_pp0_tp1_dcp0_ep1_rank1.1791877427291736879.pt.trace.json.gz  GPU total 18.69 s
+  atención            5.316 s   28.4%
+  gemm densa          3.649 s   19.5%
+  moe nvfp4           2.332 s   12.5%
+  otros               2.240 s   12.0%
+  muestreo/mtp        2.002 s   10.7%
+  norm/hiperconexión    1.731 s    9.3%
+  allreduce/nccl      1.080 s    5.8%
+  gdn/mamba           0.338 s    1.8%
+     17.8%  kernel_cutlass_kernel_b12xattentionqsa_score_cute_RepresentativeScoreKernel_object_at__cutlasscutecore_Pointer
+     12.1%  kernel_cutlass_kernel_b12xmoe_sharedkernelssiluMoEDynamicKernelSilu_object_at__tensorptrbf16gmemalign16o256025
+      8.3%  kernel_cutlass_kernel_b12xnormhyperconnection_cute_PackedCombineNorm_object_at__ptrbf16gmem_ptrbf16gmem_ptrbf1
+      8.0%  kernel_cutlass_kernel_b12xattentionpaged_selected_forward_SelectedPositionPagedForwardKernel_object_at__ptrbf1
+      7.5%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      5.7%  ncclDevKernel_AllReduce_bf16_RING(ncclDevKernelArgsStorage<4096ul>)
+      5.1%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      4.5%  _gate_mean_kernel
+      3.8%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      3.0%  kernel_cutlass_kernel_b12xsequencemtp_feedback_cute_prefillMTPPrefillBf16GemmKernel_object_at__tensor00o327682
+      2.8%  _emit_stable_topk_kernel
+      2.6%  kernel_cutlass_kernel_b12xattentiondsa_indexertiled_topkDSATiledTopkKernel_object_at__tensorptrf32gmemo1_tenso
+07:45:45Z C: fin
+07:45:45Z NO-CERRAR fuera: cierre de la ventana

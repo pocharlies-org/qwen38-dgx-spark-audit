@@ -1,0 +1,5 @@
+C=4 rep=1/1 agg=162.111 tok/s server=155.612 p50=40.451 p10=36.943 ttft_p50=0.23 ttft_p95=0.279 running=3.923 reqs=38 err=0 contaminado=False
+
+# mediana entre repeticiones (agg_tok_s min..max, dispersion relativa)
+C=  4 agg_median=162.111 [162.111..162.111] spread=0.0 ttft_p50=0.23 contaminados=0/1
+# escrito /home/user/bench-results/dgx-847/mtp/definitivo/tp21-B2/junto-c4+4-tp2.json

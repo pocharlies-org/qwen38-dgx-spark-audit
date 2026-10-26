@@ -1,0 +1,42 @@
+== /home/user/bench-results/dgx-847/pruebas/1x/c-perfil/dp0_pp0_tp0_dcp0_ep0_rank0.1791876411236688791.pt.trace.json.gz  GPU total 2.32 s
+  atención            0.574 s   24.8%
+  moe nvfp4           0.541 s   23.4%
+  gemm densa          0.495 s   21.4%
+  otros               0.298 s   12.9%
+  norm/hiperconexión    0.178 s    7.7%
+  muestreo/mtp        0.175 s    7.6%
+  gdn/mamba           0.056 s    2.4%
+  allreduce/nccl      0.000 s    0.0%
+     22.6%  kernel_cutlass_kernel_b12xmoe_sharedkernelssiluMoEDynamicKernelSilu_object_at__tensorptrbf16gmemalign16o256025
+     12.9%  kernel_cutlass_kernel_b12xattentionqsa_score_cute_RepresentativeScoreKernel_object_at__cutlasscutecore_Pointer
+      9.7%  kernel_cutlass_kernel_b12xattentionpaged_selected_forward_SelectedPositionPagedForwardKernel_object_at__ptrbf1
+      6.0%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      6.0%  kernel_cutlass_kernel_b12xnormhyperconnection_cute_PackedCombineNorm_object_at__ptrbf16gmem_ptrbf16gmem_ptrbf1
+      5.4%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      3.5%  _gate_mean_kernel
+      2.5%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      2.1%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      2.1%  kernel_cutlass_kernel_b12xattentiondsa_indexertiled_topkDSATiledTopkKernel_object_at__tensorptrf32gmemo1_tenso
+      2.0%  _emit_stable_topk_kernel
+      2.0%  kernel_cutlass_kernel_b12xsequencemtp_feedback_cute_prefillMTPPrefillBf16GemmKernel_object_at__tensor00o327682
+== /home/user/bench-results/dgx-847/pruebas/1x/c-perfil/dp0_pp0_tp0_dcp0_ep0_rank0.1791876465204393124.pt.trace.json.gz  GPU total 17.38 s
+  atención            4.677 s   26.9%
+  gemm densa          3.753 s   21.6%
+  moe nvfp4           2.963 s   17.1%
+  otros               2.411 s   13.9%
+  muestreo/mtp        1.632 s    9.4%
+  norm/hiperconexión    1.501 s    8.6%
+  gdn/mamba           0.441 s    2.5%
+  allreduce/nccl      0.000 s    0.0%
+     16.5%  kernel_cutlass_kernel_b12xmoe_sharedkernelssiluMoEDynamicKernelSilu_object_at__tensorptrbf16gmemalign16o256025
+     14.0%  kernel_cutlass_kernel_b12xattentionqsa_score_cute_RepresentativeScoreKernel_object_at__cutlasscutecore_Pointer
+     10.5%  kernel_cutlass_kernel_b12xattentionpaged_selected_forward_SelectedPositionPagedForwardKernel_object_at__ptrbf1
+      6.7%  kernel_cutlass_kernel_b12xnormhyperconnection_cute_PackedCombineNorm_object_at__ptrbf16gmem_ptrbf16gmem_ptrbf1
+      6.3%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      6.0%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      4.7%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      3.7%  _gate_mean_kernel
+      2.7%  kernel_cutlass_kernel_b12xsequencemtp_feedback_cute_prefillMTPPrefillBf16GemmKernel_object_at__tensor00o327682
+      2.4%  _emit_stable_topk_kernel
+      2.4%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      2.3%  kernel_cutlass_kernel_b12xattentiondsa_indexertiled_topkDSATiledTopkKernel_object_at__tensorptrf32gmemo1_tenso

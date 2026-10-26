@@ -1,0 +1,46 @@
+07:45:55Z Claude Code contra cada receta (tras la batería, para no contaminarla)
+07:45:57Z 2x claude-code: salida.txt=NO
+07:45:58Z 1x claude-code: salida.txt=NO
+07:45:58Z fuera las recetas de ursu
+deployment.apps "ursu-1x" deleted from llm namespace
+deployment.apps "ursu-2x-head" deleted from llm namespace
+deployment.apps "ursu-2x-worker" deleted from llm namespace
+configmap "ursu-env-1x" deleted from llm namespace
+configmap "ursu-env-2x" deleted from llm namespace
+configmap "ursu-recipe" deleted from llm namespace
+job.batch "ursu-descarga-dgx1" deleted from llm namespace
+job.batch "ursu-descarga-dgx3" deleted from llm namespace
+07:46:19Z ArgoCD: auto-sync de vuelta (ai antes que root) y sync de ai
+application.argoproj.io/ai patched
+application.argoproj.io/root patched
+application.argoproj.io/ai patched
+07:46:22Z ai=Synced/Healthy/Running arb=sync-paused deploys=[/0 /0 /0 ] health=000
+07:47:24Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+07:48:25Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+07:49:26Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+07:50:28Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+07:51:29Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+07:52:30Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+07:53:32Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+07:54:33Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+07:55:35Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+07:56:36Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+07:57:37Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+07:58:39Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+07:59:40Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:00:41Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:01:43Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:02:44Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:03:45Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:04:47Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:05:48Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:06:49Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:07:51Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:08:52Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:09:54Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:10:55Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:11:56Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:12:58Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:13:59Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:15:00Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000
+08:16:02Z ai=Synced/Healthy/Succeeded arb=sync-paused deploys=[/0 /0 /0 ] health=000

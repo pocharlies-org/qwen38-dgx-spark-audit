@@ -1,0 +1,20 @@
+06:47:51Z 2× abajo; memoria libre en dgx y dgx2
+06:47:53Z reinicio de la 2× con la PLE en disco
+06:52:45Z 2× lista en 4 min
+(Worker_TP0 pid=172) INFO 10-13 06:48:30 [ple_mmap.py:588] PLE page-cache reader: {'workers': 20, 'parallel_lookups': 2048, 'chunk': 1024, 'willneed_max': 8192, 'prewarm': '', 'madvise': 'random', 'ke
+(Worker_TP0 pid=172) INFO 10-13 06:49:26 [interface.py:1029] Setting attention block size to 2864 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP0 pid=172) INFO 10-13 06:49:48 [ple_mmap.py:372] PLE keepalive: one 4 KiB read every 50 ms
+(Worker_TP0 pid=172) INFO 10-13 06:51:31 [gpu_worker.py:753] Available KV cache memory: 40.31 GiB
+(EngineCore pid=152) INFO 10-13 06:51:31 [kv_cache_utils.py:2258] GPU KV cache size: 4,849,848 tokens, Maximum concurrency for 262,144 tokens per request: 18.50x
+(EngineCore pid=152) INFO 10-13 06:52:12 [core.py:371] init engine (profile, create kv cache, warmup model) took 165.66 s (compilation: 48.55 s)
+06:52:47Z dgx: Mem:             119         106          14           2           3          12
+06:52:48Z dgx2: Mem:             119         110           7           2           7           8
+07:23:45Z decode exit=0
+C=  1 agg_median=68.262 [66.129..68.263] spread=0.0313 ttft_p50=0.133 contaminados=0/3
+C=  4 agg_median=142.924 [95.994..149.322] spread=0.3731 ttft_p50=0.234 contaminados=0/3
+C=  8 agg_median=221.85 [204.783..226.118] spread=0.0962 ttft_p50=0.293 contaminados=0/3
+C= 10 agg_median=255.981 [253.848..258.115] spread=0.0167 ttft_p50=0.331 contaminados=0/3
+07:38:02Z benchy exit=0
+07:38:02Z dgx: Mem:             119         109           1           2          14          10
+07:38:03Z dgx2: Mem:             119         112           3           2           9           6
+07:38:03Z G: fin

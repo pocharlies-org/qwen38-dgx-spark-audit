@@ -1,0 +1,30 @@
+22:47:53Z DGX-932 calibración en dgx3: inicio
+22:47:58Z dgx3 preparado: script, volcado, parcheador y selecciones del TP=2 (682 registros) en /srv/ursu-cache/2x-b2-calib
+22:47:59Z árbitro en sync-paused (dgx-932-calib)
+22:48:01Z auto-sync de root y ai apagado
+22:50:07Z TP=1 de producción a 0
+22:50:10Z   calib-b2-comprobar (0 min): 
+22:50:31Z calib-b2-comprobar: Succeeded
+22:50:31Z   360 declaraciones de sequence.gdn_prefill, 10 consultas únicas
+22:50:31Z   en caché: 0/10 consultas; gemelas FP32 (semillas de ursu): 10/10
+22:50:31Z   COMPROBADO
+22:50:32Z ajuste en marcha (tope 10 h, 16 compiladores)
+22:50:33Z   calib-b2-ajuste (0 min): 
+22:52:57Z calib-b2-ajuste: Succeeded
+22:52:57Z   m16: guardada {'algorithm': 'sequential', 'backend': 'cutedsl', 'k_split': 1, 'segment_tokens': 256, 'stages': 3, 'v_split': 64, 'window_tiles': 5} {'cartesian_count': 756, 'effective_count': 96, 'legal_count': 96, 'measured_count': 96}
+22:52:57Z   m32: guardada {'algorithm': 'sequential', 'backend': 'cutedsl', 'k_split': 1, 'segment_tokens': 256, 'stages': 2, 'v_split': 32, 'window_tiles': 5} {'cartesian_count': 792, 'effective_count': 96, 'legal_count': 96, 'measured_count': 96}
+22:52:57Z   m64: guardada {'algorithm': 'sequential', 'backend': 'cutedsl', 'k_split': 1, 'segment_tokens': 256, 'stages': 2, 'v_split': 64, 'window_tiles': 5} {'cartesian_count': 864, 'effective_count': 96, 'legal_count': 96, 'measured_count': 96}
+22:52:57Z   m128: guardada {'algorithm': 'sequential', 'backend': 'cutedsl', 'k_split': 1, 'segment_tokens': 256, 'stages': 2, 'v_split': 32, 'window_tiles': 12} {'cartesian_count': 1008, 'effective_count': 96, 'legal_count': 96, 'measured_count': 96}
+22:52:57Z   m256: guardada {'algorithm': 'sequential', 'backend': 'cutedsl', 'k_split': 1, 'segment_tokens': 256, 'stages': 2, 'v_split': 64, 'window_tiles': 32} {'cartesian_count': 1296, 'effective_count': 160, 'legal_count': 160, 'measured_count': 160}
+22:52:57Z   m512: guardada {'algorithm': 'sequential', 'backend': 'cutedsl', 'k_split': 1, 'segment_tokens': 256, 'stages': 3, 'v_split': 64, 'window_tiles': 48} {'cartesian_count': 1872, 'effective_count': 192, 'legal_count': 192, 'measured_count': 192}
+22:52:57Z   m1024: guardada {'algorithm': 'sequential', 'backend': 'cutedsl', 'k_split': 1, 'segment_tokens': 256, 'stages': 2, 'v_split': 32, 'window_tiles': 20} {'cartesian_count': 3024, 'effective_count': 224, 'legal_count': 224, 'measured_count': 224}
+22:52:57Z   m2048: guardada {'algorithm': 'sequential', 'backend': 'cutedsl', 'k_split': 1, 'segment_tokens': 256, 'stages': 2, 'v_split': 64, 'window_tiles': 36} {'cartesian_count': 5328, 'effective_count': 256, 'legal_count': 256, 'measured_count': 256}
+22:52:57Z   m4096: guardada {'algorithm': 'sequential', 'backend': 'cutedsl', 'k_split': 4, 'segment_tokens': 256, 'stages': 3, 'v_split': 64, 'window_tiles': 272} {'cartesian_count': 9936, 'effective_count': 256, 'legal_count': 256, 'measured_count': 256}
+22:52:57Z   m8192: guardada {'algorithm': 'sequential', 'backend': 'cutedsl', 'k_split': 1, 'segment_tokens': 256, 'stages': 3, 'v_split': 64, 'window_tiles': 264} {'cartesian_count': 19152, 'effective_count': 256, 'legal_count': 256, 'measured_count': 256}
+22:52:57Z   HECHO: 10/10 selecciones nuevas en /cache/xdg/b12x/compile/preparation/225bf66521da31897db0719256f6a56cc38d43f87dd4f85f1f52549540986fe2.json en 2 min
+22:52:59Z selecciones B2 en /srv/ursu-cache/2x-b2 de dgx2 y dgx1: 692 registros (antes 682)
+22:52:59Z VUELTA: inicio
+22:57:07Z VUELTA: TP=1 de producción listo en 4 min
+22:57:08Z VUELTA: árbitro en ready
+22:57:09Z VUELTA: auto-sync de root y ai restaurado
+22:57:09Z HECHO

@@ -1,0 +1,15 @@
+B12X_ROCE_RING=1 aplicado: b12x/comm/roce/_roce_proxy.c#B12X_ROCE_RING_ABI, b12x/comm/roce/_roce_proxy.c#B12X_ROCE_RING_CONNFIELD, b12x/comm/roce/_roce_proxy.c#B12X_ROCE_RING_ROUTE, b12x/comm/roce/_roce_proxy.c#B12X_ROCE_RING_INIT, b12x/comm/roce/_roce_proxy.c#B12X_ROCE_RING_SETFN, b12x/comm/roce/_roce_proxy.c#B12X_ROCE_RING_CONNECT, b12x/comm/roce/_roce_proxy.c#B12X_ROCE_RING_CONNECTLOOP, b12x/comm/roce/_roce_proxy.c#B12X_ROCE_RING_POST, b12x/comm/roce/_proxy.py#B12X_ROCE_RING_ABI_PY, b12x/comm/roce/_proxy.py#B12X_ROCE_RING_BIND, b12x/comm/roce/_proxy.py#B12X_ROCE_RING_ROUTES, b12x/comm/roce/roce_oneshot.py#B12X_ROCE_RING_FUNCS, b12x/comm/roce/roce_oneshot.py#B12X_ROCE_RING_PARSE, b12x/comm/roce/roce_oneshot.py#B12X_ROCE_RING_CFG, b12x/comm/roce/roce_oneshot.py#B12X_ROCE_RING_ROUTES_PY
+[rank 0 · dgx2] gloo arriba con 3 rangos
+[rank 0] hcas=['rocep1s0f0', 'rocep1s0f1'] gid=3 map=1:rocep1s0f0:rocep1s0f0,2:rocep1s0f1:rocep1s0f1
+CORRECCION: OK (4 KB..2 MB, fp32 y bf16)
+    tamaño      dgx2      dgx1      dgx3   µs/op
+      4096      37.4      37.4      37.4
+     65536      37.5      37.5      37.3
+    262144      63.8      63.8      63.8
+   1048576     192.1     192.1     192.2
+   2097152     362.8     362.9     362.9
+STATS rank 0: [390905856, 390905856] B por HCA ['rocep1s0f0', 'rocep1s0f1'] (terminaciones [570, 570])
+STATS rank 1: [390905856, 390905856] B por HCA ['rocep1s0f0', 'rocep1s0f1'] (terminaciones [570, 570])
+STATS rank 2: [390905856, 390905856] B por HCA ['rocep1s0f0', 'rocep1s0f1'] (terminaciones [570, 570])
+  las dos puertas del rango deben traer bytes > 0: una por vecino
+ROCE_RING_TEST ok en los 3 rangos (14:24:21)

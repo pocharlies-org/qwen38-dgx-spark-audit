@@ -1,0 +1,176 @@
+{
+  "url": "http://spark3:8000",
+  "baseline": "/home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/A-ref1-1.json",
+  "noise": "/home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/A-ref1-2.json",
+  "rows": [
+    {
+      "case": "short0",
+      "first_divergence": null,
+      "identical": true,
+      "noise_floor": null,
+      "cold_vs_warm": null,
+      "cand_degenerate": false,
+      "suspect": false,
+      "ref_head": "La cuantificación NVFP4 es un formato de precisión numérica ",
+      "cand_head": "La cuantificación NVFP4 es un formato de precisión numérica "
+    },
+    {
+      "case": "short1",
+      "first_divergence": 43,
+      "identical": false,
+      "noise_floor": 19,
+      "cold_vs_warm": null,
+      "cand_degenerate": false,
+      "suspect": false,
+      "ref_head": "En el contexto del entrenamiento distribuido (especialmente ",
+      "cand_head": "En el contexto del entrenamiento distribuido (especialmente "
+    },
+    {
+      "case": "short2",
+      "first_divergence": 42,
+      "identical": false,
+      "noise_floor": 42,
+      "cold_vs_warm": null,
+      "cand_degenerate": false,
+      "suspect": false,
+      "ref_head": "El kernel de atención dispersa calcula la atención solo sobr",
+      "cand_head": "El kernel de atención dispersa calcula la atención solo sobr"
+    },
+    {
+      "case": "long-chunked-prefill",
+      "first_divergence": 9,
+      "identical": false,
+      "noise_floor": 7,
+      "cold_vs_warm": 7,
+      "cand_degenerate": false,
+      "suspect": true,
+      "ref_head": "Un almacén de claves distribuido, como Redis Cluster, Dynamo",
+      "cand_head": "Un almacén de claves distribuido, como los implementados en "
+    },
+    {
+      "case": "cache-warm",
+      "first_divergence": 7,
+      "identical": false,
+      "noise_floor": 9,
+      "cold_vs_warm": null,
+      "cand_degenerate": false,
+      "suspect": false,
+      "ref_head": "Un almacén de claves distribuido, como Redis Cluster, Dynamo",
+      "cand_head": "Un almacén de claves distribuido mantiene la coherencia ante"
+    },
+    {
+      "case": "cache-cold",
+      "first_divergence": 9,
+      "identical": false,
+      "noise_floor": 7,
+      "cold_vs_warm": 7,
+      "cand_degenerate": false,
+      "suspect": true,
+      "ref_head": "Un almacén de claves distribuido, como Redis Cluster, Dynamo",
+      "cand_head": "Un almacén de claves distribuido, como los implementados en "
+    },
+    {
+      "case": "prefix-cache-turn2",
+      "first_divergence": 13,
+      "identical": false,
+      "noise_floor": 9,
+      "cold_vs_warm": null,
+      "cand_degenerate": false,
+      "suspect": false,
+      "ref_head": "Si un nodo se queda térmico (sobrecalentamiento), el sistema",
+      "cand_head": "Si un nodo se queda térmico (sobrecalentamiento):\n\n1. **Thro"
+    },
+    {
+      "case": "mixed-c8-0",
+      "first_divergence": 60,
+      "identical": false,
+      "noise_floor": 60,
+      "cold_vs_warm": null,
+      "cand_degenerate": false,
+      "suspect": false,
+      "ref_head": "Proof of Work (PoW) requiere que los mineros resuelvan probl",
+      "cand_head": "Proof of Work (PoW) requiere que los mineros resuelvan probl"
+    },
+    {
+      "case": "mixed-c8-1",
+      "first_divergence": 29,
+      "identical": false,
+      "noise_floor": 16,
+      "cold_vs_warm": null,
+      "cand_degenerate": false,
+      "suspect": false,
+      "ref_head": "Proof of Work (PoW) requiere que los mineros resuelvan probl",
+      "cand_head": "Proof of Work (PoW) requiere que los mineros resuelvan probl"
+    },
+    {
+      "case": "mixed-c8-2",
+      "first_divergence": 15,
+      "identical": false,
+      "noise_floor": 39,
+      "cold_vs_warm": null,
+      "cand_degenerate": false,
+      "suspect": false,
+      "ref_head": "Proof of Work (PoW) requiere que los mineros resuelvan probl",
+      "cand_head": "Proof of Work (PoW) requiere que los mineros resuelvan compl"
+    },
+    {
+      "case": "mixed-c8-3",
+      "first_divergence": 16,
+      "identical": false,
+      "noise_floor": 15,
+      "cold_vs_warm": null,
+      "cand_degenerate": false,
+      "suspect": false,
+      "ref_head": "Proof of Work (PoW) requiere que los mineros resuelvan probl",
+      "cand_head": "Proof of Work (PoW) requiere que los mineros resuelvan probl"
+    },
+    {
+      "case": "mixed-c8-4",
+      "first_divergence": 16,
+      "identical": false,
+      "noise_floor": 29,
+      "cold_vs_warm": null,
+      "cand_degenerate": false,
+      "suspect": false,
+      "ref_head": "Proof of Work (PoW) requiere que los mineros resuelvan probl",
+      "cand_head": "Proof of Work (PoW) requiere que los mineros resuelvan probl"
+    },
+    {
+      "case": "mixed-c8-5",
+      "first_divergence": 15,
+      "identical": false,
+      "noise_floor": 18,
+      "cold_vs_warm": null,
+      "cand_degenerate": false,
+      "suspect": false,
+      "ref_head": "Proof of Work (PoW) requiere que los mineros resuelvan compl",
+      "cand_head": "Proof of Work (PoW) requiere que los mineros resuelvan probl"
+    },
+    {
+      "case": "mixed-c8-6",
+      "first_divergence": 15,
+      "identical": false,
+      "noise_floor": 16,
+      "cold_vs_warm": null,
+      "cand_degenerate": false,
+      "suspect": false,
+      "ref_head": "Proof of Work (PoW) requiere que los mineros resuelvan probl",
+      "cand_head": "Proof of Work (PoW) requiere que los mineros resuelvan compl"
+    },
+    {
+      "case": "mixed-c8-7",
+      "first_divergence": 15,
+      "identical": false,
+      "noise_floor": 27,
+      "cold_vs_warm": null,
+      "cand_degenerate": false,
+      "suspect": false,
+      "ref_head": "Proof of Work (PoW) requiere que los mineros resuelvan compl",
+      "cand_head": "Proof of Work (PoW) requiere que los mineros resuelvan probl"
+    }
+  ],
+  "suspects": [
+    "long-chunked-prefill",
+    "cache-cold"
+  ]
+}

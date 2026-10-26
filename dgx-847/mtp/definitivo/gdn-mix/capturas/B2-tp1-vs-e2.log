@@ -1,0 +1,18 @@
+compare http://spark3:8000 contra /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/E2-tp1-1.json (suelo de ruido /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/E2-tp1-2.json)
+  short0: diverge@29 suelo@29
+  short1: diverge@20 suelo@37
+  short2: diverge@11 suelo@11
+  long-chunked-prefill: SUSPECTO suelo@7 frio/caliente@7
+  cache-warm: diverge@50 suelo@50
+  cache-cold: SUSPECTO suelo@7 frio/caliente@7
+  prefix-cache-turn2: diverge@25 suelo@13
+  mixed-c8-0: diverge@27 suelo@15
+  mixed-c8-1: diverge@15 suelo@15
+  mixed-c8-2: diverge@15 suelo@15
+  mixed-c8-3: diverge@15 suelo@16
+  mixed-c8-4: diverge@3 suelo@29
+  mixed-c8-5: diverge@29 suelo@49
+  mixed-c8-6: diverge@27 suelo@16
+  mixed-c8-7: diverge@16 suelo@16
+# escrito /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/B2-tp1-vs-e2.json
+RESULTADO: 2 caso(s) SUSPECTOS: long-chunked-prefill, cache-cold

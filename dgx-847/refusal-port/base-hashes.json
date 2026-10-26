@@ -1,0 +1,19 @@
+{
+  "_pinned": "vllm 20260926.dev28+g884b4ff68.d20261002 (ghcr.io/ursuciprian/spark-vllm-b12x@sha256:8abb60ee…, 2x; el banner de arranque del 1x lleva la misma version). Regenerar con: sha256sum de cada fichero del tree desmontado de la imagen.",
+  "models/qwen3_8_flash_next/model.py": "c9332e6b9a467e2de1e55b38c4cbaeda7cb3de1e75cb9bf30f76991a2c6c26bf",
+  "models/qwen3_8_flash_next/mtp.py": "ceac802de77baea83b0cfe0cd373f6b131ac60f7e145cc7ad3e7fa4bbf5a4ded",
+  "model_executor/models/registry.py": "ebf898a52b0d7750d9b992bb2afff24bf16ac0b9471cc1e254fc0414e944fe8c",
+  "utils/b12x.py": "0961d17580981580839227147b4208aa2b4a7a2ca2beeb4dcd70497bd8c4052c",
+  "v1/core/sched/output.py": "96623adc4ddf9f603bb3eebae63d8d1ae5d34922b1d89b3c4e6f593f419ebd00",
+  "v1/core/sched/scheduler.py": "4321ce9b705a88fc88b06fa362d6d828beafd6e525b42a693501c7f3ae7aba44",
+  "v1/core/kv_cache_utils.py": "28c9047796ba5447469ce50b0c7ccd815cc692aff10cb3f7091627ccb9cfd6fb",
+  "v1/worker/gpu/model_runner.py": "3d27862432c9538901434fd1e7835cf42e5a47c29041148b2c093e8a54f16839",
+  "v1/worker/gpu/async_utils.py": "5c229b88fa4dda09e479524190b7348ebfb122032032d71598d18462a7adeb96",
+  "v1/worker/gpu_worker.py": "9a9bba3bd43082536befab0821f709daf860ecc75cbbfa4b91f10e3afd06e9f3",
+  "v1/outputs.py": "449ff48ea37157c595e2619ed5f7ee92a7ff0b063e97a9c8c005a504c5660977",
+  "v1/engine/__init__.py": "4a5b5d677c62e64981eb81bd9385874dcab17106dc1b46d1089351a4210fe974",
+  "v1/engine/output_processor.py": "f46abafd45792b4816e75c0702113b510f4b3e15ea33016d155ee00abaa3fb59",
+  "outputs.py": "346d1f9204a441867efc3af7c5a99d8a70ef0f69fe607dfa8a4a2557a82ca425",
+  "entrypoints/serve/__init__.py": "36278041128fab7bebb55fab25db39e9b229a660239d13ac910202b27d7d0a51",
+  "entrypoints/openai/chat_completion/serving.py": "9982953285e9df469032a82fffa4095d0e9d86278bede6e2b91d03d02373d182"
+}

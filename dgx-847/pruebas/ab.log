@@ -1,0 +1,27 @@
+22:49:50Z calidad 2× acabada: 22:49:47Z 2x: calidad exit=0 (exit=0 reason=ok )
+22:50:10Z A: inicio (contexto 65535)
+A: {"paso": "1 contexto 64K", "prompt_tokens": 65541, "reutilizados_metricas": 0, "consultados_metricas": 65543, "cached_tokens_usage": null, "recalculados": 65541, "ttft_s": 23.474}
+A: {"paso": "2 contexto + 2048 nuevos", "prompt_tokens": 67667, "reutilizados_metricas": 63008, "consultados_metricas": 67669, "cached_tokens_usage": null, "recalculados": 4659, "ttft_s": 2.103}
+A: {"paso": "3 repetición exacta de 2", "prompt_tokens": 67667, "reutilizados_metricas": 65872, "consultados_metricas": 67669, "cached_tokens_usage": null, "recalculados": 1795, "ttft_s": 0.892}
+22:50:39Z A: fin
+22:50:39Z B: inicio
+23:22:18Z B: inicio (relanzada: reinicio en pareja)
+B: configmap/ursu-recipe unchanged
+B: 23:22:20Z reinicio de la 2× con: --max-num-batched-tokens 4096
+B: 23:22:35Z un lado de la 2× reinició: los dos a 0 y arriba juntos
+23:55:48Z B: parada (GPU de dgx1 colgada: NVRM sin memoria a las 23:24:25Z); se relanza tras reiniciar dgx1
+05:52:02Z B: inicio (relanzada tras el cuelgue de dgx1)
+B: configmap/ursu-recipe unchanged
+B: 05:52:06Z 2× abajo; memoria libre en dgx y dgx2
+B: 05:52:07Z reinicio de la 2× con: --max-num-batched-tokens 4096
+05:58:32Z B: fin
+06:01:25Z B: inicio (3.ª: la espera devolvía 1 con la 2× ya lista y B salía sin medir)
+B: configmap/ursu-recipe unchanged
+B: 06:01:40Z 2× abajo; memoria libre en dgx y dgx2
+B: 06:01:42Z reinicio de la 2× con: --max-num-batched-tokens 4096
+B: 06:08:22Z 2× lista en 6 min
+B: (Worker_TP0 pid=170) INFO 10-13 06:03:19 [interface.py:1029] Setting attention block size to 2864 tokens to ensure that attention page size is >= mamba page size.
+B: (EngineCore pid=149) INFO 10-13 06:07:49 [core.py:371] init engine (profile, create kv cache, warmup model) took 269.47 s (compilation: 0.89 s)
+B: (EngineCore pid=149) WARNING 10-13 06:07:53 [vllm.py:2068] max_num_scheduled_tokens is set to 4096 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increas
+B: 06:22:05Z benchy exit=0
+06:22:05Z B: hecha

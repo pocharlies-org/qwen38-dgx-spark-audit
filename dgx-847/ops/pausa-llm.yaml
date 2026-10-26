@@ -1,0 +1,98 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: llm-deploy-hooks
+  name: llm-deploy-pause
+  namespace: llm
+spec:
+  activeDeadlineSeconds: 600
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        app: llm-deploy-hooks
+        role: pause
+    spec:
+      containers:
+      - args:
+        - "import json, os, ssl, sys, time, urllib.request\nROOT = \"https://%s:%s\"\
+          \ % (os.environ[\"KUBERNETES_SERVICE_HOST\"], os.environ[\"KUBERNETES_SERVICE_PORT\"\
+          ])\nTOK = open(\"/var/run/secrets/kubernetes.io/serviceaccount/token\").read()\n\
+          CTX = ssl.create_default_context(cafile=\"/var/run/secrets/kubernetes.io/serviceaccount/ca.crt\"\
+          )\nDEPLOYS = [\"omnivoice-tts-nvfp4\", \"stt-turbo\"]\nSTATE = \"/api/v1/namespaces/comfyui/configmaps/gpu-arbiter-state\"\
+          \n\ndef req(method, path, body=None):\n    r = urllib.request.Request(ROOT\
+          \ + path, method=method,\n        data=json.dumps(body).encode() if body\
+          \ is not None else None,\n        headers={\"Authorization\": \"Bearer \"\
+          \ + TOK,\n                 \"Content-Type\": \"application/merge-patch+json\"\
+          \ if method == \"PATCH\" else \"application/json\"})\n    with urllib.request.urlopen(r,\
+          \ context=CTX, timeout=15) as resp:\n        raw = resp.read()\n       \
+          \ return json.loads(raw) if raw else {}\n\ndef read_state():\n    return\
+          \ json.loads(req(\"GET\", STATE)[\"data\"][\"compute_mode\"])\n\ndef write_state(st):\n\
+          \    req(\"PATCH\", STATE, {\"data\": {\"compute_mode\": json.dumps(st,\
+          \ separators=(\",\", \":\"))}})\n\n# 1) puerta: solo se pausa desde ready\
+          \ estable sobre un perfil fijo, o se sigue sobre una pausa que ya\n#   \
+          \ esta puesta, o sobre el recovering que deja el prune de head y worker\
+          \ de qwen38 (DGX-810). La ventana\n#    deja sync-paused a proposito (no\
+          \ tiene resume) y la siguiente sync de `ai` (la vuelta, o otro commit\n\
+          #    de la ventana) llega con el arbitro asi. Cualquier otra fase o blocker\
+          \ aborta.\ndef puerta(st):\n    b = st.get(\"blockers\") or []\n    qwen38\
+          \ = (st.get(\"phase\") == \"recovering\" and len(b) == 1 and isinstance(b[0],\
+          \ dict)\n              and b[0].get(\"type\") == \"profile_components_missing\"\
+          \n              and sorted(b[0].get(\"deployments\") or []) == [\"qwen38-flash-next-head\"\
+          , \"qwen38-flash-next-worker\"])\n    return st.get(\"desired_mode\") ==\
+          \ st.get(\"effective_mode\") and (\n        st.get(\"phase\") in (\"ready\"\
+          , \"sync-paused\") or qwen38)\n\ndef pausar(st):\n    write_state({**st,\
+          \ \"phase\": \"sync-paused\", \"sync_pause\": {\n        \"by\": \"ai-presync\"\
+          , \"at\": time.strftime(\"%Y-%m-%dT%H:%M:%SZ\", time.gmtime())}})\n\ndef\
+          \ escalar(d, n):\n    req(\"PATCH\", \"/apis/apps/v1/namespaces/llm/deployments/%s/scale\"\
+          \ % d, {\"spec\": {\"replicas\": n}})\n\ndef replicas(d):\n    return req(\"\
+          GET\", \"/apis/apps/v1/namespaces/llm/deployments/%s\" % d)[\"spec\"][\"\
+          replicas\"]\n\ndeadline = time.time() + 180\nwhile True:\n    st = read_state()\n\
+          \    if puerta(st):\n        break\n    if time.time() > deadline:\n   \
+          \     sys.exit(\"arbitro en phase=%s blockers=%s tras 180 s: aborto sin\
+          \ tocar nada\" % (\n            st.get(\"phase\"), json.dumps(st.get(\"\
+          blockers\"))))\n    time.sleep(5)\nencontrado = (st, {d: replicas(d) for\
+          \ d in DEPLOYS})  # a lo que se vuelve si la pausa no aguanta (paso 4)\n\
+          # 2) pausar el watcher ANTES de escalar: si no, repara en POLL_S. Si ya\
+          \ estaba pausado, no se reescribe.\nif st.get(\"phase\") != \"sync-paused\"\
+          :\n    pausar(st)\n# 3) matar los residentes de voz y esperar a que no quede\
+          \ pod.\nfor d in DEPLOYS:\n    req(\"PATCH\", \"/apis/apps/v1/namespaces/llm/deployments/%s/scale\"\
+          \ % d, {\"spec\": {\"replicas\": 0}})\n# 4) comprobar que aguanta. Un pase\
+          \ del vigilante que ya estaba en vuelo cuando se escribio la pausa puede\n\
+          #    pisarla (la fase, o la voz a 1): tres lecturas seguidas, 6 s entre\
+          \ ellas, con sync-paused y la voz a 0.\n#    Si una falla se reescribe y\
+          \ se cuenta otra vez; a la cuarta pisada se devuelve lo que se encontro\
+          \ y se\n#    sale con error. Si otro mueve el arbitro (switching, error),\
+          \ no se le pisa.\nfirmes = pisadas = 0\nwhile firmes < 3:\n    time.sleep(6)\n\
+          \    cur = read_state()\n    if cur.get(\"phase\") == \"sync-paused\" and\
+          \ not any(replicas(d) for d in DEPLOYS):\n        firmes += 1\n        continue\n\
+          \    pisadas += 1\n    if not puerta(cur):\n        sys.exit(\"arbitro en\
+          \ phase=%s durante la pausa: no lo toco\" % cur.get(\"phase\"))\n    if\
+          \ pisadas > 3:\n        write_state(encontrado[0])\n        for d, n in\
+          \ encontrado[1].items():\n            escalar(d, n)\n        sys.exit(\"\
+          la pausa no aguanta tras 3 reescrituras: arbitro y voz como estaban\")\n\
+          \    if cur.get(\"phase\") != \"sync-paused\":\n        pausar(cur)\n  \
+          \  for d in DEPLOYS:\n        escalar(d, 0)\n    firmes = 0\ndeadline =\
+          \ time.time() + 300\nfor d in DEPLOYS:\n    while True:\n        dep = req(\"\
+          GET\", \"/apis/apps/v1/namespaces/llm/deployments/%s\" % d)\n        if\
+          \ not (dep.get(\"status\") or {}).get(\"replicas\"):\n            break\n\
+          \        if time.time() > deadline:\n            sys.exit(\"%s: pods de\
+          \ voz no terminaron de bajar (SyncFail reanudara)\" % d)\n        time.sleep(5)\n\
+          print(\"pausado: arbitro=sync-paused, voz a 0 y sin pods\")\n"
+        command:
+        - python3
+        - -c
+        image: python:3.12-alpine@sha256:6d43704baacd1bfbe7c295d7f13079d5d8104ed33568873133f8fc69980419df
+        name: pause
+        resources:
+          limits:
+            memory: 96Mi
+          requests:
+            cpu: 10m
+            memory: 32Mi
+      nodeSelector:
+        kubernetes.io/hostname: ubuntu
+      restartPolicy: Never
+      serviceAccountName: llm-deploy-hooks
+  ttlSecondsAfterFinished: 86400

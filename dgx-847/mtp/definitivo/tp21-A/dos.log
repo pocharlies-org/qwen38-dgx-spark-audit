@@ -1,0 +1,11 @@
+11:43:22Z gdn-mix: A en TP=2 (http://spark2:8000) arrancando
+11:54:24Z gdn-mix: A arriba en 11 min
+11:54:25Z gdn-mix: selector -> GDN decode kernel: b12x
+11:54:25Z gdn-mix: parche -> QWEN_GDN_MIX=A aplicado: vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py#QWEN_GDN_MIX_SELECTION QWEN_GDN_MIX=A: imagen parcheada
+11:54:53Z gdn-mix: captura 1 -> /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/A-r2-1.json
+11:55:18Z gdn-mix: captura 2 -> /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/A-r2-2.json
+11:55:41Z gdn-mix: compare exit=1 # escrito /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/A-r2-vs-e2.json
+11:55:41Z gdn-mix: A terminado; capturas en /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas
+11:55:41Z tp21-A: TP=2 RoCE: RoCEnante all-reduce is live: first routed all-reduce is 81920 bytes (bfloat16); NCCL rema
+11:55:46Z tp21-A: TP=2 tools exit=0 {"no-stream": {"ok": true, "errors": [], "cities": ["Madrid", "París"], "n_calls": 2, "final": "\n\
+12:02:49Z tp21-A: TP=2 decode c1 68 · c4 145 · c8 209 · c10 252 · c16 337 · acept c1 {'0': 0.73, '1': 0.46, '2': 0.28, '3': 0.16}

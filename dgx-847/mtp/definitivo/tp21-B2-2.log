@@ -1,0 +1,8 @@
+No resources found in llm namespace.
+12:35:34Z tp21-B2: TP=3 abajo; arrancan TP=2 y TP=1 con B2
+12:44:43Z gdn-mix: compare exit=0 # escrito /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/B2-r2-vs-e2.json
+12:34:11Z gdn-mix: compare exit=1 # escrito /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/B2-tp1-vs-e2.json
+12:53:21Z tp21-B2: juntos c4+c4: TP=2 c4 162 · TP=1 c4 102
+12:54:50Z tp21-B2: juntos c8+c8: TP=2 c8 230 · TP=1 c8 137
+12:56:20Z tp21-B2: juntos c16+c8: TP=2 c16 341 · TP=1 c8 137
+12:56:20Z tp21-B2: hecho; arriba la 2x y la 1x con B2, residente a 0 y árbitro en pausa

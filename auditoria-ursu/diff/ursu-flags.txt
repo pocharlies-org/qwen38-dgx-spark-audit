@@ -1,0 +1,41 @@
+--block-size {block_size}
+--compilation-config '{{"pass_config":{{"fuse_act_quant":true}}}}'
+--decode-refill-target auto
+--default-chat-template-kwargs (promoted
+--default-chat-template-kwargs '{{"reasoning_effort":"medium"}}'
+--dtype bfloat16
+--enable-auto-tool-choice
+--enable-chunked-prefill
+--enable-prefix-caching
+--enable-prompt-tokens-details
+--exp-b12x
+--gdn-decode-kernel b12x
+--gpu-memory-utilization {gpu_memory_utilization}
+--host {host}
+--kv-cache-dtype fp8
+--linear-backend b12x
+--load-format b12x
+--local-inference-lab--
+--mamba-cache-mode align
+--max-model-len {max_model_len}
+--max-num-batched-tokens {max_num_batched_tokens}
+--max-num-seqs {max_num_seqs}
+--max-parallel-prefills 4
+--mm-encoder-tp-mode data
+--moe-backend b12x
+--no-enable-flashinfer-autotune
+--pipeline-parallel-size {pipeline_parallel}
+--port {port}
+--prefill-policy decode-aware
+--prompt-mode task,
+--quantization modelopt_mixed
+--reasoning-parser qwen3
+--revision 03f4a0570496bbe741189f4a2a7d611679e85406
+--revision in
+--served-model-name qwen3.8-flash-next
+--speculative-config
+--speculative-config '{{"method":"mtp","num_speculative_tokens":{num_speculative_tokens},"draft_sample_method":"probabilistic"}}'
+--tensor-parallel-size {tensor_parallel}
+--tool-call-parser qwen3_xml
+--trust
+--trust-remote-code

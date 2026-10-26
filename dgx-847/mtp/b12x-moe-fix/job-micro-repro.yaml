@@ -1,0 +1,139 @@
+# DGX-852: micro-repro del IMA del MoE b12x nvfp4 (banda micro) en UN Spark.
+# NO APLICADO: los Sparks tienen el residente midiendo. Dani lo lanza cuando libre.
+#
+# Antes de aplicar, crear el ConfigMap con el script (desde este repo de bench):
+#   kubectl -n llm create configmap dgx852-micro-repro \
+#     --from-file=micro-repro.py=/home/user/bench-results/dgx-847/mtp/b12x-moe-fix/micro-repro.py
+#
+# El Job monta la rueda y la vista e768 igual que el residente (PVC hf-cache-dgx1-dgx3-llm-ro
+# en dgx3, readOnly, /cache/huggingface; JIT cache en el hostPath /tmp del residente) e instala
+# b12x 1.3.0 con el mismo comando que el bloque QWEN38_B12X de launch-nvfp4.sh
+# (--no-index --no-deps --find-links wheelhouse). NVIDIA_VISIBLE_DEVICES se deja normal (1 GPU
+# del nodo, sin ocultar). Toleración dedicated=llm:NoSchedule como el residente.
+#
+# Pases (todos eager, CUDA_LAUNCH_BLOCKING=1 para que el kernel culpable salga en la traza):
+#   P1 b12x + hidden=zeros   -> se espera OK  (reproduce el warmup: expertos 0..9)
+#   P2 b12x + hidden=randn   -> se espera CRASH en M=6 (primera vez micro con enrutado real)
+#   P3 b12x + randn + cutover=0 -> se espera OK (workaround del bloque-wa.sh validado)
+#   P4 flashinfer_cutlass + randn -> OK y salva salidas para el diff numerico
+#   P5 mtp (w4a16) + ref     -> max rel error; >0.2 confirma el bug de layout w13->w31
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dgx852-micro-repro-cmd
+  namespace: llm
+data:
+  run.sh: |
+    #!/bin/bash
+    set -uo pipefail
+    LOG=/tmp/dgx852-repro.log
+    exec > >(tee -a "$LOG") 2>&1
+    echo "== DGX-852 micro-repro $(date -Is) node=$(hostname) =="
+    python3 -m pip install --no-index --no-deps --disable-pip-version-check --quiet \
+      --find-links /cache/huggingface/wheelhouse/b12x-1.3.0 b12x==1.3.0 || { echo "P0 ABORT: pip"; exit 73; }
+    python3 -c "import b12x.moe.fused_moe, torch; assert torch.cuda.is_available(); \
+      print('b12x ok cap', torch.cuda.get_device_capability())" || { echo "P0 ABORT: import/gating"; exit 73; }
+    M=/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3-e768
+    S=/repro/micro-repro.py
+    rc=0
+    echo "--- P1 b12x zeros (esperado OK, como el warmup) ---"
+    python3 "$S" --model "$M" --backend b12x --linear b12x --hidden zeros || { echo "P1 FALLO INESPERADO"; rc=1; }
+    echo "--- P2 b12x randn (esperado CRASH M=6 = reproduccion) ---"
+    python3 "$S" --model "$M" --backend b12x --linear b12x --hidden randn --ref
+    case $? in
+      1) echo "P2 reprodujo (crash) OK-hipotesis" ;;
+      0) echo "P2 NO reprodujo: el micro con enrutado real pasa -> la causa es otra (ver LISTO 'trazas')" ; rc=2 ;;
+      *) rc=1 ;;
+    esac
+    echo "--- P3 b12x randn con workaround cutover=0 (esperado OK) ---"
+    B12X_MICRO_DYNAMIC_CUTOVER_PAIRS=0 python3 "$S" --model "$M" --backend b12x --linear b12x --hidden randn \
+      || { echo "P3 FALLO: el workaround no evita el IMA"; rc=1; }
+    echo "--- P4 flashinfer_cutlass randn (referencia numerica) ---"
+    python3 "$S" --model "$M" --backend flashinfer_cutlass --linear b12x --hidden randn || rc=1
+    echo "--- P5 mtp w4a16 + referencia (layout w13/w31) ---"
+    python3 "$S" --model "$M" --layer mtp --backend b12x --linear b12x --hidden randn --sizes 6 --ref || rc=1
+    echo "== fin rc=$rc; salidas en /tmp/repro-*.pt y $LOG (hostPath vllm-tmp del nodo) =="
+    exit $rc
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dgx852-b12x-moe-repro
+  namespace: llm
+  labels:
+    dgx852: micro-repro
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      labels:
+        dgx852: micro-repro
+    spec:
+      restartPolicy: Never
+      nodeSelector:
+        kubernetes.io/arch: arm64
+        kubernetes.io/hostname: dgx3
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: llm
+          effect: NoSchedule
+      containers:
+        - name: repro
+          image: docker.io/vllm/vllm-openai@sha256:96b234afa2867031ad0a226b149a06483861e613e3a3083da53398d347b5ffbd
+          command: ["bash", "/repro-cmd/run.sh"]
+          env:
+            - name: HF_HOME
+              value: /cache/huggingface
+            - name: HF_HUB_OFFLINE
+              value: "1"
+            - name: TORCH_CUDA_ARCH_LIST
+              value: "12.1f"
+            - name: FLASHINFER_CUDA_ARCH_LIST
+              value: "12.1a"
+            - name: B12X_COMPILE_CACHE_DIR
+              value: /tmp/b12x-compile
+            - name: CUDA_LAUNCH_BLOCKING
+              value: "1"
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: "0"
+          resources:
+            requests:
+              cpu: "4"
+              memory: 88Gi
+            limits:
+              memory: 112Gi
+              nvidia.com/gpu: "1"
+          volumeMounts:
+            - name: hf-cache
+              mountPath: /cache/huggingface
+              readOnly: true
+            - name: repro
+              mountPath: /repro
+              readOnly: true
+            - name: repro-cmd
+              mountPath: /repro-cmd
+              readOnly: true
+            - name: vllm-tmp
+              mountPath: /tmp
+            - name: shm
+              mountPath: /dev/shm
+      volumes:
+        - name: hf-cache
+          persistentVolumeClaim:
+            claimName: hf-cache-dgx1-dgx3-llm-ro
+        - name: repro
+          configMap:
+            name: dgx852-micro-repro
+        - name: repro-cmd
+          configMap:
+            name: dgx852-micro-repro-cmd
+        - name: vllm-tmp
+          hostPath:
+            path: /home/user/.cache/vllm-tmp
+            type: DirectoryOrCreate
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 16Gi

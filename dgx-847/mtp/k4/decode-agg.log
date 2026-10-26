@@ -1,0 +1,19 @@
+C=1 rep=1/3 agg=44.797 tok/s server=45.138 p50=45.946 p10=43.882 ttft_p50=0.158 ttft_p95=0.171 running=1.0 reqs=21 err=0 contaminado=False
+C=1 rep=2/3 agg=42.663 tok/s server=56.971 p50=46.819 p10=43.429 ttft_p50=0.158 ttft_p95=0.199 running=1.36 reqs=20 err=0 contaminado=False
+C=1 rep=3/3 agg=44.795 tok/s server=54.303 p50=46.457 p10=40.476 ttft_p50=0.154 ttft_p95=0.22 running=1.12 reqs=21 err=0 contaminado=False
+C=4 rep=1/3 agg=136.521 tok/s server=134.804 p50=34.831 p10=31.715 ttft_p50=0.258 ttft_p95=0.318 running=3.96 reqs=64 err=0 contaminado=False
+C=4 rep=2/3 agg=142.915 tok/s server=136.307 p50=35.26 p10=32.7 ttft_p50=0.257 ttft_p95=0.272 running=3.92 reqs=67 err=0 contaminado=False
+C=4 rep=3/3 agg=136.525 tok/s server=136.384 p50=35.533 p10=32.113 ttft_p50=0.257 ttft_p95=0.307 running=3.96 reqs=64 err=0 contaminado=False
+C=8 rep=1/3 agg=209.052 tok/s server=216.077 p50=27.984 p10=25.203 ttft_p50=0.305 ttft_p95=0.37 running=7.88 reqs=98 err=0 contaminado=False
+C=8 rep=2/3 agg=183.452 tok/s server=228.79 p50=25.582 p10=21.478 ttft_p50=0.337 ttft_p95=2.678 running=8.96 reqs=86 err=0 contaminado=True
+C=8 rep=3/3 agg=200.519 tok/s server=219.742 p50=25.806 p10=23.566 ttft_p50=0.306 ttft_p95=0.358 running=8.6 reqs=94 err=0 contaminado=False
+C=10 rep=1/3 agg=206.922 tok/s server=235.554 p50=24.446 p10=20.925 ttft_p50=0.747 ttft_p95=6.949 running=9.88 reqs=97 err=0 contaminado=False
+C=10 rep=2/3 agg=253.849 tok/s server=248.133 p50=25.497 p10=23.339 ttft_p50=0.309 ttft_p95=0.353 running=9.8 reqs=119 err=0 contaminado=False
+C=10 rep=3/3 agg=255.978 tok/s server=247.029 p50=24.974 p10=23.335 ttft_p50=0.311 ttft_p95=0.373 running=9.88 reqs=120 err=0 contaminado=False
+
+# mediana entre repeticiones (agg_tok_s min..max, dispersion relativa)
+C=  1 agg_median=44.795 [42.663..44.797] spread=0.0476 ttft_p50=0.158 contaminados=0/3
+C=  4 agg_median=136.525 [136.521..142.915] spread=0.0468 ttft_p50=0.257 contaminados=0/3
+C=  8 agg_median=200.519 [183.452..209.052] spread=0.1277 ttft_p50=0.306 contaminados=1/3
+C= 10 agg_median=253.849 [206.922..255.978] spread=0.1932 ttft_p50=0.311 contaminados=0/3
+# escrito /home/user/bench-results/dgx-847/mtp/k4/decode-agg.json

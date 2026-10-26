@@ -1,0 +1,8 @@
+17:20:48Z gdn-mix: A en TP=1 (http://spark3:8000) arrancando
+17:25:57Z gdn-mix: A arriba en 5 min
+17:25:58Z gdn-mix: selector -> GDN decode kernel: b12x
+17:25:58Z gdn-mix: parche -> QWEN_GDN_MIX=A aplicado: vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py#QWEN_GDN_MIX_SELECTION QWEN_GDN_MIX=A: imagen parcheada
+17:26:39Z gdn-mix: captura 1 -> /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/A-ref1-1.json
+17:27:13Z gdn-mix: captura 2 -> /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/A-ref1-2.json
+17:27:46Z gdn-mix: compare exit=0 # escrito /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/A-ref1-vs-e2.json
+17:27:46Z gdn-mix: A terminado; capturas en /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas

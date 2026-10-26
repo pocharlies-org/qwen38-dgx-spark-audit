@@ -1,0 +1,98 @@
+15:36:39Z inicio: ai Synced/Healthy
+15:37:13Z job llm-deploy-pause-nvfp4-131536 completo
+15:39:30Z a: resume del árbitro
+15:40:54Z job llm-deploy-resume-nvfp4-a-131536 completo
+16:12:53Z residente: un rango se ha reiniciado (arb=error deploys=[/1 1/1 1/1 ])
+      5 AssertionError: Duplicate NCCL runtime found in the current system: /opt/nccl-ring/lib/libnccl.so.2 and /usr/local/lib/python3.12/dist-packages/nvidia/nccl/lib/libnccl.so.2
+      2 RuntimeError: NCCL error: unhandled cuda error (run with NCCL_DEBUG=INFO for details)
+      2     raise RuntimeError(f"NCCL error: {error_str}")
+      2 7) forma incorrecta -> RuntimeError True
+      1 (Worker_TP0 pid=962) torch.AcceleratorError: CUDA error: an illegal memory access was encountered
+      1 (Worker_TP0 pid=962) Search for `cudaErrorIllegalAddress' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+      1 Using 'B12X' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CUTLASS', 'VLLM_CUTLASS', 'MARLIN', 'HUMMING', '
+      1 Setting attention block size to 832 tokens to ensure that attention page size is >= mamba page size.
+      1 RuntimeError: Worker failed with error 'NCCL error: unhandled cuda error (run with NCCL_DEBUG=INFO for details)', please check the stack trace above for the root cause
+      1     raise RuntimeError(
+      1 QWEN38_B12X rueda ok sha256=c97d88635521a7fd…
+      1 QWEN38_B12X MoE ok moe_intermediate_size=768 % tp=3 == 0
+      1 QWEN38_B12X instalado b12x==1.3.0 desde /cache/huggingface/wheelhouse/b12x-1.3.0
+      1 QWEN38_B12X imports ok (6 submodulos)
+16:14:18Z a1: env puesta a mano (árbitro en error tras A; sin pausa posible)
+16:15:27Z residente: un rango se ha reiniciado (arb=error deploys=[/1 1/1 1/1 ])
+16:15:30Z a2: env puesta a mano (vista 640 sin b12x)
+16:15:50Z a1: env otra vez a mano (el guion leyó como fallo el pod viejo que salía)
+/home/user/bench-results/dgx-847/ops/residente-lib.sh: line 37: syntax error near unexpected token `done'
+/home/user/bench-results/dgx-847/ops/residente-lib.sh: line 37: `  done; log "residente sin listo en $(( cap / 60 )) min (arb=$p deploys=[$d] health=$h)"; return 1'
+ventana-nvfp4.sh: line 71: listo: command not found
+16:17:36Z a2: env puesta a mano (vista 640 sin b12x)
+16:17:53Z a1: env otra vez a mano (la corrida anterior cargó una lib rota y volvió a poner A2)
+16:20:49Z a1: los tres pods borrados a la vez (los workers venían de antes que el head: rendezvous desparejado)
+16:29:57Z residente listo en 9 min
+16:29:58Z A: arriba con [/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3 1 0]
+16:30:57Z residente listo en 0 min
+16:30:57Z A: arriba con [/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3 1 0]
+16:31:13Z A: tools exit=1 {"no-stream": {"ok": true, "errors": [], "cities": ["Madrid", "París"], "n_calls": 2, "final": "\n\nEl tiempo actual es:\n\n- **Madrid:** 21 °C, cie
+16:31:43Z A: claude-code exit=0 salida.txt=HOLA DESDE DGX-852
+16:33:23Z A k=2: mido (ajenas en curso: 0)
+17:04:19Z A k=2: decode exit=0
+C=  1 agg_median=55.463 [55.463..57.596] spread=0.0385 ttft_p50=0.148 contaminados=0/3
+C=  4 agg_median=159.988 [153.589..170.654] spread=0.1067 ttft_p50=0.215 contaminados=0/3
+C=  8 agg_median=255.981 [255.973..266.632] spread=0.0416 ttft_p50=0.249 contaminados=0/3
+C= 10 agg_median=270.912 [253.847..298.645] spread=0.1654 ttft_p50=0.442 contaminados=0/3
+17:20:59Z A k=2: benchy exit=0
+A caché 64K: {"paso": "1 contexto 64K", "prompt_tokens": 65542, "reutilizados_metricas": 1664, "consultados_metricas": 67453, "cached_tokens_usage": 0, "recalculados": 63878, "ttft_s": 21.298}
+A caché 64K: {"paso": "2 contexto + 2048 nuevos", "prompt_tokens": 67668, "reutilizados_metricas": 64896, "consultados_metricas": 67628, "cached_tokens_usage": 64896, "recalculados": 2772, "ttft_s": 1.222}
+A caché 64K: {"paso": "3 repetición exacta de 2", "prompt_tokens": 67668, "reutilizados_metricas": 67392, "consultados_metricas": 67628, "cached_tokens_usage": 67392, "recalculados": 276, "ttft_s": 0.351}
+17:21:33Z ventana cortada tras la caché de A1: la calidad y B quedan para la configuración arreglada
+17:22:06Z job llm-deploy-pause-nvfp4-diag-a-131644 completo
+Error from server (NotFound): jobs.batch "llm-deploy-resume" not found
+Traceback (most recent call last):
+  File "<string>", line 2, in <module>
+  File "/usr/lib/python3.12/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+error: no objects passed to create
+Error from server (NotFound): jobs.batch "llm-deploy-resume-nvfp4-diag-a-131644" not found
+Error from server (NotFound): jobs.batch "llm-deploy-resume-nvfp4-diag-a-131644" not found
+Error from server (NotFound): jobs.batch "llm-deploy-resume-nvfp4-diag-a-131644" not found
+17:24:14Z job llm-deploy-resume-nvfp4-diag-a-131644 completo
+17:24:14Z diag a: arranque con CUDA_LAUNCH_BLOCKING=1 (árbitro en ready)
+Terminated
+17:43:18Z diag a: cortado sin llegar al fallo (Dani: arreglar primero)
+17:43:20Z a arreglada: env puesta a mano (e768 + MoE b12x con cutover0 + MTP w31)
+17:45:25Z residente: un rango se ha reiniciado (arb=recovering deploys=[/1 1/1 1/1 ])
+17:45:25Z A: no arranca en ninguna de las tres formas; vuelvo
+17:45:25Z vuelta: residente como estaba
+17:48:44Z vuelta cancelada: el reinicio era el worker de dgx3 conectando antes que el head nuevo (gloo refused); listo ya lo tolera. A arreglada sigue cargando
+17:57:08Z residente: un rango se ha reiniciado (arb=error deploys=[/1 1/1 1/1 ])
+17:57:09Z A: no arranca en ninguna de las tres formas; vuelvo
+17:57:09Z vuelta: residente como estaba
+Terminated
+17:57:23Z vuelta cancelada otra vez: el fallo fue de cita (dgx3 fuera, «2/3 clients joined» a los 600 s), no del kernel; borro los tres pods a la vez
+18:33:24Z A ARREGLADA ARRANCA: captura 14/14 + FULL, health 200, aceptación MTP 72,6 % (pos1 79 %, pos2 66 %): w31 correcto. Sigo con la batería
+18:33:25Z residente listo en 0 min
+18:33:26Z A: arriba con [/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3-e768 1 1]
+18:33:39Z A: tools exit=0 {"no-stream": {"ok": true, "errors": [], "cities": ["Madrid", "París"], "n_calls": 2, "final": "\n\nMadrid: 21 °C, despejado.  \nParís: 22 °C, des
+18:34:07Z A: claude-code exit=0 salida.txt=HOLA DESDE DGX-852
+18:34:28Z A k=2: mido (ajenas en curso: 0)
+19:05:57Z A k=2: decode exit=0
+C=  1 agg_median=34.131 [23.465..51.196] spread=0.8125 ttft_p50=0.216 contaminados=0/3
+C=  4 agg_median=102.384 [95.993..134.325] spread=0.3744 ttft_p50=0.303 contaminados=1/3
+C=  8 agg_median=196.239 [145.051..198.373] spread=0.2717 ttft_p50=0.334 contaminados=0/3
+C= 10 agg_median=230.381 [189.852..234.649] spread=0.1944 ttft_p50=0.343 contaminados=0/3
+19:14:40Z Dani: basta de pruebas, sistema definitivo. Batería cortada; vuelta a git
+19:14:40Z vuelta: residente como estaba
+19:15:14Z job llm-deploy-pause-nvfp4-fin-131914 completo
+19:29:40Z job llm-deploy-resume-nvfp4-fin-131914 completo
+19:38:38Z residente listo en 8 min
+19:38:39Z ai: Synced/Healthy · launch.sh 0 líneas b12x
+19:38:39Z NVFP4: fin (falta quitar la VALLA)

@@ -1,0 +1,7 @@
+exit=0
+reason=ok
+started=2026-10-12T19:28:00Z
+ended=2026-10-12T20:31:09Z
+elapsed_s=3789
+cap_s=6600
+steps=[{"step": "agregado", "status": "ok", "foreign_running_before": 0.0}, {"step": "64k-c8", "status": "ok", "foreign_running_before": 0.0}, {"step": "64k-c10", "status": "ok", "foreign_running_before": 0.0}]

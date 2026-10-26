@@ -1,0 +1,39 @@
+{
+  "admin_refusal_lambda": "{\"lambda\":0.0,\"consistent\":true,\"per_rank\":[0.0,0.0]}",
+  "refusal:0": {
+    "negativas_dañinos": "103/104",
+    "negativas_normales": "5/104",
+    "con_sonda": 208,
+    "detector_acierta": "203/208",
+    "score_negativas": {
+      "n": 108,
+      "min": -0.3161,
+      "mediana": -0.2872,
+      "max": -0.0894
+    },
+    "score_respuestas": {
+      "n": 100,
+      "min": -0.1273,
+      "mediana": -0.0457,
+      "max": -0.0002
+    }
+  },
+  "refusal:1.0": {
+    "negativas_dañinos": "1/104",
+    "negativas_normales": "1/104",
+    "con_sonda": 208,
+    "detector_acierta": "206/208",
+    "score_negativas": {
+      "n": 2,
+      "min": 0.0007,
+      "mediana": 0.0009,
+      "max": 0.001
+    },
+    "score_respuestas": {
+      "n": 206,
+      "min": 0.0004,
+      "mediana": 0.0009,
+      "max": 0.0014
+    }
+  }
+}

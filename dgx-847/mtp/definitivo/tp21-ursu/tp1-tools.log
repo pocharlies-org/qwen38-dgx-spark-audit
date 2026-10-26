@@ -1,0 +1,1 @@
+{"no-stream": {"ok": false, "errors": ["tool inesperada ..."], "cities": ["Madrid"], "n_calls": 1, "final": "", "s": 8.2}, "stream": {"ok": false, "errors": ["la segunda vuelta no acaba en texto"], "cities": ["Madrid"], "n_calls": 1, "final": "", "s": 8.0}, "anthropic_messages": 200}

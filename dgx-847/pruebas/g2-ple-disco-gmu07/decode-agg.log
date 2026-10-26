@@ -1,0 +1,9 @@
+C=1 rep=1/2 agg=66.128 tok/s server=66.687 p50=69.882 p10=65.234 ttft_p50=0.134 ttft_p95=0.395 running=0.96 reqs=31 err=0 contaminado=False
+C=1 rep=2/2 agg=68.262 tok/s server=69.237 p50=70.757 p10=65.688 ttft_p50=0.106 ttft_p95=0.135 running=0.96 reqs=32 err=0 contaminado=False
+C=8 rep=1/2 agg=153.59 tok/s server=146.407 p50=18.851 p10=15.818 ttft_p50=0.303 ttft_p95=0.616 running=7.96 reqs=72 err=0 contaminado=False
+C=8 rep=2/2 agg=198.388 tok/s server=194.997 p50=25.618 p10=21.474 ttft_p50=0.296 ttft_p95=0.438 running=7.84 reqs=93 err=0 contaminado=False
+
+# mediana entre repeticiones (agg_tok_s min..max, dispersion relativa)
+C=  1 agg_median=67.195 [66.128..68.262] spread=0.0318 ttft_p50=0.12 contaminados=0/2
+C=  8 agg_median=175.989 [153.59..198.388] spread=0.2546 ttft_p50=0.299 contaminados=0/2
+# escrito /home/user/bench-results/dgx-847/pruebas/g2-ple-disco-gmu07/decode-agg.json

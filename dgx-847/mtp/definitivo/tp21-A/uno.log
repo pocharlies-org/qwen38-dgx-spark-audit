@@ -1,0 +1,17 @@
+11:13:41Z gdn-mix: E2 en TP=1 (http://spark3:8000) arrancando
+11:17:48Z gdn-mix: E2 arriba en 4 min
+11:17:49Z gdn-mix: selector -> GDN decode kernel: triton
+11:18:28Z gdn-mix: captura 1 -> /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/E2-tp1-1.json
+11:19:00Z gdn-mix: captura 2 -> /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/E2-tp1-2.json
+11:19:00Z gdn-mix: E2 terminado; capturas en /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas
+11:19:10Z gdn-mix: A en TP=1 (http://spark3:8000) arrancando
+11:31:03Z gdn-mix: A arriba en 11 min
+11:31:04Z gdn-mix: selector -> GDN decode kernel: b12x
+11:31:04Z gdn-mix: parche -> QWEN_GDN_MIX=A aplicado: vllm/model_executor/layers/mamba/gdn/qwen_gdn_linear_attn.py#QWEN_GDN_MIX_SELECTION QWEN_GDN_MIX=A: imagen parcheada
+11:31:44Z gdn-mix: captura 1 -> /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/A-tp1-1.json
+11:32:16Z gdn-mix: captura 2 -> /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/A-tp1-2.json
+11:32:49Z gdn-mix: compare exit=1 # escrito /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/A-tp1-vs-e2.json
+11:32:49Z gdn-mix: A terminado; capturas en /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas
+11:32:50Z tp21-A: TP=1 GPU KV cache size: 960,680 tokens, Maximum concurrency for 262,144 tokens per re · dgx3 disponible 6 de 121 GiB
+11:32:58Z tp21-A: TP=1 tools exit=0 {"no-stream": {"ok": true, "errors": [], "cities": ["Madrid", "París"], "n_calls": 2, "final": "\n\
+11:37:16Z tp21-A: TP=1 decode c1 47 · c4 102 · c8 137 · acept c1 {'0': 0.74, '1': 0.47, '2': 0.28, '3': 0.17}

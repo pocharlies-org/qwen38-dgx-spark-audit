@@ -1,0 +1,32 @@
+{
+ "arm": "1x",
+ "base_url": "http://spark3:8000",
+ "started_utc": "2026-10-12T21:43:05+00:00",
+ "model": "qwen3.8-flash-next",
+ "argv": [
+  "--arm",
+  "1x",
+  "--base-url",
+  "http://spark3:8000",
+  "--out",
+  "/home/user/bench-results/dgx-847/1x/quality",
+  "--venv-eval",
+  "/home/user/venvs/qwen38-quality-eval",
+  "--venv-bfcl",
+  "/home/user/venvs/qwen38-quality-bfcl",
+  "--humaneval-image",
+  "sha256:19657b88d97a16ce4b0601fd884655a4b140eb15633de96f6560b077fc15de82",
+  "--priority",
+  "100",
+  "--min-max-tokens",
+  "16384",
+  "--blackout",
+  "12:00-12:01",
+  "--suites",
+  "tools12,gsm8k,minerva_math,ifeval,bfcl,humaneval,niah131072"
+ ],
+ "fields": {
+  "priority": "accepted",
+  "cache_salt": "accepted"
+ }
+}

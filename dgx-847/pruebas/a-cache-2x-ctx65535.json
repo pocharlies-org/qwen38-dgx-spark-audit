@@ -1,0 +1,33 @@
+{
+ "base": "http://spark2:8000",
+ "model": "qwen3.8-flash-next",
+ "pasos": [
+  {
+   "paso": "1 contexto 64K",
+   "prompt_tokens": 65541,
+   "reutilizados_metricas": 0,
+   "consultados_metricas": 65543,
+   "cached_tokens_usage": null,
+   "recalculados": 65541,
+   "ttft_s": 23.474
+  },
+  {
+   "paso": "2 contexto + 2048 nuevos",
+   "prompt_tokens": 67667,
+   "reutilizados_metricas": 63008,
+   "consultados_metricas": 67669,
+   "cached_tokens_usage": null,
+   "recalculados": 4659,
+   "ttft_s": 2.103
+  },
+  {
+   "paso": "3 repetición exacta de 2",
+   "prompt_tokens": 67667,
+   "reutilizados_metricas": 65872,
+   "consultados_metricas": 67669,
+   "cached_tokens_usage": null,
+   "recalculados": 1795,
+   "ttft_s": 0.892
+  }
+ ]
+}

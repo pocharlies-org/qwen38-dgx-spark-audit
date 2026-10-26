@@ -1,0 +1,6 @@
+rep 1/5: 12 salidas, errores 0, tool calls validos 12/12
+rep 2/5: 12 salidas, errores 0, tool calls validos 12/12
+rep 3/5: 12 salidas, errores 0, tool calls validos 11/12
+rep 4/5: 12 salidas, errores 0, tool calls validos 12/12
+rep 5/5: 12 salidas, errores 0, tool calls validos 11/12
+# escrito /home/user/bench-results/dgx-847/2x/quality/tools12.json

@@ -1,0 +1,238 @@
+{
+  "tool": "qwen38_decode_sweep",
+  "mode": "sweep",
+  "args": {
+    "base_url": [
+      "http://spark3:8000"
+    ],
+    "model": "qwen3.8-flash-next",
+    "concurrency": [
+      10
+    ],
+    "warmup": 30.0,
+    "duration": 120.0,
+    "reps": 3,
+    "max_tokens": 256,
+    "prompts": "/home/user/bench-results/dgx-768/tools/fixtures/qwen38_ab/prompts.jsonl",
+    "out": "/home/user/bench-results/dgx-847/1x/decode/base-63dd55f-64k-c10.json",
+    "timeout": 600,
+    "sample_interval": 5.0,
+    "long_workers": 10,
+    "long_tokens": 64000,
+    "max_model_len": 262144,
+    "seed": 496368,
+    "thermal_url": "http://10.43.33.43:8428/api/v1/query",
+    "thermal_query": "max(node_thermal_zone_temp * on(namespace, pod) group_left(node) kube_pod_info{node=~\"nvidia-dgx|gx10-ec3d|dgx3\"})",
+    "quality": false,
+    "compare": null
+  },
+  "base_urls": [
+    "http://spark3:8000"
+  ],
+  "models": {
+    "http://spark3:8000": "qwen3.8-flash-next"
+  },
+  "started_utc": "2026-10-12T20:13:29.349+00:00",
+  "points": [
+    {
+      "concurrency": 10,
+      "rep": 0,
+      "window_utc": {
+        "start": "2026-10-12T20:13:59.542+00:00",
+        "end": "2026-10-12T20:15:59.553+00:00"
+      },
+      "window_s": 120.011,
+      "thermal_c": {
+        "start": 91.2,
+        "end": 91.9
+      },
+      "threads": 10,
+      "requests": 3,
+      "errors": 0,
+      "completion_tokens": 8,
+      "agg_tok_s": 0.067,
+      "server_tok_s": 0.067,
+      "req_tok_s_p50": 0.756,
+      "req_tok_s_p10": 0.456,
+      "ttft_p50": 90.565,
+      "ttft_p95": 92.383,
+      "frac_max_tokens": 0.0,
+      "running_mean": 3.04,
+      "foreign_requests": 0,
+      "mtp_accept_by_pos": {
+        "0": 1.0,
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0
+      },
+      "contaminado": true,
+      "targets": {
+        "http://spark3:8000": {
+          "threads": 10,
+          "requests": 3,
+          "errors": 0,
+          "completion_tokens": 8,
+          "agg_tok_s": 0.067,
+          "server_tok_s": 0.067,
+          "req_tok_s_p50": 0.756,
+          "req_tok_s_p10": 0.456,
+          "ttft_p50": 90.565,
+          "ttft_p95": 92.383,
+          "frac_max_tokens": 0.0,
+          "running_mean": 3.04,
+          "foreign_requests": 0,
+          "mtp_accept_by_pos": {
+            "0": 1.0,
+            "1": 1.0,
+            "2": 1.0,
+            "3": 1.0
+          },
+          "contaminado": true
+        }
+      }
+    },
+    {
+      "concurrency": 10,
+      "rep": 1,
+      "window_utc": {
+        "start": "2026-10-12T20:20:22.753+00:00",
+        "end": "2026-10-12T20:22:22.764+00:00"
+      },
+      "window_s": 120.012,
+      "thermal_c": {
+        "start": 90.8,
+        "end": 91.6
+      },
+      "threads": 10,
+      "requests": 3,
+      "errors": 0,
+      "completion_tokens": 8,
+      "agg_tok_s": 0.067,
+      "server_tok_s": 0.067,
+      "req_tok_s_p50": 0.773,
+      "req_tok_s_p10": 0.467,
+      "ttft_p50": 89.75,
+      "ttft_p95": 90.307,
+      "frac_max_tokens": 0.0,
+      "running_mean": 3.0,
+      "foreign_requests": 0,
+      "mtp_accept_by_pos": {
+        "0": 1.0,
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0
+      },
+      "contaminado": true,
+      "targets": {
+        "http://spark3:8000": {
+          "threads": 10,
+          "requests": 3,
+          "errors": 0,
+          "completion_tokens": 8,
+          "agg_tok_s": 0.067,
+          "server_tok_s": 0.067,
+          "req_tok_s_p50": 0.773,
+          "req_tok_s_p10": 0.467,
+          "ttft_p50": 89.75,
+          "ttft_p95": 90.307,
+          "frac_max_tokens": 0.0,
+          "running_mean": 3.0,
+          "foreign_requests": 0,
+          "mtp_accept_by_pos": {
+            "0": 1.0,
+            "1": 1.0,
+            "2": 1.0,
+            "3": 1.0
+          },
+          "contaminado": true
+        }
+      }
+    },
+    {
+      "concurrency": 10,
+      "rep": 2,
+      "window_utc": {
+        "start": "2026-10-12T20:26:45.644+00:00",
+        "end": "2026-10-12T20:28:45.654+00:00"
+      },
+      "window_s": 120.01,
+      "thermal_c": {
+        "start": 91.2,
+        "end": 91.5
+      },
+      "threads": 10,
+      "requests": 3,
+      "errors": 0,
+      "completion_tokens": 7,
+      "agg_tok_s": 0.058,
+      "server_tok_s": 0.058,
+      "req_tok_s_p50": 0.357,
+      "req_tok_s_p10": 0.356,
+      "ttft_p50": 90.655,
+      "ttft_p95": 92.617,
+      "frac_max_tokens": 0.0,
+      "running_mean": 3.04,
+      "foreign_requests": 0,
+      "mtp_accept_by_pos": {
+        "0": 1.0,
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0
+      },
+      "contaminado": true,
+      "targets": {
+        "http://spark3:8000": {
+          "threads": 10,
+          "requests": 3,
+          "errors": 0,
+          "completion_tokens": 7,
+          "agg_tok_s": 0.058,
+          "server_tok_s": 0.058,
+          "req_tok_s_p50": 0.357,
+          "req_tok_s_p10": 0.356,
+          "ttft_p50": 90.655,
+          "ttft_p95": 92.617,
+          "frac_max_tokens": 0.0,
+          "running_mean": 3.04,
+          "foreign_requests": 0,
+          "mtp_accept_by_pos": {
+            "0": 1.0,
+            "1": 1.0,
+            "2": 1.0,
+            "3": 1.0
+          },
+          "contaminado": true
+        }
+      }
+    }
+  ],
+  "ended_utc": "2026-10-12T20:32:38.677+00:00",
+  "complete": true,
+  "summary": {
+    "10": {
+      "reps": 3,
+      "agg_tok_s_median": 0.067,
+      "server_tok_s_median": 0.067,
+      "req_tok_s_p50_median": 0.756,
+      "req_tok_s_p10_median": 0.456,
+      "ttft_p50_median": 90.565,
+      "ttft_p95_median": 92.383,
+      "running_mean_median": 3.04,
+      "mtp_accept_by_pos_median": {
+        "0": 1.0,
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0
+      },
+      "agg_tok_s_min": 0.058,
+      "agg_tok_s_max": 0.067,
+      "agg_tok_s_spread": 0.13432835820895522,
+      "contaminated_points": 3,
+      "targets": {
+        "http://spark3:8000": {
+          "agg_tok_s_median": 0.067
+        }
+      }
+    }
+  }
+}

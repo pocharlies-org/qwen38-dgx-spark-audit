@@ -1,0 +1,993 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "internal.example/launch-revision": "vllm-qwen38fn-20261010-tp3"
+                },
+                "creationTimestamp": "2026-10-13T16:20:49Z",
+                "generateName": "qwen38-flash-next-head-6878d7b6b7-",
+                "generation": 1,
+                "labels": {
+                    "app": "qwen38-flash-next-head",
+                    "endpoint-role": "production",
+                    "llm.dgx-infra/model-family": "qwen38-next",
+                    "llm.dgx-infra/pool": "tooling-resident",
+                    "pod-template-hash": "6878d7b6b7"
+                },
+                "name": "qwen38-flash-next-head-6878d7b6b7-5xtbw",
+                "namespace": "llm",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "qwen38-flash-next-head-6878d7b6b7",
+                        "uid": "64eba312-adac-43e5-b3a2-8285e9231267"
+                    }
+                ],
+                "resourceVersion": "269330618",
+                "uid": "f69ecb25-9ff1-4936-bb15-4a3d5b630394"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "command": [
+                            "bash",
+                            "/opt/qwen38fn/launch.sh"
+                        ],
+                        "env": [
+                            {
+                                "name": "QWEN_NCCL_RING_HOST",
+                                "value": "dgx2"
+                            },
+                            {
+                                "name": "NCCL_CUMEM_ENABLE",
+                                "value": "1"
+                            },
+                            {
+                                "name": "NCCL_RUNTIME_CONNECT",
+                                "value": "1"
+                            },
+                            {
+                                "name": "NCCL_ALGO",
+                                "value": "Ring"
+                            },
+                            {
+                                "name": "LD_PRELOAD",
+                                "value": "/opt/nccl-ring/lib/libnccl.so.2"
+                            },
+                            {
+                                "name": "VLLM_NCCL_SO_PATH",
+                                "value": "/opt/nccl-ring/lib/libnccl.so.2"
+                            },
+                            {
+                                "name": "VLLM_NODE_RANK",
+                                "value": "0"
+                            },
+                            {
+                                "name": "VLLM_HOST_IP",
+                                "value": "spark2"
+                            },
+                            {
+                                "name": "VLLM_MASTER_ADDR",
+                                "value": "spark2"
+                            },
+                            {
+                                "name": "MODEL_PATH",
+                                "value": "/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3"
+                            },
+                            {
+                                "name": "MODEL_REVISION",
+                                "value": "16c9bd54788d12390838a65ce4a4ecda97fa5f1d"
+                            },
+                            {
+                                "name": "SERVED_MODEL_NAME",
+                                "value": "qwen38-flash-next"
+                            },
+                            {
+                                "name": "GPU_MEM_UTIL",
+                                "value": "0.816"
+                            },
+                            {
+                                "name": "KV_CACHE_MEMORY_BYTES",
+                                "value": "51539607552"
+                            },
+                            {
+                                "name": "MAX_MODEL_LEN",
+                                "value": "262144"
+                            },
+                            {
+                                "name": "MAX_NUM_SEQS",
+                                "value": "10"
+                            },
+                            {
+                                "name": "MAX_NUM_BATCHED_TOKENS",
+                                "value": "4096"
+                            },
+                            {
+                                "name": "LONG_PREFILL_TOKEN_THRESHOLD",
+                                "value": "2048"
+                            },
+                            {
+                                "name": "MAMBA_SSM_CACHE_DTYPE",
+                                "value": "bfloat16"
+                            },
+                            {
+                                "name": "VLLM_QSA_DET_TOPK",
+                                "value": "1"
+                            },
+                            {
+                                "name": "VLLM_ATTENTION_CONFIG",
+                                "value": "{\"indexer_kv_dtype\":\"fp8\"}"
+                            },
+                            {
+                                "name": "SCHEDULING_POLICY",
+                                "value": "priority"
+                            },
+                            {
+                                "name": "KV_CACHE_DTYPE",
+                                "value": "fp8_e4m3"
+                            },
+                            {
+                                "name": "COMPILATION_CONFIG",
+                                "value": "{\"mode\":3,\"cudagraph_mode\":\"FULL_AND_PIECEWISE\"}"
+                            },
+                            {
+                                "name": "SPECULATIVE_CONFIG",
+                                "value": "{\"method\":\"mtp\",\"num_speculative_tokens\":2,\"disable_eagle_block_drop\":true,\"num_speculative_tokens_per_batch_size\":[[1,16,2]],\"rejection_sample_method\":\"block\",\"draft_sample_method\":\"probabilistic\"}"
+                            },
+                            {
+                                "name": "VLLM_ADDITIONAL_CONFIG",
+                                "value": "{\"gdn_prefill_backend\":\"triton\"}"
+                            },
+                            {
+                                "name": "VLLM_SPARSE_INDEXER_MAX_LOGITS_MB",
+                                "value": "64"
+                            },
+                            {
+                                "name": "TOOL_CALL_PARSER",
+                                "value": "qwen3_coder"
+                            },
+                            {
+                                "name": "REASONING_PARSER",
+                                "value": "qwen3"
+                            },
+                            {
+                                "name": "VLLM_CPUSET",
+                                "value": "5-9,15-19"
+                            },
+                            {
+                                "name": "TORCH_CUDA_ARCH_LIST",
+                                "value": "12.1f"
+                            },
+                            {
+                                "name": "CUTE_DSL_ARCH",
+                                "value": "sm_121a"
+                            },
+                            {
+                                "name": "FLASHINFER_CUDA_ARCH_LIST",
+                                "value": "12.1a"
+                            },
+                            {
+                                "name": "FLASHINFER_DISABLE_VERSION_CHECK",
+                                "value": "1"
+                            },
+                            {
+                                "name": "VLLM_PLE_CPU_OFFLOAD",
+                                "value": "0"
+                            },
+                            {
+                                "name": "QWEN_PLE_MMAP_DIR",
+                                "value": "/ple"
+                            },
+                            {
+                                "name": "VLLM_USE_DEEP_GEMM",
+                                "value": "0"
+                            },
+                            {
+                                "name": "VLLM_USE_V2_MODEL_RUNNER",
+                                "value": "1"
+                            },
+                            {
+                                "name": "NCCL_SOCKET_IFNAME",
+                                "value": "enP7s7"
+                            },
+                            {
+                                "name": "GLOO_SOCKET_IFNAME",
+                                "value": "enP7s7"
+                            },
+                            {
+                                "name": "NCCL_IB_MERGE_NICS",
+                                "value": "0"
+                            },
+                            {
+                                "name": "NCCL_NET_PLUGIN",
+                                "value": "none"
+                            },
+                            {
+                                "name": "NCCL_IB_DISABLE",
+                                "value": "0"
+                            },
+                            {
+                                "name": "NCCL_CROSS_NIC",
+                                "value": "1"
+                            },
+                            {
+                                "name": "NCCL_NET",
+                                "value": "IB"
+                            },
+                            {
+                                "name": "NCCL_IB_ADDR_FAMILY",
+                                "value": "AF_INET"
+                            },
+                            {
+                                "name": "NCCL_IB_ROCE_VERSION_NUM",
+                                "value": "2"
+                            },
+                            {
+                                "name": "NCCL_IGNORE_CPU_AFFINITY",
+                                "value": "1"
+                            },
+                            {
+                                "name": "TP_SOCKET_IFNAME",
+                                "value": "enP7s7"
+                            },
+                            {
+                                "name": "NCCL_IB_AUTO_DETECT",
+                                "value": "0"
+                            },
+                            {
+                                "name": "NCCL_NVLS_ENABLE",
+                                "value": "0"
+                            },
+                            {
+                                "name": "NCCL_DEBUG",
+                                "value": "INFO"
+                            },
+                            {
+                                "name": "NCCL_DEBUG_SUBSYS",
+                                "value": "INIT,NET"
+                            },
+                            {
+                                "name": "HF_HOME",
+                                "value": "/cache/huggingface"
+                            },
+                            {
+                                "name": "HF_HUB_OFFLINE",
+                                "value": "1"
+                            },
+                            {
+                                "name": "TRANSFORMERS_OFFLINE",
+                                "value": "1"
+                            },
+                            {
+                                "name": "VLLM_HTTP_TIMEOUT_KEEP_ALIVE",
+                                "value": "600"
+                            },
+                            {
+                                "name": "VLLM_USAGE_SOURCE",
+                                "value": "production-docker-image"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_DIRECTION",
+                                "value": "/opt/refusal/refusal_direction_flashnext.npy"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_LAMBDA",
+                                "value": "0"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_PROBE",
+                                "value": "0"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_PROBE_LAYERS",
+                                "value": "16,20,24,28,32"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_PROBE_CAL",
+                                "value": "/opt/refusal-probe-cal/cal.json"
+                            },
+                            {
+                                "name": "QWEN38_B12X",
+                                "value": "1"
+                            }
+                        ],
+                        "image": "docker.io/vllm/vllm-openai@sha256:96b234afa2867031ad0a226b149a06483861e613e3a3083da53398d347b5ffbd",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "vllm",
+                        "ports": [
+                            {
+                                "containerPort": 8000,
+                                "hostPort": 8000,
+                                "name": "http",
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/health",
+                                "port": 8000,
+                                "scheme": "HTTP"
+                            },
+                            "periodSeconds": 15,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 10
+                        },
+                        "resources": {
+                            "limits": {
+                                "memory": "112Gi",
+                                "nvidia.com/gpu": "1"
+                            },
+                            "requests": {
+                                "cpu": "4",
+                                "memory": "88Gi",
+                                "nvidia.com/gpu": "1"
+                            }
+                        },
+                        "securityContext": {
+                            "capabilities": {
+                                "add": [
+                                    "IPC_LOCK",
+                                    "SYS_PTRACE"
+                                ]
+                            }
+                        },
+                        "startupProbe": {
+                            "failureThreshold": 120,
+                            "httpGet": {
+                                "path": "/health",
+                                "port": 8000,
+                                "scheme": "HTTP"
+                            },
+                            "periodSeconds": 30,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 10
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/opt/qwen38fn-mtp-dv",
+                                "name": "mtp-draft-vocab",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/nccl-ring",
+                                "name": "nccl-ring",
+                                "readOnly": true,
+                                "subPath": "opt/nccl-ring"
+                            },
+                            {
+                                "mountPath": "/cache/huggingface",
+                                "name": "hf-cache",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/qwen38fn",
+                                "name": "launch",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/ursu",
+                                "name": "ursu-root",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/ursu/overlays",
+                                "name": "ursu-overlays",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/ursu/refusal",
+                                "name": "ursu-refusal",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/ursu/refusal/payload",
+                                "name": "ursu-refusal-payload",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/refusal-probe-cal",
+                                "name": "refusal-probe-cal",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/qwen38fn-kdet",
+                                "name": "kernel-det",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/ple",
+                                "name": "ple-table",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/qwen38fn-ple",
+                                "name": "ple-mmap",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/tmp",
+                                "name": "vllm-tmp"
+                            },
+                            {
+                                "mountPath": "/dev/infiniband",
+                                "name": "infiniband"
+                            },
+                            {
+                                "mountPath": "/dev/shm",
+                                "name": "shm"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-6q8n5",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "Default",
+                "enableServiceLinks": false,
+                "hostNetwork": true,
+                "imagePullSecrets": [
+                    {
+                        "name": "harbor-pull"
+                    }
+                ],
+                "initContainers": [
+                    {
+                        "command": [
+                            "python3",
+                            "/opt/qwen38fn-ple/build_ple_table.py"
+                        ],
+                        "env": [
+                            {
+                                "name": "CKPT_DIR",
+                                "value": "/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3"
+                            },
+                            {
+                                "name": "CKPT_REVISION",
+                                "value": "16c9bd54788d12390838a65ce4a4ecda97fa5f1d"
+                            },
+                            {
+                                "name": "OUT_DIR",
+                                "value": "/ple"
+                            },
+                            {
+                                "name": "TP_SIZE",
+                                "value": "3"
+                            },
+                            {
+                                "name": "TP_RANK",
+                                "value": "0"
+                            },
+                            {
+                                "name": "SPECULATIVE_CONFIG",
+                                "value": "{\"method\":\"mtp\",\"num_speculative_tokens\":1,\"disable_eagle_block_drop\":true,\"num_speculative_tokens_per_batch_size\":[[1,16,1]],\"rejection_sample_method\":\"block\",\"draft_sample_method\":\"probabilistic\"}"
+                            }
+                        ],
+                        "image": "docker.io/vllm/vllm-openai@sha256:96b234afa2867031ad0a226b149a06483861e613e3a3083da53398d347b5ffbd",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "ple-table",
+                        "resources": {
+                            "limits": {
+                                "memory": "4Gi"
+                            },
+                            "requests": {
+                                "cpu": "1",
+                                "memory": "1Gi"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/cache/huggingface",
+                                "name": "hf-cache",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/ple",
+                                "name": "ple-table"
+                            },
+                            {
+                                "mountPath": "/opt/qwen38fn-ple",
+                                "name": "ple-mmap",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-6q8n5",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "nodeName": "gx10-ec3d",
+                "nodeSelector": {
+                    "kubernetes.io/arch": "arm64",
+                    "kubernetes.io/hostname": "gx10-ec3d"
+                },
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "runtimeClassName": "nvidia",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 120,
+                "tolerations": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "dedicated",
+                        "operator": "Equal",
+                        "value": "llm"
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "image": {
+                            "pullPolicy": "IfNotPresent",
+                            "reference": "internal.example/homelab/nccl-ring@sha256:79db26e7877a099847cf12c2067a3dd3f02156c51a0d77386691b272316ce77e"
+                        },
+                        "name": "nccl-ring"
+                    },
+                    {
+                        "name": "hf-cache",
+                        "persistentVolumeClaim": {
+                            "claimName": "hf-cache-nvidia-dgx-ro",
+                            "readOnly": true
+                        }
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 365,
+                            "name": "qwen38-flash-next-vllm-launch"
+                        },
+                        "name": "launch"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-ursu-root"
+                        },
+                        "name": "ursu-root"
+                    },
+                    {
+                        "name": "ursu-overlays",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "configMap": {
+                                        "name": "qwen38fn-ursu-overlays-a"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "name": "qwen38fn-ursu-overlays-b"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-ursu-refusal"
+                        },
+                        "name": "ursu-refusal"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-ursu-refusal-payload"
+                        },
+                        "name": "ursu-refusal-payload"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-kernel-det"
+                        },
+                        "name": "kernel-det"
+                    },
+                    {
+                        "hostPath": {
+                            "path": "/home/user/.cache/qwen38fn-ple-ursu",
+                            "type": "DirectoryOrCreate"
+                        },
+                        "name": "ple-table"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-mtp-draft-vocab"
+                        },
+                        "name": "mtp-draft-vocab"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-ple-mmap"
+                        },
+                        "name": "ple-mmap"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-refusal-probe-cal",
+                            "optional": true
+                        },
+                        "name": "refusal-probe-cal"
+                    },
+                    {
+                        "hostPath": {
+                            "path": "/home/user/.cache/vllm-tmp",
+                            "type": "DirectoryOrCreate"
+                        },
+                        "name": "vllm-tmp"
+                    },
+                    {
+                        "hostPath": {
+                            "path": "/dev/infiniband",
+                            "type": "Directory"
+                        },
+                        "name": "infiniband"
+                    },
+                    {
+                        "emptyDir": {
+                            "medium": "Memory",
+                            "sizeLimit": "16Gi"
+                        },
+                        "name": "shm"
+                    },
+                    {
+                        "name": "kube-api-access-6q8n5",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "allocatedResources": {
+                    "cpu": "4",
+                    "memory": "88Gi",
+                    "nvidia.com/gpu": "1"
+                },
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-13T16:20:52Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-13T16:20:53Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-13T16:29:22Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-13T16:29:22Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-13T16:20:51Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "allocatedResources": {
+                            "cpu": "4",
+                            "memory": "88Gi",
+                            "nvidia.com/gpu": "1"
+                        },
+                        "allocatedResourcesStatus": [
+                            {
+                                "name": "nvidia.com/gpu",
+                                "resources": [
+                                    {
+                                        "health": "Healthy",
+                                        "resourceID": "GPU-b89ed244-0cb3-44dc-0a2e-928c5806c194::1"
+                                    }
+                                ]
+                            }
+                        ],
+                        "containerID": "containerd://a9ba82fe2e2097d2fdf8e56dba5a56c163955a862c707e6c66b46967c6488786",
+                        "image": "sha256:a1acfd251f5c8d2b69eab0e7b8fd491bd63f3f3ac093bdb767495fa66ae0035b",
+                        "imageID": "docker.io/vllm/vllm-openai@sha256:96b234afa2867031ad0a226b149a06483861e613e3a3083da53398d347b5ffbd",
+                        "lastState": {},
+                        "name": "vllm",
+                        "ready": true,
+                        "resources": {
+                            "limits": {
+                                "memory": "112Gi",
+                                "nvidia.com/gpu": "1"
+                            },
+                            "requests": {
+                                "cpu": "4",
+                                "memory": "88Gi",
+                                "nvidia.com/gpu": "1"
+                            }
+                        },
+                        "restartCount": 0,
+                        "started": true,
+                        "state": {
+                            "running": {
+                                "startedAt": "2026-10-13T16:20:53Z"
+                            }
+                        },
+                        "user": {
+                            "linux": {
+                                "gid": 0,
+                                "supplementalGroups": [
+                                    0
+                                ],
+                                "uid": 0
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/opt/qwen38fn-mtp-dv",
+                                "name": "mtp-draft-vocab",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/opt/nccl-ring",
+                                "name": "nccl-ring",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/cache/huggingface",
+                                "name": "hf-cache",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/opt/qwen38fn",
+                                "name": "launch",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/opt/ursu",
+                                "name": "ursu-root",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/opt/ursu/overlays",
+                                "name": "ursu-overlays",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/opt/ursu/refusal",
+                                "name": "ursu-refusal",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/opt/ursu/refusal/payload",
+                                "name": "ursu-refusal-payload",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/opt/refusal-probe-cal",
+                                "name": "refusal-probe-cal",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/opt/qwen38fn-kdet",
+                                "name": "kernel-det",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/ple",
+                                "name": "ple-table",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/opt/qwen38fn-ple",
+                                "name": "ple-mmap",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/tmp",
+                                "name": "vllm-tmp"
+                            },
+                            {
+                                "mountPath": "/dev/infiniband",
+                                "name": "infiniband"
+                            },
+                            {
+                                "mountPath": "/dev/shm",
+                                "name": "shm"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-6q8n5",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "tailnet-node",
+                "hostIPs": [
+                    {
+                        "ip": "tailnet-node"
+                    }
+                ],
+                "initContainerStatuses": [
+                    {
+                        "allocatedResources": {
+                            "cpu": "1",
+                            "memory": "1Gi"
+                        },
+                        "containerID": "containerd://0ef0568fe10b032e8df1d8a1b751ec0f0a88e88ac6e3678793faa14c6e1a6b18",
+                        "image": "sha256:a1acfd251f5c8d2b69eab0e7b8fd491bd63f3f3ac093bdb767495fa66ae0035b",
+                        "imageID": "docker.io/vllm/vllm-openai@sha256:96b234afa2867031ad0a226b149a06483861e613e3a3083da53398d347b5ffbd",
+                        "lastState": {},
+                        "name": "ple-table",
+                        "ready": true,
+                        "resources": {
+                            "limits": {
+                                "memory": "4Gi"
+                            },
+                            "requests": {
+                                "cpu": "1",
+                                "memory": "1Gi"
+                            }
+                        },
+                        "restartCount": 0,
+                        "started": false,
+                        "state": {
+                            "terminated": {
+                                "containerID": "containerd://0ef0568fe10b032e8df1d8a1b751ec0f0a88e88ac6e3678793faa14c6e1a6b18",
+                                "exitCode": 0,
+                                "finishedAt": "2026-10-13T16:20:52Z",
+                                "reason": "Completed",
+                                "startedAt": "2026-10-13T16:20:52Z"
+                            }
+                        },
+                        "user": {
+                            "linux": {
+                                "gid": 0,
+                                "supplementalGroups": [
+                                    0
+                                ],
+                                "uid": 0
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/cache/huggingface",
+                                "name": "hf-cache",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/ple",
+                                "name": "ple-table"
+                            },
+                            {
+                                "mountPath": "/opt/qwen38fn-ple",
+                                "name": "ple-mmap",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-6q8n5",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Running",
+                "podIP": "tailnet-node",
+                "podIPs": [
+                    {
+                        "ip": "tailnet-node"
+                    }
+                ],
+                "qosClass": "Burstable",
+                "resources": {
+                    "limits": {
+                        "memory": "112Gi"
+                    },
+                    "requests": {
+                        "cpu": "3996m",
+                        "memory": "88Gi"
+                    }
+                },
+                "startTime": "2026-10-13T16:20:51Z"
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}

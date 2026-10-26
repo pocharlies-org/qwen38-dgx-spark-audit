@@ -1,0 +1,5 @@
+C=16 rep=1/1 agg=337.009 tok/s server=320.678 p50=20.654 p10=18.995 ttft_p50=0.436 ttft_p95=0.496 running=15.692 reqs=79 err=0 contaminado=False
+
+# mediana entre repeticiones (agg_tok_s min..max, dispersion relativa)
+C= 16 agg_median=337.009 [337.009..337.009] spread=0.0 ttft_p50=0.436 contaminados=0/1
+# escrito mtp/definitivo/fork-tp3/decode-c16.json

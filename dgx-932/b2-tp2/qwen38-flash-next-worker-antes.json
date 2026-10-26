@@ -1,0 +1,305 @@
+{
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+        "annotations": {
+            "argocd.argoproj.io/sync-wave": "1",
+            "argocd.argoproj.io/tracking-id": "ai:apps/Deployment:llm/qwen38-flash-next-worker",
+            "deployment.kubernetes.io/revision": "44"
+        },
+        "creationTimestamp": "2026-10-12T07:28:30Z",
+        "generation": 96,
+        "labels": {
+            "app": "qwen38-flash-next-worker",
+            "llm.dgx-infra/model-family": "qwen38-next"
+        },
+        "name": "qwen38-flash-next-worker",
+        "namespace": "llm",
+        "resourceVersion": "274266785",
+        "uid": "bd573e35-ad63-46e9-bef6-653e3ca9ab51"
+    },
+    "spec": {
+        "progressDeadlineSeconds": 600,
+        "replicas": 1,
+        "revisionHistoryLimit": 10,
+        "selector": {
+            "matchLabels": {
+                "app": "qwen38-flash-next-worker"
+            }
+        },
+        "strategy": {
+            "type": "Recreate"
+        },
+        "template": {
+            "metadata": {
+                "annotations": {
+                    "internal.example/launch-revision": "ursu-b12x-2mas1-20261015-dgx940"
+                },
+                "labels": {
+                    "app": "qwen38-flash-next-worker",
+                    "llm.dgx-infra/model-family": "qwen38-next"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "bash",
+                            "-c",
+                            "python3 -I /etc/ursu/worker-sigue-head.py \u003e /tmp/head-id \u0026\u0026 exec bash /opt/ursu-mod/run.sh /etc/ursu/serve-gdn-mix.sh"
+                        ],
+                        "env": [
+                            {
+                                "name": "NODE_RANK",
+                                "value": "1"
+                            },
+                            {
+                                "name": "HEADLESS",
+                                "value": "--headless"
+                            },
+                            {
+                                "name": "VLLM_HOST_IP",
+                                "value": "10.0.0.1"
+                            },
+                            {
+                                "name": "VLLM_MTP_DRAFT_VOCAB",
+                                "value": "/opt/mtp-vocab-es/ids-es-K131072.txt.gz"
+                            },
+                            {
+                                "name": "QWEN_GDN_MIX",
+                                "value": "A"
+                            },
+                            {
+                                "name": "GDN_TP",
+                                "value": "2"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_DIRECTION",
+                                "value": "/opt/refusal/refusal_direction_flashnext.npy"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_LAMBDA",
+                                "value": "0"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_PROBE",
+                                "value": "1"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_PROBE_LAYERS",
+                                "value": "16,20,24,28,32"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_PROBE_CAL",
+                                "value": "/opt/refusal-probe-cal/cal.json"
+                            }
+                        ],
+                        "envFrom": [
+                            {
+                                "configMapRef": {
+                                    "name": "qwen38fn-b12x-env-2x"
+                                }
+                            }
+                        ],
+                        "image": "ghcr.io/ursuciprian/spark-vllm-b12x@sha256:1346035488a5c8a0f405ade8e74febf68c66b8df1e026b7e3a6fb83cb9f4ce13",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "exec": {
+                                "command": [
+                                    "python3",
+                                    "-I",
+                                    "/etc/ursu/worker-sigue-head.py",
+                                    "--vigila"
+                                ]
+                            },
+                            "failureThreshold": 1,
+                            "initialDelaySeconds": 30,
+                            "periodSeconds": 30,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 20
+                        },
+                        "name": "vllm",
+                        "resources": {
+                            "limits": {
+                                "memory": "112Gi",
+                                "nvidia.com/gpu": "1"
+                            },
+                            "requests": {
+                                "memory": "16Gi"
+                            }
+                        },
+                        "securityContext": {
+                            "privileged": true
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/etc/ursu",
+                                "name": "recipe",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/cache/huggingface",
+                                "name": "hf"
+                            },
+                            {
+                                "mountPath": "/cache/xdg",
+                                "name": "xdg"
+                            },
+                            {
+                                "mountPath": "/dev/shm",
+                                "name": "shm"
+                            },
+                            {
+                                "mountPath": "/opt/mtp-vocab-es",
+                                "name": "vocab-es",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/ursu-mod",
+                                "name": "mod",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/ursu-mod/refusal",
+                                "name": "mod-refusal",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/ursu-mod/refusal/payload",
+                                "name": "mod-payload",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/refusal-probe-cal",
+                                "name": "probe-cal",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "Default",
+                "enableServiceLinks": false,
+                "hostIPC": true,
+                "hostNetwork": true,
+                "imagePullSecrets": [
+                    {
+                        "name": "harbor-pull"
+                    }
+                ],
+                "nodeSelector": {
+                    "kubernetes.io/arch": "arm64",
+                    "kubernetes.io/hostname": "nvidia-dgx"
+                },
+                "restartPolicy": "Always",
+                "runtimeClassName": "nvidia",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "qwen38-tp2-worker",
+                "serviceAccountName": "qwen38-tp2-worker",
+                "terminationGracePeriodSeconds": 120,
+                "tolerations": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "dedicated",
+                        "operator": "Equal",
+                        "value": "llm"
+                    }
+                ],
+                "volumes": [
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-b12x-recipe"
+                        },
+                        "name": "recipe"
+                    },
+                    {
+                        "hostPath": {
+                            "path": "/home/dibanerz/.cache/huggingface",
+                            "type": "Directory"
+                        },
+                        "name": "hf"
+                    },
+                    {
+                        "hostPath": {
+                            "path": "/srv/ursu-cache/2x",
+                            "type": "DirectoryOrCreate"
+                        },
+                        "name": "xdg"
+                    },
+                    {
+                        "emptyDir": {
+                            "medium": "Memory",
+                            "sizeLimit": "25Gi"
+                        },
+                        "name": "shm"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-b12x-draft-vocab-es"
+                        },
+                        "name": "vocab-es"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-b12x-mod"
+                        },
+                        "name": "mod"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-b12x-mod-refusal"
+                        },
+                        "name": "mod-refusal"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-b12x-mod-payload"
+                        },
+                        "name": "mod-payload"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-refusal-probe-cal",
+                            "optional": true
+                        },
+                        "name": "probe-cal"
+                    }
+                ]
+            }
+        }
+    },
+    "status": {
+        "availableReplicas": 1,
+        "conditions": [
+            {
+                "lastTransitionTime": "2026-10-12T07:28:30Z",
+                "lastUpdateTime": "2026-10-15T21:11:02Z",
+                "message": "ReplicaSet \"qwen38-flash-next-worker-787cc99768\" has successfully progressed.",
+                "reason": "NewReplicaSetAvailable",
+                "status": "True",
+                "type": "Progressing"
+            },
+            {
+                "lastTransitionTime": "2026-10-15T22:37:51Z",
+                "lastUpdateTime": "2026-10-15T22:37:51Z",
+                "message": "Deployment has minimum availability.",
+                "reason": "MinimumReplicasAvailable",
+                "status": "True",
+                "type": "Available"
+            }
+        ],
+        "observedGeneration": 96,
+        "readyReplicas": 1,
+        "replicas": 1,
+        "terminatingReplicas": 0,
+        "updatedReplicas": 1
+    }
+}

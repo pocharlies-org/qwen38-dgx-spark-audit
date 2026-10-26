@@ -1,0 +1,121 @@
+{
+  "tool": "qwen38_decode_sweep",
+  "mode": "sweep",
+  "args": {
+    "base_url": [
+      "http://spark3:8000"
+    ],
+    "model": "qwen3.8-flash-next",
+    "concurrency": [
+      4
+    ],
+    "warmup": 20.0,
+    "duration": 60.0,
+    "reps": 1,
+    "max_tokens": 256,
+    "prompts": "/home/user/bench-results/dgx-768/tools/fixtures/qwen38_ab/prompts.jsonl",
+    "out": "/home/user/bench-results/dgx-847/mtp/definitivo/tp21-A/junto-c4+4-tp1.json",
+    "timeout": 600,
+    "sample_interval": 5.0,
+    "long_workers": 0,
+    "long_tokens": 32000,
+    "max_model_len": 262144,
+    "seed": 496368,
+    "thermal_url": null,
+    "thermal_query": "max(node_thermal_zone_temp * on(namespace, pod) group_left(node) kube_pod_info{node=~\"nvidia-dgx|gx10-ec3d\"})",
+    "quality": false,
+    "compare": null
+  },
+  "base_urls": [
+    "http://spark3:8000"
+  ],
+  "models": {
+    "http://spark3:8000": "qwen3.8-flash-next"
+  },
+  "started_utc": "2026-10-14T12:02:50.042+00:00",
+  "points": [
+    {
+      "concurrency": 4,
+      "rep": 0,
+      "window_utc": {
+        "start": "2026-10-14T12:03:10.053+00:00",
+        "end": "2026-10-14T12:04:10.062+00:00"
+      },
+      "window_s": 60.009,
+      "thermal_c": null,
+      "threads": 4,
+      "requests": 23,
+      "errors": 0,
+      "completion_tokens": 5888,
+      "agg_tok_s": 98.119,
+      "server_tok_s": 98.919,
+      "req_tok_s_p50": 25.361,
+      "req_tok_s_p10": 23.306,
+      "ttft_p50": 0.372,
+      "ttft_p95": 0.438,
+      "frac_max_tokens": 1.0,
+      "running_mean": 3.692,
+      "foreign_requests": 0,
+      "mtp_accept_by_pos": {
+        "0": 0.7317,
+        "1": 0.4807,
+        "2": 0.2763,
+        "3": 0.1555
+      },
+      "contaminado": false,
+      "targets": {
+        "http://spark3:8000": {
+          "threads": 4,
+          "requests": 23,
+          "errors": 0,
+          "completion_tokens": 5888,
+          "agg_tok_s": 98.119,
+          "server_tok_s": 98.919,
+          "req_tok_s_p50": 25.361,
+          "req_tok_s_p10": 23.306,
+          "ttft_p50": 0.372,
+          "ttft_p95": 0.438,
+          "frac_max_tokens": 1.0,
+          "running_mean": 3.692,
+          "foreign_requests": 0,
+          "mtp_accept_by_pos": {
+            "0": 0.7317,
+            "1": 0.4807,
+            "2": 0.2763,
+            "3": 0.1555
+          },
+          "contaminado": false
+        }
+      }
+    }
+  ],
+  "ended_utc": "2026-10-14T12:04:13.485+00:00",
+  "complete": true,
+  "summary": {
+    "4": {
+      "reps": 1,
+      "agg_tok_s_median": 98.119,
+      "server_tok_s_median": 98.919,
+      "req_tok_s_p50_median": 25.361,
+      "req_tok_s_p10_median": 23.306,
+      "ttft_p50_median": 0.372,
+      "ttft_p95_median": 0.438,
+      "running_mean_median": 3.692,
+      "mtp_accept_by_pos_median": {
+        "0": 0.732,
+        "1": 0.481,
+        "2": 0.276,
+        "3": 0.155
+      },
+      "agg_tok_s_min": 98.119,
+      "agg_tok_s_max": 98.119,
+      "agg_tok_s_spread": 0.0,
+      "contaminated_points": 0,
+      "targets": {
+        "http://spark3:8000": {
+          "agg_tok_s_median": 98.119
+        }
+      }
+    }
+  }
+}

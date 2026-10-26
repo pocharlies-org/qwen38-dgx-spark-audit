@@ -1,0 +1,14 @@
+Number of models evaluated:   0%|          | 0/1 [00:00<?, ?it/s]Number of models evaluated: 100%|██████████| 1/1 [00:00<00:00,  9.08it/s]Number of models evaluated: 100%|██████████| 1/1 [00:00<00:00,  9.07it/s]
+🦍 Model: openbmb_MiniCPM-SALA-FC
+🔍 Running test: parallel_multiple
+✅ Test completed: parallel_multiple. 🎯 Accuracy: 70.00%
+🔍 Running test: simple_python
+✅ Test completed: simple_python. 🎯 Accuracy: 89.00%
+🔍 Running test: parallel
+✅ Test completed: parallel. 🎯 Accuracy: 62.00%
+🔍 Running test: multiple
+✅ Test completed: multiple. 🎯 Accuracy: 94.00%
+📈 Aggregating data to generate leaderboard score table...
+🏁 Evaluation completed. See /home/user/bench-results/dgx-847/2x/quality/bfcl/score/data_overall.csv for overall evaluation results on BFCL V4.
+⚠️  Partial evaluation for a single category is enabled (--partial-run flag is set). Accuracy scores are computed only on the subset of entries present in the model result files, which may differ from a full evaluation and from the official leaderboard score.
+See /home/user/bench-results/dgx-847/2x/quality/bfcl/score/data_live.csv, /home/user/bench-results/dgx-847/2x/quality/bfcl/score/data_non_live.csv, /home/user/bench-results/dgx-847/2x/quality/bfcl/score/data_multi_turn.csv, /home/user/bench-results/dgx-847/2x/quality/bfcl/score/data_agentic.csv and /home/user/bench-results/dgx-847/2x/quality/bfcl/score/data_format_sensitivity.csv for detailed evaluation results on each sub-section categories respectively.

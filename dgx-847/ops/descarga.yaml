@@ -1,0 +1,68 @@
+# DGX-847: pesos de la receta de ursuciprian. Sin GPU y con 4 GiB de límite: la caché de páginas de la escritura
+# se queda en el cgroup del Job y no desplaza al residente. dgx1: revisión 2× (la ve dgx2 por el NFS de hf-cache);
+# dgx3: revisión 1× en disco local (la PLE se lee por mmap del checkpoint, no puede ir por NFS).
+apiVersion: batch/v1
+kind: Job
+metadata: {name: ursu-descarga-dgx1, namespace: llm, labels: {app: ursu-descarga, dgx-847: prueba}}
+spec:
+  backoffLimit: 3
+  template:
+    metadata: {labels: {app: ursu-descarga}}
+    spec:
+      restartPolicy: OnFailure
+      nodeSelector: {kubernetes.io/hostname: nvidia-dgx}
+      tolerations: [{operator: Exists}]
+      containers:
+      - name: hf
+        image: docker.io/vllm/vllm-openai@sha256:96b234afa2867031ad0a226b149a06483861e613e3a3083da53398d347b5ffbd
+        command: [python3, -c]
+        args:
+        - |
+          import os
+          from huggingface_hub import snapshot_download as d
+          for repo, rev, pat in [("ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE", os.environ["REV"], None),
+                                 ("local-inference-lab/Qwen3.8-Flash-Next-NVFP4", "7c4f1bc1a2d6847e0cbc01ac6b823f00251de8dd",
+                                  ["model-00035-of-00036.safetensors", "model.safetensors.index.json"])]:
+              p = d(repo, revision=rev, allow_patterns=pat, max_workers=4)
+              print("OK", repo, rev, p, flush=True)
+        env:
+        - {name: HF_HOME, value: /cache/huggingface}
+        - {name: REV, value: 16c9bd54788d12390838a65ce4a4ecda97fa5f1d}
+        - {name: HF_HUB_DISABLE_TELEMETRY, value: "1"}
+        - {name: HF_HUB_DISABLE_XET, value: "1"}  # con xet y 8 workers el Job pasaba de 4 GiB (OOMKilled)
+        resources: {requests: {cpu: "2", memory: 1Gi}, limits: {memory: 4Gi}}
+        volumeMounts: [{name: hf, mountPath: /cache/huggingface}]
+      volumes: [{name: hf, hostPath: {path: /home/dibanerz/.cache/huggingface, type: Directory}}]
+---
+apiVersion: batch/v1
+kind: Job
+metadata: {name: ursu-descarga-dgx3, namespace: llm, labels: {app: ursu-descarga, dgx-847: prueba}}
+spec:
+  backoffLimit: 3
+  template:
+    metadata: {labels: {app: ursu-descarga}}
+    spec:
+      restartPolicy: OnFailure
+      nodeSelector: {kubernetes.io/hostname: dgx3}
+      tolerations: [{operator: Exists}]
+      containers:
+      - name: hf
+        image: docker.io/vllm/vllm-openai@sha256:96b234afa2867031ad0a226b149a06483861e613e3a3083da53398d347b5ffbd
+        command: [python3, -c]
+        args:
+        - |
+          import os
+          from huggingface_hub import snapshot_download as d
+          for repo, rev, pat in [("ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE", os.environ["REV"], None),
+                                 ("local-inference-lab/Qwen3.8-Flash-Next-NVFP4", "7c4f1bc1a2d6847e0cbc01ac6b823f00251de8dd",
+                                  ["model-00035-of-00036.safetensors", "model.safetensors.index.json"])]:
+              p = d(repo, revision=rev, allow_patterns=pat, max_workers=4)
+              print("OK", repo, rev, p, flush=True)
+        env:
+        - {name: HF_HOME, value: /cache/huggingface}
+        - {name: REV, value: 03f4a0570496bbe741189f4a2a7d611679e85406}
+        - {name: HF_HUB_DISABLE_TELEMETRY, value: "1"}
+        - {name: HF_HUB_DISABLE_XET, value: "1"}  # con xet y 8 workers el Job pasaba de 4 GiB (OOMKilled)
+        resources: {requests: {cpu: "2", memory: 1Gi}, limits: {memory: 4Gi}}
+        volumeMounts: [{name: hf, mountPath: /cache/huggingface}]
+      volumes: [{name: hf, hostPath: {path: /srv/models/hf-ursu, type: DirectoryOrCreate}}]

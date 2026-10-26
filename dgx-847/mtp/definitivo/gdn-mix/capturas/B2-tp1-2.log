@@ -1,0 +1,2 @@
+capture http://spark3:8000 -> /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/B2-tp1-2.json (long=76608 chars)
+# capturados 15 casos en /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/B2-tp1-2.json

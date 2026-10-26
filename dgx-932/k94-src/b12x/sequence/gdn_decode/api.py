@@ -1,0 +1,47 @@
+"""Public surface for :mod:`b12x.sequence.gdn_decode`."""
+
+from __future__ import annotations
+
+from ..._lib.gating import has_cutlass_dsl, has_triton
+from b12x.preparation import Plan
+
+from . import reference
+from ._impl import (
+    Binding,
+    Caps,
+    KdaBinding,
+    bind,
+    bind_kda,
+    commit_deferred_checkpoints,
+    precompile_deferred_commit,
+    run,
+    run_kda,
+)
+from ._preparation import plan, invocation_from_tensors
+from ._tuning import GdnConfig, GdnQuery
+
+
+def is_supported(device=None) -> bool:
+    """True when mandatory Qwen CuTe and its Triton auxiliaries are usable."""
+    del device
+    return has_cutlass_dsl() and has_triton()
+
+
+__all__ = [
+    "Binding",
+    "Caps",
+    "GdnConfig",
+    "GdnQuery",
+    "KdaBinding",
+    "Plan",
+    "bind",
+    "bind_kda",
+    "commit_deferred_checkpoints",
+    "is_supported",
+    "precompile_deferred_commit",
+    "plan",
+    "invocation_from_tensors",
+    "reference",
+    "run",
+    "run_kda",
+]

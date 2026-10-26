@@ -1,0 +1,170 @@
+Greedy decoding ON (--greedy): setting bs=1, n_samples=1, temperature=0
+Initializing a decoder model: qwen3.8-flash-next ...
+Sanitized code outputs will be saved to /home/user/bench-results/dgx-847/2x/quality/humaneval/shard0/humaneval/qwen3.8-flash-next_openai_temp_0.0.jsonl
+Raw outputs will be saved to /home/user/bench-results/dgx-847/2x/quality/humaneval/shard0/humaneval/qwen3.8-flash-next_openai_temp_0.0.raw.jsonl
+Codegen: HumanEval/0 @ qwen3.8-flash-next
+Codegen: HumanEval/1 @ qwen3.8-flash-next
+Codegen: HumanEval/2 @ qwen3.8-flash-next
+Codegen: HumanEval/3 @ qwen3.8-flash-next
+Codegen: HumanEval/4 @ qwen3.8-flash-next
+Codegen: HumanEval/5 @ qwen3.8-flash-next
+Codegen: HumanEval/6 @ qwen3.8-flash-next
+Codegen: HumanEval/7 @ qwen3.8-flash-next
+Codegen: HumanEval/8 @ qwen3.8-flash-next
+Codegen: HumanEval/9 @ qwen3.8-flash-next
+Codegen: HumanEval/10 @ qwen3.8-flash-next
+Codegen: HumanEval/11 @ qwen3.8-flash-next
+Codegen: HumanEval/12 @ qwen3.8-flash-next
+Codegen: HumanEval/13 @ qwen3.8-flash-next
+Codegen: HumanEval/14 @ qwen3.8-flash-next
+Codegen: HumanEval/15 @ qwen3.8-flash-next
+Codegen: HumanEval/16 @ qwen3.8-flash-next
+Codegen: HumanEval/17 @ qwen3.8-flash-next
+Codegen: HumanEval/18 @ qwen3.8-flash-next
+Codegen: HumanEval/19 @ qwen3.8-flash-next
+Codegen: HumanEval/20 @ qwen3.8-flash-next
+Codegen: HumanEval/21 @ qwen3.8-flash-next
+Codegen: HumanEval/22 @ qwen3.8-flash-next
+Codegen: HumanEval/23 @ qwen3.8-flash-next
+Codegen: HumanEval/24 @ qwen3.8-flash-next
+Codegen: HumanEval/25 @ qwen3.8-flash-next
+Codegen: HumanEval/26 @ qwen3.8-flash-next
+Codegen: HumanEval/27 @ qwen3.8-flash-next
+Codegen: HumanEval/28 @ qwen3.8-flash-next
+Codegen: HumanEval/29 @ qwen3.8-flash-next
+Codegen: HumanEval/30 @ qwen3.8-flash-next
+Codegen: HumanEval/31 @ qwen3.8-flash-next
+Codegen: HumanEval/32 @ qwen3.8-flash-next
+Codegen: HumanEval/33 @ qwen3.8-flash-next
+Codegen: HumanEval/34 @ qwen3.8-flash-next
+Codegen: HumanEval/35 @ qwen3.8-flash-next
+Codegen: HumanEval/36 @ qwen3.8-flash-next
+Codegen: HumanEval/37 @ qwen3.8-flash-next
+Codegen: HumanEval/38 @ qwen3.8-flash-next
+Codegen: HumanEval/39 @ qwen3.8-flash-next
+Codegen: HumanEval/40 @ qwen3.8-flash-next
+Codegen: HumanEval/41 @ qwen3.8-flash-next
+Codegen: HumanEval/42 @ qwen3.8-flash-next
+Codegen: HumanEval/43 @ qwen3.8-flash-next
+Codegen: HumanEval/44 @ qwen3.8-flash-next
+Codegen: HumanEval/45 @ qwen3.8-flash-next
+Codegen: HumanEval/46 @ qwen3.8-flash-next
+Codegen: HumanEval/47 @ qwen3.8-flash-next
+Codegen: HumanEval/48 @ qwen3.8-flash-next
+Codegen: HumanEval/49 @ qwen3.8-flash-next
+Codegen: HumanEval/50 @ qwen3.8-flash-next
+Codegen: HumanEval/51 @ qwen3.8-flash-next
+Codegen: HumanEval/52 @ qwen3.8-flash-next
+Codegen: HumanEval/53 @ qwen3.8-flash-next
+Codegen: HumanEval/54 @ qwen3.8-flash-next
+Skipping HumanEval/55 as it is not in (0, 55)
+Skipping HumanEval/56 as it is not in (0, 55)
+Skipping HumanEval/57 as it is not in (0, 55)
+Skipping HumanEval/58 as it is not in (0, 55)
+Skipping HumanEval/59 as it is not in (0, 55)
+Skipping HumanEval/60 as it is not in (0, 55)
+Skipping HumanEval/61 as it is not in (0, 55)
+Skipping HumanEval/62 as it is not in (0, 55)
+Skipping HumanEval/63 as it is not in (0, 55)
+Skipping HumanEval/64 as it is not in (0, 55)
+Skipping HumanEval/65 as it is not in (0, 55)
+Skipping HumanEval/66 as it is not in (0, 55)
+Skipping HumanEval/67 as it is not in (0, 55)
+Skipping HumanEval/68 as it is not in (0, 55)
+Skipping HumanEval/69 as it is not in (0, 55)
+Skipping HumanEval/70 as it is not in (0, 55)
+Skipping HumanEval/71 as it is not in (0, 55)
+Skipping HumanEval/72 as it is not in (0, 55)
+Skipping HumanEval/73 as it is not in (0, 55)
+Skipping HumanEval/74 as it is not in (0, 55)
+Skipping HumanEval/75 as it is not in (0, 55)
+Skipping HumanEval/76 as it is not in (0, 55)
+Skipping HumanEval/77 as it is not in (0, 55)
+Skipping HumanEval/78 as it is not in (0, 55)
+Skipping HumanEval/79 as it is not in (0, 55)
+Skipping HumanEval/80 as it is not in (0, 55)
+Skipping HumanEval/81 as it is not in (0, 55)
+Skipping HumanEval/82 as it is not in (0, 55)
+Skipping HumanEval/83 as it is not in (0, 55)
+Skipping HumanEval/84 as it is not in (0, 55)
+Skipping HumanEval/85 as it is not in (0, 55)
+Skipping HumanEval/86 as it is not in (0, 55)
+Skipping HumanEval/87 as it is not in (0, 55)
+Skipping HumanEval/88 as it is not in (0, 55)
+Skipping HumanEval/89 as it is not in (0, 55)
+Skipping HumanEval/90 as it is not in (0, 55)
+Skipping HumanEval/91 as it is not in (0, 55)
+Skipping HumanEval/92 as it is not in (0, 55)
+Skipping HumanEval/93 as it is not in (0, 55)
+Skipping HumanEval/94 as it is not in (0, 55)
+Skipping HumanEval/95 as it is not in (0, 55)
+Skipping HumanEval/96 as it is not in (0, 55)
+Skipping HumanEval/97 as it is not in (0, 55)
+Skipping HumanEval/98 as it is not in (0, 55)
+Skipping HumanEval/99 as it is not in (0, 55)
+Skipping HumanEval/100 as it is not in (0, 55)
+Skipping HumanEval/101 as it is not in (0, 55)
+Skipping HumanEval/102 as it is not in (0, 55)
+Skipping HumanEval/103 as it is not in (0, 55)
+Skipping HumanEval/104 as it is not in (0, 55)
+Skipping HumanEval/105 as it is not in (0, 55)
+Skipping HumanEval/106 as it is not in (0, 55)
+Skipping HumanEval/107 as it is not in (0, 55)
+Skipping HumanEval/108 as it is not in (0, 55)
+Skipping HumanEval/109 as it is not in (0, 55)
+Skipping HumanEval/110 as it is not in (0, 55)
+Skipping HumanEval/111 as it is not in (0, 55)
+Skipping HumanEval/112 as it is not in (0, 55)
+Skipping HumanEval/113 as it is not in (0, 55)
+Skipping HumanEval/114 as it is not in (0, 55)
+Skipping HumanEval/115 as it is not in (0, 55)
+Skipping HumanEval/116 as it is not in (0, 55)
+Skipping HumanEval/117 as it is not in (0, 55)
+Skipping HumanEval/118 as it is not in (0, 55)
+Skipping HumanEval/119 as it is not in (0, 55)
+Skipping HumanEval/120 as it is not in (0, 55)
+Skipping HumanEval/121 as it is not in (0, 55)
+Skipping HumanEval/122 as it is not in (0, 55)
+Skipping HumanEval/123 as it is not in (0, 55)
+Skipping HumanEval/124 as it is not in (0, 55)
+Skipping HumanEval/125 as it is not in (0, 55)
+Skipping HumanEval/126 as it is not in (0, 55)
+Skipping HumanEval/127 as it is not in (0, 55)
+Skipping HumanEval/128 as it is not in (0, 55)
+Skipping HumanEval/129 as it is not in (0, 55)
+Skipping HumanEval/130 as it is not in (0, 55)
+Skipping HumanEval/131 as it is not in (0, 55)
+Skipping HumanEval/132 as it is not in (0, 55)
+Skipping HumanEval/133 as it is not in (0, 55)
+Skipping HumanEval/134 as it is not in (0, 55)
+Skipping HumanEval/135 as it is not in (0, 55)
+Skipping HumanEval/136 as it is not in (0, 55)
+Skipping HumanEval/137 as it is not in (0, 55)
+Skipping HumanEval/138 as it is not in (0, 55)
+Skipping HumanEval/139 as it is not in (0, 55)
+Skipping HumanEval/140 as it is not in (0, 55)
+Skipping HumanEval/141 as it is not in (0, 55)
+Skipping HumanEval/142 as it is not in (0, 55)
+Skipping HumanEval/143 as it is not in (0, 55)
+Skipping HumanEval/144 as it is not in (0, 55)
+Skipping HumanEval/145 as it is not in (0, 55)
+Skipping HumanEval/146 as it is not in (0, 55)
+Skipping HumanEval/147 as it is not in (0, 55)
+Skipping HumanEval/148 as it is not in (0, 55)
+Skipping HumanEval/149 as it is not in (0, 55)
+Skipping HumanEval/150 as it is not in (0, 55)
+Skipping HumanEval/151 as it is not in (0, 55)
+Skipping HumanEval/152 as it is not in (0, 55)
+Skipping HumanEval/153 as it is not in (0, 55)
+Skipping HumanEval/154 as it is not in (0, 55)
+Skipping HumanEval/155 as it is not in (0, 55)
+Skipping HumanEval/156 as it is not in (0, 55)
+Skipping HumanEval/157 as it is not in (0, 55)
+Skipping HumanEval/158 as it is not in (0, 55)
+Skipping HumanEval/159 as it is not in (0, 55)
+Skipping HumanEval/160 as it is not in (0, 55)
+Skipping HumanEval/161 as it is not in (0, 55)
+Skipping HumanEval/162 as it is not in (0, 55)
+Skipping HumanEval/163 as it is not in (0, 55)
+humaneval •100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 164/164 • 0:02:35
+/home/user/bench-results/dgx-847/2x/quality/humaneval/shard0/humaneval/qwen3.8-flash-next_openai_temp_0.0.jsonl

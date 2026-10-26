@@ -1,0 +1,33 @@
+14:24:44Z compruebo las dos vistas en dgx1 (las sirve el NFS ro a dgx2 y dgx3)
+14:24:44Z   dgx1:qwen38fn-mtp-ursu-nvfp4-tp3-fork ok
+14:24:45Z   dgx1:qwen38fn-mtp-ursu-mxfp8-tp3 ok
+14:24:45Z compruebo lo que el manifiesto monta
+14:24:46Z   pvc hf-cache-nvidia-dgx-ro Bound
+14:24:46Z   pvc hf-cache-dgx1-dgx3-llm-ro Bound
+  qwen38fn-mtp-draft-vocab trae ids-es-K131072.txt.gz
+14:24:46Z compruebo los tres nodos: sin DiskPressure y con las dos imagenes que hacen falta
+14:24:49Z   dgx2 sin disk-pressure
+14:24:51Z   dgx sin disk-pressure
+14:24:53Z   dgx3 sin disk-pressure
+14:24:53Z ConfigMaps de la 3x del fork
+configmap/ursu-fork-recipe-3x unchanged
+configmap/ursu-fork-env-3x unchanged
+configmap/ursu-fork-recipe-3x not labeled
+configmap/ursu-fork-env-3x not labeled
+14:24:55Z tres rangos arriba
+deployment.apps/ursu-fork-3x-head configured
+deployment.apps/ursu-fork-3x-worker-dgx1 configured
+deployment.apps/ursu-fork-3x-worker-dgx3 configured
+Waiting for deployment "ursu-fork-3x-worker-dgx1" rollout to finish: 0 of 1 updated replicas are available...
+deployment "ursu-fork-3x-worker-dgx1" successfully rolled out
+Waiting for deployment "ursu-fork-3x-worker-dgx3" rollout to finish: 0 of 1 updated replicas are available...
+deployment "ursu-fork-3x-worker-dgx3" successfully rolled out
+14:24:58Z TP=3 lanzado. El primer arranque es autotune FRIO (la semilla de la imagen esta claveada a TP=2 y
+14:24:58Z   a la ruta del modelo), y el arranque del residente TP=3 ronda la media hora: seguir con
+14:24:58Z     kubectl logs -n llm -l dgx-852=fork-tp3 -f   hasta 'b12x ready' + /health 200 en dgx2:8000
+14:33:28Z tp3: arriba en 8 min
+14:33:28Z tp3: Available KV cache memory: 23.13 GiB GDN decode kernel: b12x GPU KV cache size: 1,667,296 tokens, Maximum concurrency for 262,144 tokens per request: 6.36x Model loading took 48.22 GiB memory and 59.085456 seconds MTP draft vocab: 131072 of 248320 ids from /opt/mtp-vocab-es/ids-es-K131072.txt.gz Setting attention block size to 800 tokens to ensure that attention page size is >= mamba page size.
+14:33:34Z tp3: tools exit=0 {"no-stream": {"ok": true, "errors": [], "cities": ["Madrid", "París"], "n_calls": 2, "final": "\n\
+14:33:59Z tp3: greedy contra E2 TP=2 exit=0 RESULTADO: sin sospechas de corrupcion
+14:41:00Z tp3: decode c1 77 · c4 171 · c8 243 · c10 273 · c16 341 · acept c1 {'0': 0.71, '1': 0.44, '2': 0.24, '3': 0.13}
+14:41:00Z tp3: hecho (su fork TP=3 arriba; 2x y 1x a 0)

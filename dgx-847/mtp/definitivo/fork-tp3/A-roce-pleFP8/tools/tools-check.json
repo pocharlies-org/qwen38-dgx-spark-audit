@@ -1,0 +1,25 @@
+{
+ "no-stream": {
+  "ok": true,
+  "errors": [],
+  "cities": [
+   "Madrid",
+   "París"
+  ],
+  "n_calls": 2,
+  "final": "\n\nEsto es el tiempo ahora mismo:\n\n- **Madrid**: 21 °C, cielo despejado ☀️\n- **París**: 22 °C, cielo despejado ☀️\n\nAmbas ciudades disfrutan de un día parecido, con París apenas un grado más cálida.",
+  "s": 2.6
+ },
+ "stream": {
+  "ok": true,
+  "errors": [],
+  "cities": [
+   "Madrid",
+   "París"
+  ],
+  "n_calls": 2,
+  "final": "\n\nEsto es el tiempo ahora mismo:\n\n- **Madrid**: 21 °C, cielo despejado ☀️\n- **París**: 22 °C, cielo despejado ☀️\n\nAmbas ciudades disfrutan de un día agradable y soleado, con solo un grado de diferencia. ¿Quieres saber algo más?",
+  "s": 2.2
+ },
+ "anthropic_messages": 200
+}

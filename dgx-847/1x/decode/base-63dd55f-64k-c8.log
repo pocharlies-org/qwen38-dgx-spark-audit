@@ -1,0 +1,7 @@
+C=8 rep=1/3 agg=0.067 tok/s server=0.067 p50=0.781 p10=0.469 ttft_p50=90.202 ttft_p95=90.644 running=3.92 reqs=3 err=0 contaminado=True
+C=8 rep=2/3 agg=0.058 tok/s server=0.058 p50=0.386 p10=0.384 ttft_p50=89.663 ttft_p95=90.087 running=5.16 reqs=3 err=0 contaminado=True
+C=8 rep=3/3 agg=0.058 tok/s server=0.058 p50=0.384 p10=0.381 ttft_p50=90.167 ttft_p95=92.109 running=5.2 reqs=3 err=0 contaminado=True
+
+# mediana entre repeticiones (agg_tok_s min..max, dispersion relativa)
+C=  8 agg_median=0.058 [0.058..0.067] spread=0.1552 ttft_p50=90.167 contaminados=3/3
+# escrito /home/user/bench-results/dgx-847/1x/decode/base-63dd55f-64k-c8.json

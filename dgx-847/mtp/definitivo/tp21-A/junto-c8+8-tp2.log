@@ -1,0 +1,5 @@
+C=8 rep=1/1 agg=209.034 tok/s server=227.547 p50=29.017 p10=26.428 ttft_p50=0.297 ttft_p95=0.358 running=7.846 reqs=49 err=0 contaminado=False
+
+# mediana entre repeticiones (agg_tok_s min..max, dispersion relativa)
+C=  8 agg_median=209.034 [209.034..209.034] spread=0.0 ttft_p50=0.297 contaminados=0/1
+# escrito /home/user/bench-results/dgx-847/mtp/definitivo/tp21-A/junto-c8+8-tp2.json

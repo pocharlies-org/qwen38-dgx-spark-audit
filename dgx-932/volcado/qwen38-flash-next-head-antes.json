@@ -1,0 +1,327 @@
+{
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+        "annotations": {
+            "argocd.argoproj.io/sync-wave": "1",
+            "argocd.argoproj.io/tracking-id": "ai:apps/Deployment:llm/qwen38-flash-next-head",
+            "deployment.kubernetes.io/revision": "43"
+        },
+        "creationTimestamp": "2026-10-12T07:28:30Z",
+        "generation": 93,
+        "labels": {
+            "app": "qwen38-flash-next-head",
+            "llm.dgx-infra/model-family": "qwen38-next"
+        },
+        "name": "qwen38-flash-next-head",
+        "namespace": "llm",
+        "resourceVersion": "274185404",
+        "uid": "d7bcf350-636c-4661-9767-8e3618404512"
+    },
+    "spec": {
+        "progressDeadlineSeconds": 600,
+        "replicas": 1,
+        "revisionHistoryLimit": 10,
+        "selector": {
+            "matchLabels": {
+                "app": "qwen38-flash-next-head"
+            }
+        },
+        "strategy": {
+            "type": "Recreate"
+        },
+        "template": {
+            "metadata": {
+                "annotations": {
+                    "internal.example/launch-revision": "ursu-b12x-2mas1-20261015-dgx940"
+                },
+                "labels": {
+                    "app": "qwen38-flash-next-head",
+                    "endpoint-role": "production",
+                    "llm.dgx-infra/model-family": "qwen38-next",
+                    "llm.dgx-infra/pool": "tooling-resident"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "bash",
+                            "/opt/ursu-mod/run.sh",
+                            "/etc/ursu/serve-gdn-mix.sh"
+                        ],
+                        "env": [
+                            {
+                                "name": "NODE_RANK",
+                                "value": "0"
+                            },
+                            {
+                                "name": "HEADLESS"
+                            },
+                            {
+                                "name": "VLLM_HOST_IP",
+                                "value": "10.0.0.2"
+                            },
+                            {
+                                "name": "VLLM_MTP_DRAFT_VOCAB",
+                                "value": "/opt/mtp-vocab-es/ids-es-K131072.txt.gz"
+                            },
+                            {
+                                "name": "QWEN_GDN_MIX",
+                                "value": "A"
+                            },
+                            {
+                                "name": "GDN_TP",
+                                "value": "2"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_DIRECTION",
+                                "value": "/opt/refusal/refusal_direction_flashnext.npy"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_LAMBDA",
+                                "value": "0"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_PROBE",
+                                "value": "1"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_PROBE_LAYERS",
+                                "value": "16,20,24,28,32"
+                            },
+                            {
+                                "name": "VLLM_REFUSAL_PROBE_CAL",
+                                "value": "/opt/refusal-probe-cal/cal.json"
+                            },
+                            {
+                                "name": "B2_AUTOTUNE",
+                                "value": "0"
+                            },
+                            {
+                                "name": "VLLM_B12X_DUMP_QUERIES",
+                                "value": "/cache/xdg/b12x-consultas.jsonl"
+                            }
+                        ],
+                        "envFrom": [
+                            {
+                                "configMapRef": {
+                                    "name": "qwen38fn-b12x-env-2x"
+                                }
+                            }
+                        ],
+                        "image": "ghcr.io/ursuciprian/spark-vllm-b12x@sha256:1346035488a5c8a0f405ade8e74febf68c66b8df1e026b7e3a6fb83cb9f4ce13",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "vllm",
+                        "ports": [
+                            {
+                                "containerPort": 8000,
+                                "name": "http",
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/health",
+                                "port": 8000,
+                                "scheme": "HTTP"
+                            },
+                            "periodSeconds": 15,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 10
+                        },
+                        "resources": {
+                            "limits": {
+                                "memory": "112Gi",
+                                "nvidia.com/gpu": "1"
+                            },
+                            "requests": {
+                                "memory": "16Gi"
+                            }
+                        },
+                        "securityContext": {
+                            "privileged": true
+                        },
+                        "startupProbe": {
+                            "failureThreshold": 120,
+                            "httpGet": {
+                                "path": "/health",
+                                "port": 8000,
+                                "scheme": "HTTP"
+                            },
+                            "periodSeconds": 30,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 10
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/etc/ursu",
+                                "name": "recipe",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/cache/huggingface",
+                                "name": "hf",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/cache/xdg",
+                                "name": "xdg"
+                            },
+                            {
+                                "mountPath": "/dev/shm",
+                                "name": "shm"
+                            },
+                            {
+                                "mountPath": "/opt/mtp-vocab-es",
+                                "name": "vocab-es",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/ursu-mod",
+                                "name": "mod",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/ursu-mod/refusal",
+                                "name": "mod-refusal",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/ursu-mod/refusal/payload",
+                                "name": "mod-payload",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/opt/refusal-probe-cal",
+                                "name": "probe-cal",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "Default",
+                "enableServiceLinks": false,
+                "hostIPC": true,
+                "hostNetwork": true,
+                "imagePullSecrets": [
+                    {
+                        "name": "harbor-pull"
+                    }
+                ],
+                "nodeSelector": {
+                    "kubernetes.io/arch": "arm64",
+                    "kubernetes.io/hostname": "gx10-ec3d"
+                },
+                "restartPolicy": "Always",
+                "runtimeClassName": "nvidia",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "terminationGracePeriodSeconds": 120,
+                "tolerations": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "dedicated",
+                        "operator": "Equal",
+                        "value": "llm"
+                    }
+                ],
+                "volumes": [
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-b12x-recipe"
+                        },
+                        "name": "recipe"
+                    },
+                    {
+                        "name": "hf",
+                        "persistentVolumeClaim": {
+                            "claimName": "hf-cache-nvidia-dgx-ro",
+                            "readOnly": true
+                        }
+                    },
+                    {
+                        "hostPath": {
+                            "path": "/srv/ursu-cache/2x",
+                            "type": "DirectoryOrCreate"
+                        },
+                        "name": "xdg"
+                    },
+                    {
+                        "emptyDir": {
+                            "medium": "Memory",
+                            "sizeLimit": "25Gi"
+                        },
+                        "name": "shm"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-b12x-draft-vocab-es"
+                        },
+                        "name": "vocab-es"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-b12x-mod"
+                        },
+                        "name": "mod"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-b12x-mod-refusal"
+                        },
+                        "name": "mod-refusal"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-b12x-mod-payload"
+                        },
+                        "name": "mod-payload"
+                    },
+                    {
+                        "configMap": {
+                            "defaultMode": 420,
+                            "name": "qwen38fn-refusal-probe-cal",
+                            "optional": true
+                        },
+                        "name": "probe-cal"
+                    }
+                ]
+            }
+        }
+    },
+    "status": {
+        "availableReplicas": 1,
+        "conditions": [
+            {
+                "lastTransitionTime": "2026-10-15T21:42:29Z",
+                "lastUpdateTime": "2026-10-15T21:42:29Z",
+                "message": "Deployment has minimum availability.",
+                "reason": "MinimumReplicasAvailable",
+                "status": "True",
+                "type": "Available"
+            },
+            {
+                "lastTransitionTime": "2026-10-15T21:42:29Z",
+                "lastUpdateTime": "2026-10-15T21:42:29Z",
+                "message": "ReplicaSet \"qwen38-flash-next-head-57db5cfc67\" has successfully progressed.",
+                "reason": "NewReplicaSetAvailable",
+                "status": "True",
+                "type": "Progressing"
+            }
+        ],
+        "observedGeneration": 93,
+        "readyReplicas": 1,
+        "replicas": 1,
+        "terminatingReplicas": 0,
+        "updatedReplicas": 1
+    }
+}

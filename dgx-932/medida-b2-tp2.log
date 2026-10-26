@@ -1,0 +1,34 @@
+23:00:50Z DGX-932 medida B2 calibrado frente a A en el TP=2 (A B2): espero a ArgoCD quieto, árbitro en ready y los dos servidores listos
+23:00:54Z árbitro en sync-paused (dgx-932-b2tp2)
+23:00:55Z auto-sync de root y ai apagado
+23:03:03Z voz y TP=2 de producción a 0
+23:03:08Z   dgx2: bloques de 2 MiB+ libres 16560 → 16588, MemAvailable 69.1 GB
+23:03:10Z   dgx: bloques de 2 MiB+ libres 23440 → 23440, MemAvailable 117.3 GB
+23:04:13Z A: b2m-head y b2m-worker arrancando (autoajuste encendido, caché 2x-b2, KV 25500000000)
+23:04:14Z   esperando A (0 min): b12x routing checkpoint shards: 0/36 shards routed, 0.00 GB selected on rank 0, 0:00
+23:06:49Z A sirviendo en 2 min; GPU KV cache size: 3,090,191 tokens
+23:06:49Z A b12x al arrancar: medidos máx 0, en caché máx 456, en caché con gdn_prefill 0, 'tuning stopped' 0 líneas
+23:06:51Z A memoria libre antes de medir: dgx2 1.6 GB dgx 16.1 GB 
+23:06:57Z A tools exit=0 {"no-stream": {"ok": true, "errors": [], "cities": ["Madrid", "París"], "n_calls": 2, "final": "\n\
+23:12:38Z A decode c1 73 · c4 166 · c8 218 · c16 341 · acept c1 {'0': 0.73, '1': 0.47, '2': 0.29, '3': 0.17}
+23:15:52Z A prefill frio exit=0 contexto64k exit=0 
+23:15:54Z A memoria libre después de medir: dgx2 2.3 GB dgx 15.8 GB 
+23:16:14Z   dgx2: bloques de 2 MiB+ libres 21454 → 21460, MemAvailable 117.2 GB
+23:16:16Z   dgx: bloques de 2 MiB+ libres 18070 → 18079, MemAvailable 71.6 GB
+23:17:19Z B2: b2m-head y b2m-worker arrancando (autoajuste encendido, caché 2x-b2, KV 25500000000)
+23:17:21Z   esperando B2 (0 min): b12x routing checkpoint shards: 0/36 shards routed, 0.00 GB selected on rank 0, 0:00
+23:21:43Z B2 sirviendo en 4 min; GPU KV cache size: 3,284,890 tokens
+23:21:43Z B2 b12x al arrancar: medidos máx 0, en caché máx 456, en caché con gdn_prefill 10, 'tuning stopped' 0 líneas
+23:21:45Z B2 memoria libre antes de medir: dgx2 1.4 GB dgx 10.0 GB 
+23:21:51Z B2 tools exit=0 {"no-stream": {"ok": true, "errors": [], "cities": ["Madrid", "París"], "n_calls": 2, "final": "\n\
+23:27:33Z B2 decode c1 68 · c4 162 · c8 230 · c16 341 · acept c1 {'0': 0.75, '1': 0.48, '2': 0.29, '3': 0.17}
+23:30:48Z B2 prefill frio exit=0 contexto64k exit=0 
+23:30:50Z B2 memoria libre después de medir: dgx2 8.2 GB dgx 9.6 GB 
+23:30:50Z VUELTA: inicio
+23:31:09Z VUELTA: pruebas fuera
+23:40:00Z VUELTA: TP=2 de producción listo en 8 min
+23:40:02Z VUELTA: voz a como estaba
+23:40:03Z VUELTA: árbitro en ready
+23:40:05Z VUELTA: auto-sync de root y ai restaurado
+23:42:06Z VUELTA: ArgoCD ai Synced Healthy op=Succeeded
+23:42:06Z HECHO

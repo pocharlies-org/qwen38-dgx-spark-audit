@@ -1,0 +1,30 @@
+{
+ "no-stream": {
+  "ok": true,
+  "errors": [],
+  "cities": [
+   null,
+   null,
+   "Madrid",
+   "París"
+  ],
+  "n_calls": 4,
+  "final": "\n\nEn Madrid hace **23 °C** y el cielo está **despejado**.\n\nEn París hace **24 °C** y el cielo está **despejado**.",
+  "s": 9.1
+ },
+ "stream": {
+  "ok": true,
+  "errors": [],
+  "cities": [
+   null,
+   "Madrid",
+   "París",
+   "Madrid",
+   "París"
+  ],
+  "n_calls": 5,
+  "final": "\n\nMadrid: **22 °C**, despejado.  \nParís: **23 °C**, despejado.",
+  "s": 14.3
+ },
+ "anthropic_messages": 200
+}

@@ -1,0 +1,36 @@
+NVFP4 KV eval  2026-10-12T21:43:05Z
+  endpoint  http://127.0.0.1:34315/s/niah-11-131072
+  model     qwen3.8-flash-next
+  kv dtype  unknown   pool=? tokens   mem=? GB   free=?
+  context   262144
+  seed      11  (filler salt dda1494c73cf256d)
+  cache     NOT flushed between cases — a case may be answered from the radix cache rather than from attention
+  note      get_server_info failed: HTTP Error 404: Not Found
+  WARNING: this looks like bf16 KV — results are a baseline, not an NVFP4 measurement. Pass --require-nvfp4 to abort.
+  calibrating token estimator…
+  estimator tokenize  (~37.0 tok/line)
+  PASS  control/no-haystack               46 tok          0.7s  prefill 91 tok/s  decode 70 tok/s
+  PASS  decode/exact-copy                 29 tok          0.4s  prefill 113 tok/s  decode 58 tok/s
+  PASS  niah/4096@0%                    4112 tok @0%      2.7s  prefill 1712 tok/s  decode 47 tok/s
+  PASS  niah/4096@25%                   4113 tok @25%     2.4s  prefill 1939 tok/s  decode 56 tok/s
+  PASS  niah/4096@50%                   4110 tok @50%     2.5s  prefill 1755 tok/s  decode 54 tok/s
+  PASS  niah/4096@75%                   4113 tok @75%     2.3s  prefill 1943 tok/s  decode 57 tok/s
+  PASS  niah/4096@100%                  4109 tok @100%     2.3s  prefill 1878 tok/s  decode 59 tok/s
+  PASS  niah/131072@0%                128610 tok @0%     68.1s  prefill 1892 tok/s  decode 67 tok/s
+  PASS  niah/131072@25%               128610 tok @25%    68.0s  prefill 1897 tok/s  decode 65 tok/s
+  PASS  niah/131072@50%               128607 tok @50%    68.4s  prefill 1884 tok/s  decode 68 tok/s
+  PASS  niah/131072@75%               128610 tok @75%    54.8s  prefill 2356 tok/s  decode 62 tok/s
+  PASS  niah/131072@100%              128610 tok @100%    38.0s  prefill 3398 tok/s  decode 94 tok/s
+  PASS  binding/port-kestrel            8103 tok @15%     4.3s  prefill 2101 tok/s  decode 19 tok/s
+  PASS  radix/follow-up/4096            4101 tok @50%     0.9s  prefill 5378 tok/s  decode 74 tok/s
+
+Summary
+  pool     dtype=unknown  nvfp4=False  tokens=?  mem=? GB
+  cases    14/14 passed
+  cache    NOT flushed — a case may have been served from the radix cache
+  niah     10/10 passed
+             4096 tok  5/5
+           131072 tok  5/5
+  verdict  RELIABLE  — every planted passkey came back exactly
+           (pool is not NVFP4; treat this as a bf16 baseline)
+  json     /home/user/bench-results/dgx-847/1x/quality/niah-11-131072.json

@@ -1,0 +1,29 @@
+<ol>
+<li><b>Peticiones cortas, una a una: su TP=2 es más rápido.</b> Genera 70 tok/s a c1 frente a nuestros 49 (+43 %), y en llama-benchy
+85 frente a 49. La ventaja viene de su MTP k=4 con kernels b12x: cada token especulado les cuesta muy poco, así que les sale a cuenta
+proponer 4 (aceptación por posición 0,72 · 0,46 · 0,27 · 0,15). Con 8-10 peticiones a la vez empatamos (235-256 tok/s).</li>
+<li><b>Contexto largo ya en caché (64K + 2 048 nuevos): nuestro TP=3 responde antes.</b> La primera respuesta llega en 0,99 s a c1 y 4,7 s
+a c8; ellos tardan 2,2 s y 10,6 s. La causa es el tamaño de bloque de la caché de prefijo, que lo fija la página del estado SSM: con su
+estado en FP32 el bloque es de 2 864 tokens y con el nuestro en BF16 de 832, así que tras 2 048 tokens nuevos ellos recalculan
+4 659 tokens (2,1 s) y nosotros 2 388 (1,0 s; medido el 13-10 en el residente). Sus kernels b12x de GDN exigen el FP32 (la prueba E ni
+arranca).</li>
+<li><b>La palanca que lo arregla en su receta es la E2:</b> estado SSM en BF16 y el GDN estándar (triton) en vez del b12x. El bloque baja a
+1 504 tokens, la primera respuesta mejora un 25 % a c1 y un 15 % a c8, y la generación sube un 6-27 %. El precio es el prefill de 2K, que
+cae un 16 %. El GDN es solo el 1-2,5 % del tiempo de GPU (perfil C), así que dejar b12x ahí aporta poco.</li>
+<li><b>Generación con 64K de contexto y 8 peticiones: nosotros 100 tok/s, ellos 58.</b> En frío (64K sin caché) ellos ganan a c8 (68 s
+frente a 85) y pierden a c10 (103 s frente a 86).</li>
+<li><b>Calidad: empate en las 7 suites</b> (tools, BFCL, GSM8K, MATH, IFEval, HumanEval, NIAH). La única diferencia significativa es
+<code>minerva_math_em</code>, que puntúa el formato exacto de la respuesta; la nota matemática real empata. El castellano no se midió
+aparte.</li>
+<li><b>La tabla PLE en disco les cuesta velocidad</b> (−7 a −29 %) aunque sobre memoria para la caché de páginas (G2). El cuello es el lector
+de CPU que la sirve, no la memoria. En su 1 Spark la PLE no cabe en GPU, así que ahí el disco es obligatorio.</li>
+<li><b>Los ajustes del planificador no ayudan:</b> 4 096 tokens por paso empeora (B), y añadir el tope de 2 048 por petición mejora la
+generación a c8 pero retrasa la primera respuesta un 31 % (F).</li>
+<li><b>MTP más largo en nuestra pila</b> (13-10, misma tarde y sin tráfico real): k=2 genera más que nuestro k=1 (llama-benchy c1 56 frente a
+49 tok/s, c4 123 frente a 97), pero con 64K en caché la primera respuesta tarda más (1,25 s frente a 0,97 a c1). k=3 y k=4 no mejoran a
+k=2: con nuestros kernels cada token propuesto de más cuesta 5-9 ms.</li>
+<li><b>Su 1 Spark</b> da 47 tok/s a c1 y se satura en ~139 tok/s; para un solo usuario es un servidor razonable, pero no para varios.</li>
+</ol>
+<p><b>Lo mejor para seguir</b> es unir las dos pilas: la nuestra (estado en BF16, bloque de caché pequeño, TP=3) con lo que les da velocidad
+a ellos, que es su checkpoint NVFP4, los kernels b12x en el MoE y los GEMM (no en el GDN) y un MTP más largo. Esa combinación se prueba en
+DGX-852.</p>

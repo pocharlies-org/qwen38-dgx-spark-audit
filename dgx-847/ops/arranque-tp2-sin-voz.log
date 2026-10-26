@@ -1,0 +1,47 @@
+20:12:27Z árbitro antes: {"phase":"error","last_error":"profile repair failed: timeout waiting for llm/qwen38-flash-next-head replicas=1"}
+20:12:28Z árbitro en pausa: {"phase":"sync-paused","sync_pause":{"by":"dgx-852-arranque-tp2","at":"2026-10-14T20:12:27Z"}}
+20:12:32Z stt-turbo parado
+20:14:41Z pods del TP=2 de nuevo; libre dgx2=111.4 GiB dgx1=104.5 GiB
+20:14:42Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:0 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=111.2 GiB
+20:15:44Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:0 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.2 GiB
+20:16:46Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:0 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.2 GiB
+20:17:47Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:0 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.2 GiB
+20:18:49Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:0 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.2 GiB
+20:19:50Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:0 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.1 GiB
+20:20:52Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:0 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.2 GiB
+20:21:53Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:0 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.1 GiB
+20:22:55Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:0 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.2 GiB
+20:23:56Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:0 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.2 GiB
+20:24:58Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:0 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.1 GiB
+20:26:01Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=109.4 GiB
+20:27:02Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.0 GiB
+20:28:04Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.1 GiB
+20:29:05Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.1 GiB
+20:30:08Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.1 GiB
+20:31:10Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.1 GiB
+20:32:12Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.0 GiB
+20:33:14Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.0 GiB
+20:34:16Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-5whj8:Running:0  libre dgx2=108.1 GiB
+20:35:17Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-h8wzh:Running:0  libre dgx2=108.1 GiB
+20:36:19Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-h8wzh:Running:0  libre dgx2=50.2 GiB
+20:37:21Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-h8wzh:Running:0  libre dgx2=41.1 GiB
+20:38:23Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-h8wzh:Running:0  libre dgx2=19.1 GiB
+20:39:25Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-h8wzh:Running:0  libre dgx2=18.3 GiB
+20:40:26Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-h8wzh:Running:0  libre dgx2=15.0 GiB
+20:41:28Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-h8wzh:Running:0  libre dgx2=14.9 GiB
+20:42:29Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-h8wzh:Running:0  libre dgx2=14.9 GiB
+20:43:31Z TP=2 arrancando: qwen38-flash-next-head-647cdb4f6b-gbx2h:Running:1 qwen38-flash-next-worker-dcb588865-h8wzh:Running:0  libre dgx2=14.8 GiB
+20:44:32Z TP=2 sano: ["qwen38-flash-next","qwen3.8-flash-next","ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE"]; libre dgx2=11.7 GiB
+20:44:35Z stt-turbo de vuelta; libre dgx2=11.7 GiB
+20:44:36Z árbitro a ready
+20:45:08Z árbitro={"phase":"ready","last_error":null} deploys=[1/1 1/1 1/1 1/1 1/1 ] health tp2=200 tp1=200 libre dgx2=12.0 GiB
+20:45:41Z árbitro={"phase":"ready","last_error":null} deploys=[1/1 1/1 1/1 1/1 1/1 ] health tp2=200 tp1=200 libre dgx2=12.0 GiB
+20:46:13Z árbitro={"phase":"ready","last_error":null} deploys=[1/1 1/1 1/1 1/1 1/1 ] health tp2=200 tp1=200 libre dgx2=11.9 GiB
+20:46:46Z árbitro={"phase":"ready","last_error":null} deploys=[1/1 1/1 1/1 1/1 1/1 ] health tp2=200 tp1=200 libre dgx2=11.5 GiB
+20:47:18Z árbitro={"phase":"ready","last_error":null} deploys=[1/1 1/1 1/1 1/1 1/1 ] health tp2=200 tp1=200 libre dgx2=11.5 GiB
+20:47:51Z árbitro={"phase":"ready","last_error":null} deploys=[1/1 1/1 1/1 1/1 1/1 ] health tp2=200 tp1=200 libre dgx2=11.3 GiB
+20:48:23Z árbitro={"phase":"ready","last_error":null} deploys=[1/1 1/1 1/1 1/1 1/1 ] health tp2=200 tp1=200 libre dgx2=11.4 GiB
+20:48:55Z árbitro={"phase":"ready","last_error":null} deploys=[1/1 1/1 1/1 1/1 1/1 ] health tp2=200 tp1=200 libre dgx2=11.5 GiB
+20:49:28Z árbitro={"phase":"ready","last_error":null} deploys=[1/1 1/1 1/1 1/1 1/1 ] health tp2=200 tp1=200 libre dgx2=11.7 GiB
+20:50:00Z árbitro={"phase":"ready","last_error":null} deploys=[1/1 1/1 1/1 1/1 1/1 ] health tp2=200 tp1=200 libre dgx2=11.6 GiB
+20:50:00Z FIN

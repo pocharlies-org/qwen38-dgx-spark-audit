@@ -1,0 +1,10 @@
+18:24:33 vigilando pocharlies-org/k8s-gitops-pocharlies#604 (tope 960s, vuelta cada 30s, once=0, epic=0)
+18:24:34 pend=5 fail=0 pass=8 total=13 estado=open
+18:25:04 pend=5 fail=0 pass=9 total=14 estado=open
+18:25:35 pend=1 fail=0 pass=16 total=17 estado=open
+18:26:06 pend=1 fail=0 pass=16 total=17 estado=open
+18:26:37 pend=0 fail=0 pass=17 total=17 estado=open
+null
+gh pr merge BLOQUEADO — pocharlies-org/k8s-gitops-pocharlies#604 no se puede fusionar todavía (Dani, 30-09: toda PR con código necesita qa + architect + PR review + CI en verde):
+  - falta la aprobación de qa (riesgo alto: marcador, argocd) (company-aprobar pocharlies-org/k8s-gitops-pocharlies#604 --rol qa --aprueba --nota …)
+18:26:41 merge falló (ver /home/user/bench-results/dgx-847/ops/pr604.log)

@@ -1,0 +1,2505 @@
+{
+  "tool": "qwen38_decode_sweep",
+  "mode": "quality",
+  "args": {
+    "base_url": [
+      "http://127.0.0.1:34315/s/tools12"
+    ],
+    "model": "qwen3.8-flash-next",
+    "concurrency": [
+      1,
+      4,
+      8,
+      10
+    ],
+    "warmup": 30,
+    "duration": 120,
+    "reps": 5,
+    "max_tokens": 256,
+    "prompts": "/home/user/bench-results/dgx-847/1x/quality/tools12-prompts.jsonl",
+    "out": "/home/user/bench-results/dgx-847/1x/quality/tools12.json",
+    "timeout": 600,
+    "sample_interval": 5.0,
+    "long_workers": 0,
+    "long_tokens": 32000,
+    "max_model_len": 262144,
+    "seed": 841385,
+    "thermal_url": null,
+    "thermal_query": "max(node_thermal_zone_temp * on(namespace, pod) group_left(node) kube_pod_info{node=~\"nvidia-dgx|gx10-ec3d\"})",
+    "quality": true,
+    "compare": null
+  },
+  "model": "qwen3.8-flash-next",
+  "base_url": "http://127.0.0.1:34315/s/tools12",
+  "started_utc": "2026-10-12T21:43:05.944+00:00",
+  "ended_utc": "2026-10-12T21:54:12.261+00:00",
+  "outputs": [
+    {
+      "rep": 0,
+      "id": "t01",
+      "kind": "tool",
+      "expect": "get_weather",
+      "text": "I'll check the current weather in Madrid for you.\nget_weather {\"city\": \"Madrid\"}",
+      "token_ids": [
+        40,
+        3172,
+        1716,
+        279,
+        1428,
+        8831,
+        303,
+        23327,
+        364,
+        488,
+        13,
+        198,
+        447,
+        67017,
+        5046,
+        8656,
+        763,
+        328,
+        218787,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 38,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-a80cdee38192e060",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"city\": \"Madrid\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 0,
+      "id": "t02",
+      "kind": "tool",
+      "expect": "convert_currency",
+      "text": "\nconvert_currency {\"amount\": 250, \"from\": \"USD\", \"to\": \"EUR\"}",
+      "token_ids": [
+        198,
+        13761,
+        33562,
+        5046,
+        5856,
+        763,
+        220,
+        17,
+        20,
+        15,
+        11,
+        328,
+        1445,
+        763,
+        328,
+        25895,
+        487,
+        328,
+        951,
+        763,
+        328,
+        52897,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 53,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-8985f3221ea65732",
+          "type": "function",
+          "function": {
+            "name": "convert_currency",
+            "arguments": "{\"amount\": 250, \"from\": \"USD\", \"to\": \"EUR\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 0,
+      "id": "t03",
+      "kind": "tool",
+      "expect": "set_timer",
+      "text": "\nset_timer {\"minutes\": 12, \"label\": \"pasta\"}",
+      "token_ids": [
+        198,
+        723,
+        15776,
+        5046,
+        35808,
+        763,
+        220,
+        16,
+        17,
+        11,
+        328,
+        1448,
+        763,
+        328,
+        79,
+        13890,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-8201a77364e0555e",
+          "type": "function",
+          "function": {
+            "name": "set_timer",
+            "arguments": "{\"minutes\": 12, \"label\": \"pasta\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 0,
+      "id": "t04",
+      "kind": "tool",
+      "expect": "web_search",
+      "text": "\nweb_search {\"query\": \"vLLM latest release notes\"}",
+      "token_ids": [
+        198,
+        2817,
+        10400,
+        5046,
+        1574,
+        763,
+        328,
+        85,
+        3950,
+        44,
+        5362,
+        4722,
+        8129,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 31,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-baf3b3416bec8b92",
+          "type": "function",
+          "function": {
+            "name": "web_search",
+            "arguments": "{\"query\": \"vLLM latest release notes\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 0,
+      "id": "t05",
+      "kind": "tool",
+      "expect": "send_email",
+      "text": "\nsend_email {\"to\": \"ana@example.com\", \"subject\": \"Build is Green\", \"body\": \"Hi Ana,\\n\\nJust letting you know that the build is green.\\n\\nBest regards\"}",
+      "token_ids": [
+        198,
+        6472,
+        8899,
+        5046,
+        951,
+        763,
+        328,
+        3253,
+        34314,
+        877,
+        487,
+        328,
+        11170,
+        763,
+        328,
+        10743,
+        369,
+        7592,
+        487,
+        328,
+        2513,
+        763,
+        328,
+        12675,
+        31079,
+        25427,
+        77,
+        1639,
+        9658,
+        19581,
+        488,
+        1366,
+        421,
+        279,
+        1870,
+        369,
+        5983,
+        6889,
+        77,
+        1639,
+        14055,
+        23187,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 71,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-9c37452193bb9d34",
+          "type": "function",
+          "function": {
+            "name": "send_email",
+            "arguments": "{\"to\": \"ana@example.com\", \"subject\": \"Build is Green\", \"body\": \"Hi Ana,\\n\\nJust letting you know that the build is green.\\n\\nBest regards\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 0,
+      "id": "t06",
+      "kind": "tool",
+      "expect": "read_file",
+      "text": "\nread_file {\"path\": \"/etc/hostname\"}",
+      "token_ids": [
+        198,
+        851,
+        2378,
+        5046,
+        2267,
+        763,
+        3405,
+        11763,
+        14,
+        26903,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 27,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-b8c883228f99b6ed",
+          "type": "function",
+          "function": {
+            "name": "read_file",
+            "arguments": "{\"path\": \"/etc/hostname\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 0,
+      "id": "t07",
+      "kind": "tool",
+      "expect": "create_event",
+      "text": "\ncreate_event {\"date\": \"2026-11-03\", \"time\": \"10:00\", \"title\": \"Sprint review\"}",
+      "token_ids": [
+        198,
+        3081,
+        6536,
+        5046,
+        993,
+        763,
+        328,
+        17,
+        15,
+        17,
+        21,
+        12,
+        16,
+        16,
+        12,
+        15,
+        18,
+        487,
+        328,
+        1619,
+        763,
+        328,
+        16,
+        15,
+        25,
+        15,
+        15,
+        487,
+        328,
+        2034,
+        763,
+        328,
+        50,
+        1302,
+        3286,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 62,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-8fc212ee2b080a86",
+          "type": "function",
+          "function": {
+            "name": "create_event",
+            "arguments": "{\"date\": \"2026-11-03\", \"time\": \"10:00\", \"title\": \"Sprint review\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 0,
+      "id": "t08",
+      "kind": "tool",
+      "expect": "query_orders",
+      "text": "\nquery_orders {\"status\": \"shipped\", \"day\": \"yesterday\"}",
+      "token_ids": [
+        198,
+        1574,
+        35899,
+        5046,
+        2738,
+        763,
+        328,
+        898,
+        6248,
+        487,
+        328,
+        1247,
+        763,
+        328,
+        88,
+        10955,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-a5bfa8eddde7b694",
+          "type": "function",
+          "function": {
+            "name": "query_orders",
+            "arguments": "{\"status\": \"shipped\", \"day\": \"yesterday\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 0,
+      "id": "t09",
+      "kind": "tool",
+      "expect": "translate",
+      "text": "\u304a\u306f\u3088\u3046\u3054\u3056\u3044\u307e\u3059",
+      "token_ids": [
+        31171,
+        14876,
+        148564,
+        152302
+      ],
+      "finish_reason": "stop",
+      "completion_tokens": 5,
+      "tool_calls": null,
+      "tool_valid": false,
+      "error": null
+    },
+    {
+      "rep": 0,
+      "id": "t10",
+      "kind": "tool",
+      "expect": "restart_service",
+      "text": "\nrestart_service {\"environment\": \"staging\", \"name\": \"gateway\"}",
+      "token_ids": [
+        198,
+        48528,
+        11917,
+        5046,
+        22570,
+        763,
+        328,
+        267,
+        3982,
+        487,
+        328,
+        591,
+        763,
+        328,
+        44922,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-91316755235bc1df",
+          "type": "function",
+          "function": {
+            "name": "restart_service",
+            "arguments": "{\"environment\": \"staging\", \"name\": \"gateway\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 0,
+      "id": "t11",
+      "kind": "tool",
+      "expect": "get_stock_price",
+      "text": "\nget_stock_price {\"ticker\": \"NVDA\"}",
+      "token_ids": [
+        198,
+        447,
+        29543,
+        8768,
+        5046,
+        66032,
+        763,
+        328,
+        35125,
+        6151,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 28,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-904b53102f8586bb",
+          "type": "function",
+          "function": {
+            "name": "get_stock_price",
+            "arguments": "{\"ticker\": \"NVDA\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 0,
+      "id": "t12",
+      "kind": "tool",
+      "expect": "run_tests",
+      "text": "\nrun_tests {\"module\": \"billing\", \"verbose\": true}",
+      "token_ids": [
+        198,
+        5917,
+        31436,
+        5046,
+        4211,
+        763,
+        328,
+        37355,
+        487,
+        328,
+        14452,
+        763,
+        804,
+        92
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-91589c9b1b2a44a0",
+          "type": "function",
+          "function": {
+            "name": "run_tests",
+            "arguments": "{\"module\": \"billing\", \"verbose\": true}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 1,
+      "id": "t01",
+      "kind": "tool",
+      "expect": "get_weather",
+      "text": "\nget_weather {\"city\": \"Madrid\"}",
+      "token_ids": [
+        198,
+        447,
+        67017,
+        5046,
+        8656,
+        763,
+        328,
+        218787,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 26,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-b4b637c36885a2e5",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"city\": \"Madrid\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 1,
+      "id": "t02",
+      "kind": "tool",
+      "expect": "convert_currency",
+      "text": "\nconvert_currency {\"amount\": 250, \"from\": \"USD\", \"to\": \"EUR\"}",
+      "token_ids": [
+        198,
+        13761,
+        33562,
+        5046,
+        5856,
+        763,
+        220,
+        17,
+        20,
+        15,
+        11,
+        328,
+        1445,
+        763,
+        328,
+        25895,
+        487,
+        328,
+        951,
+        763,
+        328,
+        52897,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 53,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-9fa1e9c0526ed574",
+          "type": "function",
+          "function": {
+            "name": "convert_currency",
+            "arguments": "{\"amount\": 250, \"from\": \"USD\", \"to\": \"EUR\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 1,
+      "id": "t03",
+      "kind": "tool",
+      "expect": "set_timer",
+      "text": "\nset_timer {\"minutes\": 12, \"label\": \"pasta\"}",
+      "token_ids": [
+        198,
+        723,
+        15776,
+        5046,
+        35808,
+        763,
+        220,
+        16,
+        17,
+        11,
+        328,
+        1448,
+        763,
+        328,
+        79,
+        13890,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-8cb0d4059c192bbc",
+          "type": "function",
+          "function": {
+            "name": "set_timer",
+            "arguments": "{\"minutes\": 12, \"label\": \"pasta\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 1,
+      "id": "t04",
+      "kind": "tool",
+      "expect": "web_search",
+      "text": "\nweb_search {\"query\": \"vLLM latest release notes\"}",
+      "token_ids": [
+        198,
+        2817,
+        10400,
+        5046,
+        1574,
+        763,
+        328,
+        85,
+        3950,
+        44,
+        5362,
+        4722,
+        8129,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 31,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-b25ac0bf763bf2f3",
+          "type": "function",
+          "function": {
+            "name": "web_search",
+            "arguments": "{\"query\": \"vLLM latest release notes\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 1,
+      "id": "t05",
+      "kind": "tool",
+      "expect": "send_email",
+      "text": "\nsend_email {\"to\": \"ana@example.com\", \"subject\": \"Build is green\", \"body\": \"Hi Ana,\\n\\nJust letting you know that the build is green.\\n\\nBest regards\"}",
+      "token_ids": [
+        198,
+        6472,
+        8899,
+        5046,
+        951,
+        763,
+        328,
+        3253,
+        34314,
+        877,
+        487,
+        328,
+        11170,
+        763,
+        328,
+        10743,
+        369,
+        5983,
+        487,
+        328,
+        2513,
+        763,
+        328,
+        12675,
+        31079,
+        25427,
+        77,
+        1639,
+        9658,
+        19581,
+        488,
+        1366,
+        421,
+        279,
+        1870,
+        369,
+        5983,
+        6889,
+        77,
+        1639,
+        14055,
+        23187,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 71,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-a370809f02bfa16e",
+          "type": "function",
+          "function": {
+            "name": "send_email",
+            "arguments": "{\"to\": \"ana@example.com\", \"subject\": \"Build is green\", \"body\": \"Hi Ana,\\n\\nJust letting you know that the build is green.\\n\\nBest regards\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 1,
+      "id": "t06",
+      "kind": "tool",
+      "expect": "read_file",
+      "text": "\nread_file {\"path\": \"/etc/hostname\"}",
+      "token_ids": [
+        198,
+        851,
+        2378,
+        5046,
+        2267,
+        763,
+        3405,
+        11763,
+        14,
+        26903,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 27,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-beaa340ed51ca827",
+          "type": "function",
+          "function": {
+            "name": "read_file",
+            "arguments": "{\"path\": \"/etc/hostname\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 1,
+      "id": "t07",
+      "kind": "tool",
+      "expect": "create_event",
+      "text": "\ncreate_event {\"date\": \"2026-11-03\", \"time\": \"10:00\", \"title\": \"Sprint review\"}",
+      "token_ids": [
+        198,
+        3081,
+        6536,
+        5046,
+        993,
+        763,
+        328,
+        17,
+        15,
+        17,
+        21,
+        12,
+        16,
+        16,
+        12,
+        15,
+        18,
+        487,
+        328,
+        1619,
+        763,
+        328,
+        16,
+        15,
+        25,
+        15,
+        15,
+        487,
+        328,
+        2034,
+        763,
+        328,
+        50,
+        1302,
+        3286,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 62,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-892009d1c6c487d9",
+          "type": "function",
+          "function": {
+            "name": "create_event",
+            "arguments": "{\"date\": \"2026-11-03\", \"time\": \"10:00\", \"title\": \"Sprint review\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 1,
+      "id": "t08",
+      "kind": "tool",
+      "expect": "query_orders",
+      "text": "\nquery_orders {\"status\": \"shipped\", \"day\": \"yesterday\"}",
+      "token_ids": [
+        198,
+        1574,
+        35899,
+        5046,
+        2738,
+        763,
+        328,
+        898,
+        6248,
+        487,
+        328,
+        1247,
+        763,
+        328,
+        88,
+        10955,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-bf70f367ab161533",
+          "type": "function",
+          "function": {
+            "name": "query_orders",
+            "arguments": "{\"status\": \"shipped\", \"day\": \"yesterday\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 1,
+      "id": "t09",
+      "kind": "tool",
+      "expect": "translate",
+      "text": "\ntranslate {\"text\": \"good morning\", \"target_language\": \"Japanese\"}",
+      "token_ids": [
+        198,
+        13642,
+        5046,
+        1272,
+        763,
+        328,
+        17981,
+        6353,
+        487,
+        328,
+        5480,
+        28074,
+        763,
+        328,
+        49732,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 38,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-8fe26f8fc9c1c845",
+          "type": "function",
+          "function": {
+            "name": "translate",
+            "arguments": "{\"text\": \"good morning\", \"target_language\": \"Japanese\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 1,
+      "id": "t10",
+      "kind": "tool",
+      "expect": "restart_service",
+      "text": "\nrestart_service {\"environment\": \"staging\", \"name\": \"gateway\"}",
+      "token_ids": [
+        198,
+        48528,
+        11917,
+        5046,
+        22570,
+        763,
+        328,
+        267,
+        3982,
+        487,
+        328,
+        591,
+        763,
+        328,
+        44922,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-9dabc08f5c6e6017",
+          "type": "function",
+          "function": {
+            "name": "restart_service",
+            "arguments": "{\"environment\": \"staging\", \"name\": \"gateway\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 1,
+      "id": "t11",
+      "kind": "tool",
+      "expect": "get_stock_price",
+      "text": "\nget_stock_price {\"ticker\": \"NVDA\"}",
+      "token_ids": [
+        198,
+        447,
+        29543,
+        8768,
+        5046,
+        66032,
+        763,
+        328,
+        35125,
+        6151,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 28,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-ac4598164a24a169",
+          "type": "function",
+          "function": {
+            "name": "get_stock_price",
+            "arguments": "{\"ticker\": \"NVDA\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 1,
+      "id": "t12",
+      "kind": "tool",
+      "expect": "run_tests",
+      "text": "\nrun_tests {\"module\": \"billing\", \"verbose\": true}",
+      "token_ids": [
+        198,
+        5917,
+        31436,
+        5046,
+        4211,
+        763,
+        328,
+        37355,
+        487,
+        328,
+        14452,
+        763,
+        804,
+        92
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-b7e14b511fd95a80",
+          "type": "function",
+          "function": {
+            "name": "run_tests",
+            "arguments": "{\"module\": \"billing\", \"verbose\": true}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 2,
+      "id": "t01",
+      "kind": "tool",
+      "expect": "get_weather",
+      "text": "\nget_weather {\"city\": \"Madrid\"}",
+      "token_ids": [
+        198,
+        447,
+        67017,
+        5046,
+        8656,
+        763,
+        328,
+        218787,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 26,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-96abb04d4fbe0149",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"city\": \"Madrid\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 2,
+      "id": "t02",
+      "kind": "tool",
+      "expect": "convert_currency",
+      "text": "\nconvert_currency {\"amount\": 250, \"from\": \"USD\", \"to\": \"EUR\"}",
+      "token_ids": [
+        198,
+        13761,
+        33562,
+        5046,
+        5856,
+        763,
+        220,
+        17,
+        20,
+        15,
+        11,
+        328,
+        1445,
+        763,
+        328,
+        25895,
+        487,
+        328,
+        951,
+        763,
+        328,
+        52897,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 53,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-bb22f1a0f809f620",
+          "type": "function",
+          "function": {
+            "name": "convert_currency",
+            "arguments": "{\"amount\": 250, \"from\": \"USD\", \"to\": \"EUR\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 2,
+      "id": "t03",
+      "kind": "tool",
+      "expect": "set_timer",
+      "text": "\nset_timer {\"minutes\": 12, \"label\": \"pasta\"}",
+      "token_ids": [
+        198,
+        723,
+        15776,
+        5046,
+        35808,
+        763,
+        220,
+        16,
+        17,
+        11,
+        328,
+        1448,
+        763,
+        328,
+        79,
+        13890,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-a6065f7498de304f",
+          "type": "function",
+          "function": {
+            "name": "set_timer",
+            "arguments": "{\"minutes\": 12, \"label\": \"pasta\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 2,
+      "id": "t04",
+      "kind": "tool",
+      "expect": "web_search",
+      "text": "\nweb_search {\"query\": \"latest vLLM release notes\"}",
+      "token_ids": [
+        198,
+        2817,
+        10400,
+        5046,
+        1574,
+        763,
+        328,
+        18763,
+        343,
+        3950,
+        44,
+        4722,
+        8129,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 31,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-ae54cab0242feb40",
+          "type": "function",
+          "function": {
+            "name": "web_search",
+            "arguments": "{\"query\": \"latest vLLM release notes\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 2,
+      "id": "t05",
+      "kind": "tool",
+      "expect": "send_email",
+      "text": "\nsend_email {\"to\": \"ana@example.com\", \"subject\": \"Build is Green\", \"body\": \"Hi Ana,\\n\\nJust letting you know that the build is green.\\n\\nBest regards\"}",
+      "token_ids": [
+        198,
+        6472,
+        8899,
+        5046,
+        951,
+        763,
+        328,
+        3253,
+        34314,
+        877,
+        487,
+        328,
+        11170,
+        763,
+        328,
+        10743,
+        369,
+        7592,
+        487,
+        328,
+        2513,
+        763,
+        328,
+        12675,
+        31079,
+        25427,
+        77,
+        1639,
+        9658,
+        19581,
+        488,
+        1366,
+        421,
+        279,
+        1870,
+        369,
+        5983,
+        6889,
+        77,
+        1639,
+        14055,
+        23187,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 71,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-9982e3d928d69b5d",
+          "type": "function",
+          "function": {
+            "name": "send_email",
+            "arguments": "{\"to\": \"ana@example.com\", \"subject\": \"Build is Green\", \"body\": \"Hi Ana,\\n\\nJust letting you know that the build is green.\\n\\nBest regards\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 2,
+      "id": "t06",
+      "kind": "tool",
+      "expect": "read_file",
+      "text": "\nread_file {\"path\": \"/etc/hostname\"}",
+      "token_ids": [
+        198,
+        851,
+        2378,
+        5046,
+        2267,
+        763,
+        3405,
+        11763,
+        14,
+        26903,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 27,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-9909e97004b2ec32",
+          "type": "function",
+          "function": {
+            "name": "read_file",
+            "arguments": "{\"path\": \"/etc/hostname\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 2,
+      "id": "t07",
+      "kind": "tool",
+      "expect": "create_event",
+      "text": "\ncreate_event {\"date\": \"2026-11-03\", \"time\": \"10:00\", \"title\": \"Sprint review\"}",
+      "token_ids": [
+        198,
+        3081,
+        6536,
+        5046,
+        993,
+        763,
+        328,
+        17,
+        15,
+        17,
+        21,
+        12,
+        16,
+        16,
+        12,
+        15,
+        18,
+        487,
+        328,
+        1619,
+        763,
+        328,
+        16,
+        15,
+        25,
+        15,
+        15,
+        487,
+        328,
+        2034,
+        763,
+        328,
+        50,
+        1302,
+        3286,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 62,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-9afc0ec48f8fb488",
+          "type": "function",
+          "function": {
+            "name": "create_event",
+            "arguments": "{\"date\": \"2026-11-03\", \"time\": \"10:00\", \"title\": \"Sprint review\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 2,
+      "id": "t08",
+      "kind": "tool",
+      "expect": "query_orders",
+      "text": "\nquery_orders {\"status\": \"shipped\", \"day\": \"yesterday\"}",
+      "token_ids": [
+        198,
+        1574,
+        35899,
+        5046,
+        2738,
+        763,
+        328,
+        898,
+        6248,
+        487,
+        328,
+        1247,
+        763,
+        328,
+        88,
+        10955,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-bf88ab2ca5bb6097",
+          "type": "function",
+          "function": {
+            "name": "query_orders",
+            "arguments": "{\"status\": \"shipped\", \"day\": \"yesterday\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 2,
+      "id": "t09",
+      "kind": "tool",
+      "expect": "translate",
+      "text": "\u304a\u306f\u3088\u3046\u3054\u3056\u3044\u307e\u3059",
+      "token_ids": [
+        31171,
+        14876,
+        148564,
+        152302
+      ],
+      "finish_reason": "stop",
+      "completion_tokens": 5,
+      "tool_calls": null,
+      "tool_valid": false,
+      "error": null
+    },
+    {
+      "rep": 2,
+      "id": "t10",
+      "kind": "tool",
+      "expect": "restart_service",
+      "text": "\nrestart_service {\"environment\": \"staging\", \"name\": \"gateway\"}",
+      "token_ids": [
+        198,
+        48528,
+        11917,
+        5046,
+        22570,
+        763,
+        328,
+        267,
+        3982,
+        487,
+        328,
+        591,
+        763,
+        328,
+        44922,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-8729e9c7d7199fd0",
+          "type": "function",
+          "function": {
+            "name": "restart_service",
+            "arguments": "{\"environment\": \"staging\", \"name\": \"gateway\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 2,
+      "id": "t11",
+      "kind": "tool",
+      "expect": "get_stock_price",
+      "text": "\nget_stock_price {\"ticker\": \"NVDA\"}",
+      "token_ids": [
+        198,
+        447,
+        29543,
+        8768,
+        5046,
+        66032,
+        763,
+        328,
+        35125,
+        6151,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 28,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-a32d4053e400d9e0",
+          "type": "function",
+          "function": {
+            "name": "get_stock_price",
+            "arguments": "{\"ticker\": \"NVDA\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 2,
+      "id": "t12",
+      "kind": "tool",
+      "expect": "run_tests",
+      "text": "\nrun_tests {\"module\": \"billing\", \"verbose\": true}",
+      "token_ids": [
+        198,
+        5917,
+        31436,
+        5046,
+        4211,
+        763,
+        328,
+        37355,
+        487,
+        328,
+        14452,
+        763,
+        804,
+        92
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-8b12b1533065bbf5",
+          "type": "function",
+          "function": {
+            "name": "run_tests",
+            "arguments": "{\"module\": \"billing\", \"verbose\": true}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 3,
+      "id": "t01",
+      "kind": "tool",
+      "expect": "get_weather",
+      "text": "I'll check the current weather in Madrid for you.\nget_weather {\"city\": \"Madrid\"}",
+      "token_ids": [
+        40,
+        3172,
+        1716,
+        279,
+        1428,
+        8831,
+        303,
+        23327,
+        364,
+        488,
+        13,
+        198,
+        447,
+        67017,
+        5046,
+        8656,
+        763,
+        328,
+        218787,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 38,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-a79cb3cf3b0de9cd",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"city\": \"Madrid\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 3,
+      "id": "t02",
+      "kind": "tool",
+      "expect": "convert_currency",
+      "text": "\nconvert_currency {\"amount\": 250, \"from\": \"USD\", \"to\": \"EUR\"}",
+      "token_ids": [
+        198,
+        13761,
+        33562,
+        5046,
+        5856,
+        763,
+        220,
+        17,
+        20,
+        15,
+        11,
+        328,
+        1445,
+        763,
+        328,
+        25895,
+        487,
+        328,
+        951,
+        763,
+        328,
+        52897,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 53,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-9e7b5f5e90fdf438",
+          "type": "function",
+          "function": {
+            "name": "convert_currency",
+            "arguments": "{\"amount\": 250, \"from\": \"USD\", \"to\": \"EUR\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 3,
+      "id": "t03",
+      "kind": "tool",
+      "expect": "set_timer",
+      "text": "\nset_timer {\"minutes\": 12, \"label\": \"pasta\"}",
+      "token_ids": [
+        198,
+        723,
+        15776,
+        5046,
+        35808,
+        763,
+        220,
+        16,
+        17,
+        11,
+        328,
+        1448,
+        763,
+        328,
+        79,
+        13890,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-8267a2555271700c",
+          "type": "function",
+          "function": {
+            "name": "set_timer",
+            "arguments": "{\"minutes\": 12, \"label\": \"pasta\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 3,
+      "id": "t04",
+      "kind": "tool",
+      "expect": "web_search",
+      "text": "\nweb_search {\"query\": \"vLLM latest release notes\"}",
+      "token_ids": [
+        198,
+        2817,
+        10400,
+        5046,
+        1574,
+        763,
+        328,
+        85,
+        3950,
+        44,
+        5362,
+        4722,
+        8129,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 31,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-87673f844e542de3",
+          "type": "function",
+          "function": {
+            "name": "web_search",
+            "arguments": "{\"query\": \"vLLM latest release notes\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 3,
+      "id": "t05",
+      "kind": "tool",
+      "expect": "send_email",
+      "text": "\nsend_email {\"to\": \"ana@example.com\", \"subject\": \"Build is Green\", \"body\": \"Hi Ana,\\n\\nJust letting you know that the build is green.\\n\\nBest regards\"}",
+      "token_ids": [
+        198,
+        6472,
+        8899,
+        5046,
+        951,
+        763,
+        328,
+        3253,
+        34314,
+        877,
+        487,
+        328,
+        11170,
+        763,
+        328,
+        10743,
+        369,
+        7592,
+        487,
+        328,
+        2513,
+        763,
+        328,
+        12675,
+        31079,
+        25427,
+        77,
+        1639,
+        9658,
+        19581,
+        488,
+        1366,
+        421,
+        279,
+        1870,
+        369,
+        5983,
+        6889,
+        77,
+        1639,
+        14055,
+        23187,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 71,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-988bae43e2af94bc",
+          "type": "function",
+          "function": {
+            "name": "send_email",
+            "arguments": "{\"to\": \"ana@example.com\", \"subject\": \"Build is Green\", \"body\": \"Hi Ana,\\n\\nJust letting you know that the build is green.\\n\\nBest regards\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 3,
+      "id": "t06",
+      "kind": "tool",
+      "expect": "read_file",
+      "text": "\nread_file {\"path\": \"/etc/hostname\"}",
+      "token_ids": [
+        198,
+        851,
+        2378,
+        5046,
+        2267,
+        763,
+        3405,
+        11763,
+        14,
+        26903,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 27,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-aaf22d4b471c8c6b",
+          "type": "function",
+          "function": {
+            "name": "read_file",
+            "arguments": "{\"path\": \"/etc/hostname\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 3,
+      "id": "t07",
+      "kind": "tool",
+      "expect": "create_event",
+      "text": "\ncreate_event {\"date\": \"2026-11-03\", \"time\": \"10:00\", \"title\": \"Sprint review\"}",
+      "token_ids": [
+        198,
+        3081,
+        6536,
+        5046,
+        993,
+        763,
+        328,
+        17,
+        15,
+        17,
+        21,
+        12,
+        16,
+        16,
+        12,
+        15,
+        18,
+        487,
+        328,
+        1619,
+        763,
+        328,
+        16,
+        15,
+        25,
+        15,
+        15,
+        487,
+        328,
+        2034,
+        763,
+        328,
+        50,
+        1302,
+        3286,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 62,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-a465bc81f8be7ce3",
+          "type": "function",
+          "function": {
+            "name": "create_event",
+            "arguments": "{\"date\": \"2026-11-03\", \"time\": \"10:00\", \"title\": \"Sprint review\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 3,
+      "id": "t08",
+      "kind": "tool",
+      "expect": "query_orders",
+      "text": "\nquery_orders {\"status\": \"shipped\", \"day\": \"yesterday\"}",
+      "token_ids": [
+        198,
+        1574,
+        35899,
+        5046,
+        2738,
+        763,
+        328,
+        898,
+        6248,
+        487,
+        328,
+        1247,
+        763,
+        328,
+        88,
+        10955,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-a416148a072b69e2",
+          "type": "function",
+          "function": {
+            "name": "query_orders",
+            "arguments": "{\"status\": \"shipped\", \"day\": \"yesterday\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 3,
+      "id": "t09",
+      "kind": "tool",
+      "expect": "translate",
+      "text": "\u304a\u306f\u3088\u3046\u3054\u3056\u3044\u307e\u3059",
+      "token_ids": [
+        31171,
+        14876,
+        148564,
+        152302
+      ],
+      "finish_reason": "stop",
+      "completion_tokens": 5,
+      "tool_calls": null,
+      "tool_valid": false,
+      "error": null
+    },
+    {
+      "rep": 3,
+      "id": "t10",
+      "kind": "tool",
+      "expect": "restart_service",
+      "text": "\nrestart_service {\"name\": \"gateway\", \"environment\": \"staging\"}",
+      "token_ids": [
+        198,
+        48528,
+        11917,
+        5046,
+        591,
+        763,
+        328,
+        44922,
+        487,
+        328,
+        22570,
+        763,
+        328,
+        267,
+        3982,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-80c1a62f5ae29235",
+          "type": "function",
+          "function": {
+            "name": "restart_service",
+            "arguments": "{\"name\": \"gateway\", \"environment\": \"staging\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 3,
+      "id": "t11",
+      "kind": "tool",
+      "expect": "get_stock_price",
+      "text": "\nget_stock_price {\"ticker\": \"NVDA\"}",
+      "token_ids": [
+        198,
+        447,
+        29543,
+        8768,
+        5046,
+        66032,
+        763,
+        328,
+        35125,
+        6151,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 28,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-81bc09b835be2869",
+          "type": "function",
+          "function": {
+            "name": "get_stock_price",
+            "arguments": "{\"ticker\": \"NVDA\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 3,
+      "id": "t12",
+      "kind": "tool",
+      "expect": "run_tests",
+      "text": "\nrun_tests {\"module\": \"billing\", \"verbose\": true}",
+      "token_ids": [
+        198,
+        5917,
+        31436,
+        5046,
+        4211,
+        763,
+        328,
+        37355,
+        487,
+        328,
+        14452,
+        763,
+        804,
+        92
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-9ff889581af52557",
+          "type": "function",
+          "function": {
+            "name": "run_tests",
+            "arguments": "{\"module\": \"billing\", \"verbose\": true}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 4,
+      "id": "t01",
+      "kind": "tool",
+      "expect": "get_weather",
+      "text": "\nget_weather {\"city\": \"Madrid\"}",
+      "token_ids": [
+        198,
+        447,
+        67017,
+        5046,
+        8656,
+        763,
+        328,
+        218787,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 26,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-8573735a6b00d1cf",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"city\": \"Madrid\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 4,
+      "id": "t02",
+      "kind": "tool",
+      "expect": "convert_currency",
+      "text": "\nconvert_currency {\"amount\": 250, \"from\": \"USD\", \"to\": \"EUR\"}",
+      "token_ids": [
+        198,
+        13761,
+        33562,
+        5046,
+        5856,
+        763,
+        220,
+        17,
+        20,
+        15,
+        11,
+        328,
+        1445,
+        763,
+        328,
+        25895,
+        487,
+        328,
+        951,
+        763,
+        328,
+        52897,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 53,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-b307300831842bed",
+          "type": "function",
+          "function": {
+            "name": "convert_currency",
+            "arguments": "{\"amount\": 250, \"from\": \"USD\", \"to\": \"EUR\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 4,
+      "id": "t03",
+      "kind": "tool",
+      "expect": "set_timer",
+      "text": "\nset_timer {\"minutes\": 12, \"label\": \"pasta\"}",
+      "token_ids": [
+        198,
+        723,
+        15776,
+        5046,
+        35808,
+        763,
+        220,
+        16,
+        17,
+        11,
+        328,
+        1448,
+        763,
+        328,
+        79,
+        13890,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-a9f868f1bdde7a74",
+          "type": "function",
+          "function": {
+            "name": "set_timer",
+            "arguments": "{\"minutes\": 12, \"label\": \"pasta\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 4,
+      "id": "t04",
+      "kind": "tool",
+      "expect": "web_search",
+      "text": "\nweb_search {\"query\": \"latest vLLM release notes\"}",
+      "token_ids": [
+        198,
+        2817,
+        10400,
+        5046,
+        1574,
+        763,
+        328,
+        18763,
+        343,
+        3950,
+        44,
+        4722,
+        8129,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 31,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-a0b01713b52fe7c2",
+          "type": "function",
+          "function": {
+            "name": "web_search",
+            "arguments": "{\"query\": \"latest vLLM release notes\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 4,
+      "id": "t05",
+      "kind": "tool",
+      "expect": "send_email",
+      "text": "\nsend_email {\"to\": \"ana@example.com\", \"subject\": \"Build is Green\", \"body\": \"Hi Ana,\\n\\nJust letting you know that the build is green.\\n\\nBest regards\"}",
+      "token_ids": [
+        198,
+        6472,
+        8899,
+        5046,
+        951,
+        763,
+        328,
+        3253,
+        34314,
+        877,
+        487,
+        328,
+        11170,
+        763,
+        328,
+        10743,
+        369,
+        7592,
+        487,
+        328,
+        2513,
+        763,
+        328,
+        12675,
+        31079,
+        25427,
+        77,
+        1639,
+        9658,
+        19581,
+        488,
+        1366,
+        421,
+        279,
+        1870,
+        369,
+        5983,
+        6889,
+        77,
+        1639,
+        14055,
+        23187,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 71,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-85a4452d739e0ffe",
+          "type": "function",
+          "function": {
+            "name": "send_email",
+            "arguments": "{\"to\": \"ana@example.com\", \"subject\": \"Build is Green\", \"body\": \"Hi Ana,\\n\\nJust letting you know that the build is green.\\n\\nBest regards\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 4,
+      "id": "t06",
+      "kind": "tool",
+      "expect": "read_file",
+      "text": "\nread_file {\"path\": \"/etc/hostname\"}",
+      "token_ids": [
+        198,
+        851,
+        2378,
+        5046,
+        2267,
+        763,
+        3405,
+        11763,
+        14,
+        26903,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 27,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-8f483970fb87074b",
+          "type": "function",
+          "function": {
+            "name": "read_file",
+            "arguments": "{\"path\": \"/etc/hostname\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 4,
+      "id": "t07",
+      "kind": "tool",
+      "expect": "create_event",
+      "text": "\ncreate_event {\"date\": \"2026-11-03\", \"time\": \"10:00\", \"title\": \"Sprint review\"}",
+      "token_ids": [
+        198,
+        3081,
+        6536,
+        5046,
+        993,
+        763,
+        328,
+        17,
+        15,
+        17,
+        21,
+        12,
+        16,
+        16,
+        12,
+        15,
+        18,
+        487,
+        328,
+        1619,
+        763,
+        328,
+        16,
+        15,
+        25,
+        15,
+        15,
+        487,
+        328,
+        2034,
+        763,
+        328,
+        50,
+        1302,
+        3286,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 62,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-b3bba81c15d68a57",
+          "type": "function",
+          "function": {
+            "name": "create_event",
+            "arguments": "{\"date\": \"2026-11-03\", \"time\": \"10:00\", \"title\": \"Sprint review\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 4,
+      "id": "t08",
+      "kind": "tool",
+      "expect": "query_orders",
+      "text": "\nquery_orders {\"status\": \"shipped\", \"day\": \"yesterday\"}",
+      "token_ids": [
+        198,
+        1574,
+        35899,
+        5046,
+        2738,
+        763,
+        328,
+        898,
+        6248,
+        487,
+        328,
+        1247,
+        763,
+        328,
+        88,
+        10955,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-bacb9b5f0435bbb1",
+          "type": "function",
+          "function": {
+            "name": "query_orders",
+            "arguments": "{\"status\": \"shipped\", \"day\": \"yesterday\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 4,
+      "id": "t09",
+      "kind": "tool",
+      "expect": "translate",
+      "text": "\u304a\u306f\u3088\u3046\u3054\u3056\u3044\u307e\u3059",
+      "token_ids": [
+        31171,
+        14876,
+        148564,
+        152302
+      ],
+      "finish_reason": "stop",
+      "completion_tokens": 5,
+      "tool_calls": null,
+      "tool_valid": false,
+      "error": null
+    },
+    {
+      "rep": 4,
+      "id": "t10",
+      "kind": "tool",
+      "expect": "restart_service",
+      "text": "\nrestart_service {\"name\": \"gateway\", \"environment\": \"staging\"}",
+      "token_ids": [
+        198,
+        48528,
+        11917,
+        5046,
+        591,
+        763,
+        328,
+        44922,
+        487,
+        328,
+        22570,
+        763,
+        328,
+        267,
+        3982,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 39,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-bdaf414732fb2a91",
+          "type": "function",
+          "function": {
+            "name": "restart_service",
+            "arguments": "{\"name\": \"gateway\", \"environment\": \"staging\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 4,
+      "id": "t11",
+      "kind": "tool",
+      "expect": "get_stock_price",
+      "text": "\nget_stock_price {\"ticker\": \"NVDA\"}",
+      "token_ids": [
+        198,
+        447,
+        29543,
+        8768,
+        5046,
+        66032,
+        763,
+        328,
+        35125,
+        6151,
+        8934
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 28,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-9c4f87473c28fb99",
+          "type": "function",
+          "function": {
+            "name": "get_stock_price",
+            "arguments": "{\"ticker\": \"NVDA\"}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    },
+    {
+      "rep": 4,
+      "id": "t12",
+      "kind": "tool",
+      "expect": "run_tests",
+      "text": "I'll run the unit tests for the billing module with verbose output.\nrun_tests {\"module\": \"billing\", \"verbose\": true}",
+      "token_ids": [
+        40,
+        3172,
+        1542,
+        279,
+        4821,
+        6813,
+        364,
+        279,
+        32419,
+        4536,
+        440,
+        13301,
+        2468,
+        13,
+        198,
+        5917,
+        31436,
+        5046,
+        4211,
+        763,
+        328,
+        37355,
+        487,
+        328,
+        14452,
+        763,
+        804,
+        92
+      ],
+      "finish_reason": "tool_calls",
+      "completion_tokens": 54,
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-9ec8cb5c3c7bac3c",
+          "type": "function",
+          "function": {
+            "name": "run_tests",
+            "arguments": "{\"module\": \"billing\", \"verbose\": true}"
+          }
+        }
+      ],
+      "tool_valid": true,
+      "error": null
+    }
+  ]
+}

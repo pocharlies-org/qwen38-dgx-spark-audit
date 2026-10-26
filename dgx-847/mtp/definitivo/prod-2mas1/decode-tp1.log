@@ -1,0 +1,9 @@
+C=1 rep=1/1 agg=42.66 tok/s server=44.893 p50=45.911 p10=42.308 ttft_p50=0.219 ttft_p95=0.228 running=1.0 reqs=10 err=0 contaminado=False
+C=4 rep=1/1 agg=102.379 tok/s server=94.747 p50=25.036 p10=22.897 ttft_p50=0.385 ttft_p95=0.454 running=3.923 reqs=24 err=0 contaminado=False
+C=8 rep=1/1 agg=136.512 tok/s server=137.795 p50=17.699 p10=16.416 ttft_p50=0.535 ttft_p95=0.641 running=7.769 reqs=32 err=0 contaminado=False
+
+# mediana entre repeticiones (agg_tok_s min..max, dispersion relativa)
+C=  1 agg_median=42.66 [42.66..42.66] spread=0.0 ttft_p50=0.219 contaminados=0/1
+C=  4 agg_median=102.379 [102.379..102.379] spread=0.0 ttft_p50=0.385 contaminados=0/1
+C=  8 agg_median=136.512 [136.512..136.512] spread=0.0 ttft_p50=0.535 contaminados=0/1
+# escrito /home/user/bench-results/dgx-847/mtp/definitivo/prod-2mas1/decode-tp1.json

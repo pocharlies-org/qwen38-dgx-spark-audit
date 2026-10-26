@@ -1,0 +1,10 @@
+19:25:28Z health antes de tools: 200
+{"no-stream": {"ok": true, "errors": [], "cities": ["Madrid", "París"], "n_calls": 2, "final": "\n\nAquí tienes el tiempo actual:\n\n- **Madrid**: 21 °C, despejado ☀️\n- **París**: 22 °C, despejado ☀️\n\nAmbas ciudades disfrutan de un día soleado y temperaturas muy parecidas.", "s": 4.0}, "stream": {"ok": true, "errors": [], "cities": ["Madrid", "París"], "n_calls": 2, "final": "\n\nAquí tienes el tiempo actual:\n\n- **Madrid**: 21 °C, cielo despejado ☀️\n- **París**: 22 °C, cielo despejado ☀️\n\n¡Ambas ciudades con buen tiempo!", "s": 3.5}, "anthropic_messages": 200}
+19:25:37Z tools exit=0
+19:25:39Z claude-code exit=0 salida.txt=NO
+19:25:39Z health antes de decode: 200
+20:32:39Z decode exit=0 (exit=0 reason=ok )
+20:32:39Z health antes de benchy: 200
+20:44:34Z 1x: benchy+calidad (sin tope de hora)
+21:43:03Z 1x: calidad (benchy ya hecho; sin tope de hora)
+23:20:54Z 1x: calidad exit=0 (exit=0 reason=ok )

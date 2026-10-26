@@ -1,0 +1,91 @@
+08:44:14Z E2: inicio (estado SSM en BF16 + GDN triton para prefill y decode)
+08:44:33Z 2× abajo; memoria libre en dgx y dgx2
+(APIServer pid=1) INFO 10-13 08:44:49 [api_utils.py:286] non-default args: {'model_tag': 'ursuciprian/Qwen3.8-Flash-Next-NVFP4-GDN-MSE', 'default_chat_template_kwargs': {'reasoning_effort': 'medium'},
+(APIServer pid=1) WARNING 10-13 08:44:50 [config.py:890] Qwen3.5 model specifies mamba_ssm_dtype='float32' in its config, but --mamba-ssm-cache-dtype='bfloat16' was passed. Using the user-specified va
+(EngineCore pid=149) INFO 10-13 08:45:01 [core.py:123] Initializing a V1 LLM engine (v20260926.dev28+g884b4ff68.d20261002) with config: model='/cache/huggingface/hub/models--ursuciprian--Qwen3.8-Flash
+(EngineCore pid=149) INFO 10-13 08:49:16 [kv_cache_utils.py:2258] GPU KV cache size: 3,744,869 tokens, Maximum concurrency for 262,144 tokens per request: 14.29x
+WARNING 10-13 08:44:49 [argparse_utils.py:441] Found duplicate keys --gdn-decode-kernel
+(Worker_TP0 pid=169) INFO 10-13 08:45:13 [qwen_gdn_linear_attn.py:439] Using Triton/FLA GDN prefill kernel (requested=triton, head_k_dim=128).
+08:58:01Z E2: 2× lista en 13 min
+E2 A: {"paso": "1 contexto 64K", "prompt_tokens": 65541, "reutilizados_metricas": 0, "consultados_metricas": 65543, "cached_tokens_usage": null, "recalculados": 65541, "ttft_s": 141.577}
+E2 A: {"paso": "2 contexto + 2048 nuevos", "prompt_tokens": 67667, "reutilizados_metricas": 64672, "consultados_metricas": 67669, "cached_tokens_usage": null, "recalculados": 2995, "ttft_s": 1.407}
+E2 A: {"paso": "3 repetición exacta de 2", "prompt_tokens": 67667, "reutilizados_metricas": 66176, "consultados_metricas": 67669, "cached_tokens_usage": null, "recalculados": 1491, "ttft_s": 0.739}
+09:14:17Z E2: benchy exit=0
+09:14:17Z E2: fin
+09:14:17Z fuera la 2×
+deployment.apps "ursu-2x-head" deleted from llm namespace
+deployment.apps "ursu-2x-worker" deleted from llm namespace
+configmap "ursu-env-2x" deleted from llm namespace
+configmap "ursu-recipe" deleted from llm namespace
+09:14:37Z ArgoCD: fuera auto-sync de root y ai (copia en *-syncpolicy-mtp.json)
+application.argoproj.io/root patched
+application.argoproj.io/ai patched
+09:14:41Z MTP k=2: resume del árbitro
+09:15:57Z job llm-deploy-resume-mtp2 completo
+09:25:16Z residente listo en 9 min
+09:25:17Z MTP k=2: attention block size to 832 GPU KV cache size: 3,551,933 tokens num_speculative_tokens. num_speculative_tokens > 1 num_speculative_tokens': 2 num_speculative_tokens_per
+09:56:37Z MTP k=2: decode exit=0
+C=  1 agg_median=27.731 [27.731..36.264] spread=0.3077 ttft_p50=0.211 contaminados=3/3
+C=  4 agg_median=113.058 [102.39..117.324] spread=0.1321 ttft_p50=0.235 contaminados=3/3
+C=  8 agg_median=185.588 [181.321..202.653] spread=0.1149 ttft_p50=0.282 contaminados=3/3
+C= 10 agg_median=260.247 [255.983..275.179] spread=0.0738 ttft_p50=0.255 contaminados=0/3
+10:00:55Z MTP k=2: medición con tráfico real descartada (c1/c4/c8 contaminados 3/3); valla puesta (default_plan=alibaba) y se repite
+10:01:42Z residente listo en 0 min
+10:01:43Z MTP k=2: attention block size to 832 GPU KV cache size: 3,551,933 tokens num_speculative_tokens. num_speculative_tokens > 1 num_speculative_tokens': 2 num_speculative_tokens_per
+10:08:44Z MTP k=2: mido (ajenas en curso: 0)
+10:39:39Z MTP k=2: decode exit=0
+C=  1 agg_median=44.797 [44.796..51.196] spread=0.1429 ttft_p50=0.132 contaminados=2/3
+C=  4 agg_median=145.055 [145.055..147.191] spread=0.0147 ttft_p50=0.201 contaminados=0/3
+C=  8 agg_median=238.908 [196.249..238.916] spread=0.1786 ttft_p50=0.238 contaminados=1/3
+C= 10 agg_median=277.311 [270.916..277.315] spread=0.0231 ttft_p50=0.257 contaminados=0/3
+10:55:44Z MTP k=2: benchy exit=0
+10:56:08Z job llm-deploy-pause-mtp3 completo
+deployment.apps/qwen38-flash-next-head scaled
+deployment.apps/qwen38-flash-next-worker scaled
+deployment.apps/qwen38-flash-next-worker-dgx3 scaled
+10:58:19Z MTP k=3: resume del árbitro
+10:59:37Z job llm-deploy-resume-mtp3 completo
+11:09:58Z residente listo en 10 min
+11:09:59Z MTP k=3: attention block size to 832 GPU KV cache size: 3,509,773 tokens num_speculative_tokens. num_speculative_tokens > 1 num_speculative_tokens': 3 num_speculative_tokens_per
+11:10:19Z MTP k=3: mido (ajenas en curso: 0)
+11:41:29Z MTP k=3: decode exit=0
+C=  1 agg_median=46.929 [46.928..49.064] spread=0.0455 ttft_p50=0.153 contaminados=0/3
+C=  4 agg_median=145.053 [142.922..149.322] spread=0.0441 ttft_p50=0.234 contaminados=0/3
+C=  8 agg_median=226.115 [209.048..228.238] spread=0.0849 ttft_p50=0.269 contaminados=0/3
+C= 10 agg_median=260.243 [260.243..262.374] spread=0.0082 ttft_p50=0.28 contaminados=0/3
+11:57:50Z MTP k=3: benchy exit=0
+11:58:15Z job llm-deploy-pause-mtp4 completo
+deployment.apps/qwen38-flash-next-head scaled
+deployment.apps/qwen38-flash-next-worker scaled
+deployment.apps/qwen38-flash-next-worker-dgx3 scaled
+11:58:39Z MTP k=4: resume del árbitro
+11:59:55Z job llm-deploy-resume-mtp4 completo
+12:10:17Z residente listo en 10 min
+12:10:18Z MTP k=4: attention block size to 848 GPU KV cache size: 3,464,213 tokens num_speculative_tokens. num_speculative_tokens > 1 num_speculative_tokens': 4 num_speculative_tokens_per
+12:10:38Z MTP k=4: mido (ajenas en curso: 0)
+12:42:00Z MTP k=4: decode exit=0
+C=  1 agg_median=44.795 [42.663..44.797] spread=0.0476 ttft_p50=0.158 contaminados=0/3
+C=  4 agg_median=136.525 [136.521..142.915] spread=0.0468 ttft_p50=0.257 contaminados=0/3
+C=  8 agg_median=200.519 [183.452..209.052] spread=0.1277 ttft_p50=0.306 contaminados=1/3
+C= 10 agg_median=253.849 [206.922..255.978] spread=0.1932 ttft_p50=0.311 contaminados=0/3
+12:58:27Z MTP k=4: benchy exit=0
+12:58:27Z MTP: fin (residente con k=4, valla PUESTA y ArgoCD en pausa: quitar la valla y fijar la k por PR)
+12:59:19Z job llm-deploy-pause-mtp1 completo
+deployment.apps/qwen38-flash-next-head scaled
+deployment.apps/qwen38-flash-next-worker scaled
+deployment.apps/qwen38-flash-next-worker-dgx3 scaled
+12:59:43Z MTP k=1 (control): resume del árbitro
+13:01:00Z job llm-deploy-resume-mtp1 completo
+13:11:20Z residente listo en 10 min
+13:11:41Z MTP k=1 (control): mido (ajenas en curso: 0)
+13:42:43Z MTP k=1 (control): decode exit=0
+C=  1 agg_median=40.531 [40.531..46.93] spread=0.1579 ttft_p50=0.163 contaminados=2/3
+C=  4 agg_median=142.923 [140.789..145.056] spread=0.0299 ttft_p50=0.179 contaminados=0/3
+C=  8 agg_median=221.85 [174.907..238.915] spread=0.2885 ttft_p50=0.214 contaminados=1/3
+C= 10 agg_median=258.116 [258.115..264.507] spread=0.0248 ttft_p50=0.226 contaminados=0/3
+13:58:48Z MTP k=1 (control): benchy exit=0
+13:58:48Z ArgoCD: auto-sync de vuelta (ai antes que root), env igual que git
+application.argoproj.io/ai patched
+application.argoproj.io/root patched
+14:00:19Z ai: Synced/Healthy · residente: 200
+14:00:19Z MTP control: fin (falta quitar la VALLA)

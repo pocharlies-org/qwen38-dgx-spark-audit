@@ -1,0 +1,61 @@
+no arranca: OOMKilled (exit 137, 07:23:06Z). Con la PLE en GPU los pesos ocupan 102,26 GiB (memoria libre al empezar: 110,23 GiB) y la receta reserva 14 GiB de KV: no cabe en un Spark. Por eso su 1× lleva la PLE en disco.
+(EngineCore pid=212) INFO 10-13 07:20:41 [compilation.py:329] Enabled custom fusions: act_quant
+(EngineCore pid=212) WARNING 10-13 07:20:41 [modelopt.py:379] Detected ModelOpt fp8 checkpoint (quant_algo=FP8). Please note that the format is experimental and could change.
+(EngineCore pid=212) WARNING 10-13 07:20:41 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=NVFP4). Please note that the format is experimental and could change in future.
+(EngineCore pid=212) WARNING 10-13 07:20:41 [modelopt.py:1031] Detected ModelOpt NVFP4 checkpoint (quant_algo=W4A16_NVFP4). Please note that the format is experimental and could change in future.
+(EngineCore pid=212) WARNING 10-13 07:20:41 [modelopt.py:1723] Detected ModelOpt MXFP8 checkpoint. Please note that the format is experimental and could change in future.
+(EngineCore pid=212) INFO 10-13 07:20:41 [kernel.py:376] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(EngineCore pid=212) INFO 10-13 07:20:41 [vocab_parallel_embedding.py:417] Quantizing LM head shards to NVFP4 with BF16 activations.
+(EngineCore pid=212) INFO 10-13 07:20:41 [mtp.py:833] MTP draft vocab: 131072 of 248320 ids from /opt/mtp-vocab/ids-v2-K131072.txt.gz
+(EngineCore pid=212) INFO 10-13 07:20:42 [weight_utils.py:667] Safetensors index filter selected 1/36 checkpoint shards.
+b12x routing checkpoint shards: 0/1 shards routed, 0.00 GB selected on rank 0, 0:00
+b12x routing checkpoint shards: 1/1 shards routed, 4.14 GB selected on rank 0, 0:01
+b12x reading and scattering weights: 1/1 shards routed, 4.14 GB selected on rank 0, 0:01
+b12x weights loaded: 4.14 GB selected on rank 0 · 4.17 GB physical reads; 1.40 s total loading; ROUTE 0.85s · SETUP 0.00s · PLAN 0.00s · READ 0.55s · SYNC 0.00s
+(EngineCore pid=212) INFO 10-13 07:20:43 [default_loader.py:510] Loading weights took 1.40 seconds
+(EngineCore pid=212) WARNING 10-13 07:20:44 [speculator.py:196] Draft model Qwen3_8FlashNextMTP does not support external multimodal embeddings. Embeddings from the target model will not be passed to the drafter; using text-only draft inputs instead.
+(EngineCore pid=212) INFO 10-13 07:20:44 [model_runner.py:417] Model loading took 102.26 GiB memory and 129.057192 seconds
+(EngineCore pid=212) INFO 10-13 07:20:44 [topk_topp_sampler.py:64] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=212) INFO 10-13 07:20:44 [interface.py:1029] Setting attention block size to 3024 tokens to ensure that attention page size is >= mamba page size.
+(EngineCore pid=212) INFO 10-13 07:20:44 [interface.py:1062] Padding mamba page size by 0.03% to ensure that mamba page size and attention page size are exactly equal.
+(EngineCore pid=212) INFO 10-13 07:20:44 [utils.py:381] Using BLHNC KV cache layout.
+(EngineCore pid=212) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=212) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=212) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(EngineCore pid=212) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+(EngineCore pid=212) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+b12x planning gemm.blockscaled_precision: 0/297 ready, 0 measured, 1 cached, 0 compilations, 0:00
+b12x planning moe.decode: 0/297 ready, 0 measured, 257 cached, 0 compilations, 0:00
+b12x selecting gemm.blockscaled_precision: 19/297 ready, 0 measured, 279 cached, 0 compilations, 0:01
+b12x compiling gemm.blockscaled_precision: 19/297 ready, 0 measured, 279 cached, 0 compilations, 0:01
+b12x compiling moe.decode: 107/297 ready, 0 measured, 279 cached, 3 compilations, 0:04
+b12x priming moe.decode: 107/297 ready, 0 measured, 279 cached, 6 compilations, 0:04
+b12x compiling norm.hyperconnection: 128/297 ready, 0 measured, 279 cached, 7 compilations, 0:10
+b12x priming gemm.blockscaled_precision: 253/297 ready, 0 measured, 279 cached, 10 compilations, 0:11
+b12x compiling sequence.mtp_feedback: 258/297 ready, 0 measured, 279 cached, 10 compilations, 0:13
+b12x priming sequence.mtp_feedback: 258/297 ready, 0 measured, 279 cached, 13 compilations, 0:13
+b12x compiling moe.decode: 262/297 ready, 0 measured, 279 cached, 29 compilations, 0:23
+b12x compiling moe.decode: 277/297 ready, candidates 0/1 prepared, 0 measured, 279 cached, 48 compilations, 0:34
+b12x ready gemm.blockscaled_precision: 297/297 ready, 0 measured, 279 cached, 50 compilations, 0:37
+b12x warming heuristics gemm.blockscaled_precision: 0/25 ready, 0 measured, 0 cached, 0 compilations, 0:37
+b12x warming heuristics sequence.ple_embedding: 7/25 ready, 0 measured, 0 cached, 0 compilations, 0:38
+b12x ready sequence.ple_embedding: 25/25 ready, 0 measured, 0 cached, 0 compilations, 0:40
+(EngineCore pid=212) INFO 10-13 07:21:29 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 16384 tokens, and profiled with 1 image items of the maximum feature size.
+(EngineCore pid=212) INFO 10-13 07:22:00 [backends.py:1094] Using cache directory: /cache/xdg/vllm/torch_compile_cache/afa05e2763/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=212) INFO 10-13 07:22:00 [backends.py:1155] Dynamo bytecode transform time: 9.58 s
+(EngineCore pid=212) [rank0]:W1013 07:22:04.331000 212 torch/_inductor/utils.py:1953] Not enough SMs to use max_autotune_gemm mode
+(EngineCore pid=212) INFO 10-13 07:22:33 [backends.py:393] Compiling a graph for compile range (1, 8192) takes 33.02 s
+(EngineCore pid=212) INFO 10-13 07:22:37 [backends.py:920] collected artifacts: 52 entries, 52 artifacts, 39507548 bytes total
+(EngineCore pid=212) INFO 10-13 07:22:37 [decorators.py:710] saved AOT compiled function to /cache/xdg/vllm/torch_compile_cache/torch_aot_compile/fef277683a32b182d3bffb822f0475da16fe80ee3f94de2fc916d83097e4432d/rank_0_0/model
+(EngineCore pid=212) INFO 10-13 07:22:37 [monitor.py:53] torch.compile took 46.57 s in total
+(EngineCore pid=212) INFO 10-13 07:22:38 [monitor.py:81] Initial profiling/warmup run took 1.15 s
+(EngineCore pid=212) INFO 10-13 07:22:39 [backends.py:1094] Using cache directory: /cache/xdg/vllm/torch_compile_cache/afa05e2763/rank_0_0/eagle_head for vLLM's torch.compile
+(EngineCore pid=212) INFO 10-13 07:22:39 [backends.py:1155] Dynamo bytecode transform time: 0.43 s
+(EngineCore pid=212) INFO 10-13 07:22:51 [backends.py:393] Compiling a graph for compile range (1, 8192) takes 11.54 s
+(EngineCore pid=212) INFO 10-13 07:22:51 [backends.py:920] collected artifacts: 2 entries, 2 artifacts, 4621657 bytes total
+(EngineCore pid=212) INFO 10-13 07:22:51 [decorators.py:710] saved AOT compiled function to /cache/xdg/vllm/torch_compile_cache/torch_aot_compile/20067b1aaae00b7c1dad9513933089db28f514d3661781d2d15fa1b09a247f34/rank_0_0/model
+(EngineCore pid=212) INFO 10-13 07:22:51 [monitor.py:53] torch.compile took 12.34 s in total
+(EngineCore pid=212) INFO 10-13 07:22:51 [monitor.py:81] Initial profiling/warmup run took 0.20 s
+(EngineCore pid=212) INFO 10-13 07:22:53 [gpu_worker.py:610] Initial free memory 110.23 GiB, reserved 14.0 GiB memory for KV Cache as specified by kv_cache_memory_bytes config and skipped memory profiling. This does not respect the gpu_memory_utilization config. Only use kv_cache_memory_bytes config when you want manual control of KV cache memory size. If OOM'ed, check the difference of initial free memory between the current run and the previous run where kv_cache_memory_bytes is suggested and update it correspondingly.
+(EngineCore pid=212) INFO 10-13 07:22:53 [kv_cache_utils.py:2258] GPU KV cache size: 993,754 tokens, Maximum concurrency for 262,144 tokens per request: 3.79x
+(EngineCore pid=212) INFO 10-13 07:22:53 [gpu_worker.py:850] Cleared 1.85 GiB of cached CUDA allocator memory before KV cache allocation.

@@ -1,0 +1,830 @@
+QWEN_NCCL_RING host=dgx1 NCCL_IB_HCA==rocep1s0f0,rocep1s0f1,roceP2p1s0f0,roceP2p1s0f1 NCCL_GRAPH_FILE=/tmp/nccl-graph.xml
+<graphs version="1">
+  <graph id="0" pattern="4" crossnic="1" nchannels="2" speedintra="40" speedinter="12" latencyinter="0" typeintra="LOC" typeinter="PHB" samechannels="0">
+    <channel>
+      <net dev="0"/>
+      <gpu dev="0"/>
+      <net dev="1"/>
+    </channel>
+    <channel>
+      <net dev="2"/>
+      <gpu dev="0"/>
+      <net dev="3"/>
+    </channel>
+  </graph>
+</graphs>
+QWEN_TP3_PREFLIGHT ok rank=1 hcas=rocep1s0f0,rocep1s0f1,roceP2p1s0f0,roceP2p1s0f1 gid=3 mtu=9000
+[qwen38next-rank1] anclaje aplicado: 6 sitios target + 3 drafter
+[qwen38next-runtime] lambda por peticion conectado: 5 ficheros
+[refusal-probe] sonda cableada: 9 ficheros
+1) un writer                       err_max=4.768e-06
+2) suma de 5 writers, 1 proyeccion err_max=9.537e-06
+3) embed_tokens (project_in)       err_max=2.384e-07
+4) apply_hc por stream             err_max=2.384e-07
+5) lambda=0 identidad bit a bit    True
+6) set_lambda muta in-place        True
+7) forma incorrecta -> RuntimeError True
+
+TODO OK
+rank1-refusal: cache_salt pide lambda 99.0, fuera de [-1.0, 4.0]; se usa el global
+OK   buffer por token: [0,0,1.5,1.5] -> [0.0, 0.0, 1.5, 1.5]
+OK   tramo lam=0 sale bit-exacto 
+OK   tramo lam=1.5 sale corregido 
+OK   tramo lam=1.5 == algebra del autor (W-lam*v(vW)) err_max=8.030e-03 (suelo bf16 sobre |y|~1)
+OK   sello 0.0 explicito != ausencia (pide base) 
+OK   slot reusado sin sello usa el global 
+OK   global 1.5 mueve a quien no trae sello 
+OK   sello con basura alrededor 
+OK   sello fuera de cota -> None 
+OK   sin sello -> None 
+TODO OK
+PASS  literal 'refusal:1.0' -> 1.0  -> 1.0
+PASS  otro valor 'refusal:1.5' -> 1.5  -> 1.5
+PASS  'refusal:0' -> 0.0 y no None  -> 0.0
+PASS  sin sello -> None (cae al global)  
+PASS  salt ajeno 'otra-cosa' -> None  -> None
+PASS  salt ajeno 'prefix-cache-v2' -> None  -> None
+PASS  salt ajeno 'refusal' -> None  -> None
+PASS  salt ajeno 'refusal:' -> None  -> None
+WARNING 10-13 17:24:36 [refusal_projection.py:128] rank1-refusal: cache_salt pide lambda 99.0, fuera de [-1.0, 4.0]; se usa el global
+PASS  'refusal:99' no cuela  -> None
+PASS  'refusal:-99' no cuela  -> None
+PASS  'refusal:abc' no cuela  -> None
+WARNING 10-13 17:24:38 [import_utils.py:429] Module deep_ep was found but failed to import
+WARNING 10-13 17:24:38 [import_utils.py:429] Traceback (most recent call last):
+WARNING 10-13 17:24:38 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/vllm/utils/import_utils.py", line 427, in _has_module
+WARNING 10-13 17:24:38 [import_utils.py:429]     importlib.import_module(module_name)
+WARNING 10-13 17:24:38 [import_utils.py:429]   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+WARNING 10-13 17:24:38 [import_utils.py:429]     return _bootstrap._gcd_import(name[level:], package, level)
+WARNING 10-13 17:24:38 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:24:38 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+WARNING 10-13 17:24:38 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+WARNING 10-13 17:24:38 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+WARNING 10-13 17:24:38 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+WARNING 10-13 17:24:38 [import_utils.py:429]   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+WARNING 10-13 17:24:38 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+WARNING 10-13 17:24:38 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 83, in <module>
+WARNING 10-13 17:24:38 [import_utils.py:429]     check_nccl_so()
+WARNING 10-13 17:24:38 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 59, in check_nccl_so
+WARNING 10-13 17:24:38 [import_utils.py:429]     assert so == loaded_nccl_so, f'Duplicate NCCL runtime found in the current system: {so} and {loaded_nccl_so}'
+WARNING 10-13 17:24:38 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:24:38 [import_utils.py:429] AssertionError: Duplicate NCCL runtime found in the current system: /opt/nccl-ring/lib/libnccl.so.2 and /usr/local/lib/python3.12/dist-packages/nvidia/nccl/lib/libnccl.so.2
+PASS  Worker.set_refusal_lambda alcanzable por collective_rpc  
+PASS  Worker.get_refusal_lambda alcanzable por collective_rpc  
+
+FALLOS: ninguno
+INFO 10-13 17:24:44 [refusal_projection.py:173] rank1-refusal: ACTIVA dir=/opt/refusal/refusal_direction_flashnext.npy hidden=2560 lambda=1.0000 device=cpu
+PASS  hay estado (si no, esto no probaria nada)  
+PASS  la forma separada se rechaza  -> rank1-refusal(hc): separado esperaba ultimo eje 10240, visto
+PASS  aplanar+project_hc == proyeccion por stream  max|delta|=0.00e+00
+PASS  no es un no-op  max|x-y|=0.2631
+
+FALLOS: ninguno
+INFO 10-13 17:24:46 [refusal_projection.py:147] rank1-refusal: sin VLLM_REFUSAL_DIRECTION, proyeccion DESACTIVADA
+PASS  A1 sin variable no hay estado  
+PASS  A2 identidad exacta torch.bfloat16  
+PASS  A2 identidad exacta torch.float16  
+PASS  A2 identidad exacta torch.float32  
+INFO 10-13 17:24:46 [refusal_projection.py:173] rank1-refusal: ACTIVA dir=/opt/refusal/refusal_direction_flashnext.npy hidden=2560 lambda=0.0000 device=cpu
+PASS  B1 con variable hay estado  
+PASS  B2 lambda es 0.0 exacto  lambda=0.0
+PASS  B3 max|delta| == 0 torch.bfloat16  max|delta|=0.0
+PASS  B4 bit-exact torch.bfloat16  
+PASS  B3 max|delta| == 0 torch.float16  max|delta|=0.0
+PASS  B4 bit-exact torch.float16  
+PASS  B3 max|delta| == 0 torch.float32  max|delta|=0.0
+PASS  B4 bit-exact torch.float32  
+PASS  C1 control negativo: lambda=1.5 mueve  max|delta|=0.3906
+PASS  C2 volver a 0 restaura la identidad  
+
+FALLOS: ninguno
+ok   models/qwen4_exp/nvidia/model.py
+ok   models/qwen4_exp/nvidia/mtp.py
+ok   v1/worker/gpu/refusal_utils.py
+
+gate de ambito OK: 3 ficheros, todos los nombres ligados
+--- produccion: 48 capas, ple en [2] (98 sitios registrados)
+  ok   verify_consumed('language_model.model.layers', 48, suffix='attn_out') -> registrados=48
+  ok   verify_consumed('language_model.model.layers', 48, suffix='mlp_out') -> registrados=48
+  ok   verify_consumed('language_model.model.layers', 1, suffix='ple') -> registrados=1
+--- control: 4 capas, ple en [1, 3] (11 sitios registrados)
+  ok   verify_consumed('language_model.model.layers', 4, suffix='attn_out') -> registrados=4
+  ok   verify_consumed('language_model.model.layers', 4, suffix='mlp_out') -> registrados=4
+  ok   verify_consumed('language_model.model.layers', 2, suffix='ple') -> registrados=2
+
+gate de cuentas OK: las 3 verificaciones casan en 2 topologias
+PASS  el runner llama al estado de refusal  5 llamadas
+PASS  nada arrasa el buffer tras fill_target  
+PASS  la neutralizacion del drafter sigue existiendo  lineas [2056]
+PASS  y esta pegada a speculator.propose()  draft=[2056] propose=[853, 2060]
+INFO 10-13 17:24:50 [refusal_projection.py:173] rank1-refusal: ACTIVA dir=/opt/refusal/refusal_direction_flashnext.npy hidden=2560 lambda=1.0000 device=cpu
+PASS  fill_target escribe lambda por peticion  tok[:6]=[0.0, 0.0, 0.0, 1.0, 1.0, 1.0]
+
+FALLOS: ninguno
+refusal-probe: calibracion /tmp/tmpg_wvyq89/cal.json invalida: {'id': 't3', 'feature': 'inventada', 'threshold': 1}
+refusal-probe: DESACTIVADA: model.layers.16: forma (3, 1280), se esperaba (N, 1x2560)
+OK   probe no modifica el tensor del forward 
+OK   capa 16 -> columna 0, coseno exacto 
+OK   capa 24 -> columna 1, invariante a escala 
+OK   hc=4: coseno de la suma de streams, tensor intacto 
+OK   el drafter MTP no pisa la capa 16 del target 
+OK   req 0: max/suma/n de SUS tres tokens 
+OK   req 1: max/suma/n de SUS dos tokens 
+OK   ultimo token por capa de cada peticion [0.20000000298023224, 0.20000000298023224] [0.6000000238418579, 0.800000011920929]
+OK   prefill por peticion 
+OK   prompt: max de todos los tramos 
+OK   prompt: ultimo token = el del ULTIMO tramo 
+OK   generacion cortada en GEN_WINDOW g_n=64.0
+OK   sin cal: score = prompt_last_mean {'v': 1, 'score': 0.3, 'feature': 'prompt_last_mean', 'flag': None, 'cal': None, 'layers': [16, 24], 'prompt_last': [0.2, 0.4], 'prompt_max': 0.9, 'prompt_mean': 0.26667, 'gen_max': 0.05, 'gen_mean': 0.02, 'prompt_last_mean': 0.3, 'prompt_n': 6, 'gen_n': 64}
+OK   sin cal: flag None y cal None 
+OK   finalize limpia el acumulador 
+OK   finalize sin tokens -> None 
+OK   gen_mean correcto 0.02
+OK   cal: por encima del umbral -> flag True 
+OK   cal: por debajo -> flag False 
+OK   cal releida por mtime sin reiniciar {'v': 1, 'score': 0.1, 'feature': 'prompt_last_mean', 'flag': True, 'cal': 't2', 'layers': [16, 24], 'prompt_last': [0.1, 0.1], 'prompt_max': 0.0, 'prompt_mean': 0.0, 'gen_max': None, 'gen_mean': None, 'prompt_last_mean': 0.1, 'prompt_n': 1, 'gen_n': 0}
+OK   cal invalida -> sin flag (nunca un veredicto inventado) {'v': 1, 'score': 0.9, 'feature': 'prompt_last_mean', 'flag': None, 'cal': None, 'layers': [16, 24], 'prompt_last': [0.9, 0.9], 'prompt_max': 0.0, 'prompt_mean': 0.0, 'gen_max': None, 'gen_mean': None, 'prompt_last_mean': 0.9, 'prompt_n': 1, 'gen_n': 0}
+OK   forma inesperada desactiva la sonda 
+OK   desactivada: step_stats -> None 
+OK   sin VLLM_REFUSAL_PROBE no se activa 
+OK   capas por entorno 
+OK   nan/inf no viajan como numero 
+
+0 fallos
+Ursucipian hybrid mod applied and CPU contracts passed
+QWEN_URSU_MOD instalado (marcador /opt/refusal/ursucipian-installed.json)
+QWEN_VLLM_EFFECTIVE rank=1 kv=fp8_e4m3 seqs=10 memutil=0.73 kvbytes=51539607552 headless=si v2runner=1 long_prefill_threshold=2048 mamba_ssm=bfloat16 ple=/ple scheduling_policy=n/a
+QWEN_PATCH_58692 aplicado
+QWEN_PLE_MMAP aplicado en ngram_embedding.py, model_state.py; tabla /ple/table.u8 17066762240 bytes
+QWEN_KDET listo: /tmp/qwen38fn-kdet-075774603bd6cd84/build/_C_det.so (210 casos OK)
+QWEN_KDET cableado en /usr/local/lib/python3.12/dist-packages/vllm/models/qwen4_exp/nvidia/ops/qsa_indexer.py
+QWEN_FI_EP_UNEVEN aplicado
+QWEN_TP3_MTP_FC_REPLICATED aplicado
+QWEN_TP3_VOCAB_MASK aplicado (-inf en ids >= 248320 de 248448)
+QWEN_TP3_PLE_SHARD_SKIP aplicado
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+QWEN38_B12X rueda ok sha256=c97d88635521a7fd…
+QWEN38_B12X dependencias ok (11): torch=2.13.0+cu130, cuda-python=13.4.1, nvidia-cutlass-dsl=4.6.2, nvidia-cutlass-dsl-libs-base=4.6.2, nvidia-cutlass-dsl-libs-core=4.6.2, nvidia-cutlass-dsl-libs-cu12=4.6.2, nvidia-cutlass-dsl-libs-cu13=4.6.2, apache-tvm-ffi=0.1.11, rich=15.0.0, transformers=5.17.0, safetensors=0.8.0
+QWEN38_B12X instalado b12x==1.3.0 desde /cache/huggingface/wheelhouse/b12x-1.3.0
+QWEN38_B12X imports ok (6 submodulos)
+QWEN38_B12X gating ok cap=(12, 1) cutlass-dsl=4.6.2 triton=3.7.1
+QWEN38_B12X MoE ok moe_intermediate_size=768 % tp=3 == 0
+QWEN38_B12X activo rank=1 linear=b12x moe=1 wheelhouse=/cache/huggingface/wheelhouse/b12x-1.3.0 jit=/tmp/b12x-compile
+WARNING 10-13 17:25:14 [import_utils.py:429] Module deep_ep was found but failed to import
+WARNING 10-13 17:25:14 [import_utils.py:429] Traceback (most recent call last):
+WARNING 10-13 17:25:14 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/vllm/utils/import_utils.py", line 427, in _has_module
+WARNING 10-13 17:25:14 [import_utils.py:429]     importlib.import_module(module_name)
+WARNING 10-13 17:25:14 [import_utils.py:429]   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+WARNING 10-13 17:25:14 [import_utils.py:429]     return _bootstrap._gcd_import(name[level:], package, level)
+WARNING 10-13 17:25:14 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:25:14 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+WARNING 10-13 17:25:14 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+WARNING 10-13 17:25:14 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+WARNING 10-13 17:25:14 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+WARNING 10-13 17:25:14 [import_utils.py:429]   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+WARNING 10-13 17:25:14 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+WARNING 10-13 17:25:14 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 83, in <module>
+WARNING 10-13 17:25:14 [import_utils.py:429]     check_nccl_so()
+WARNING 10-13 17:25:14 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 59, in check_nccl_so
+WARNING 10-13 17:25:14 [import_utils.py:429]     assert so == loaded_nccl_so, f'Duplicate NCCL runtime found in the current system: {so} and {loaded_nccl_so}'
+WARNING 10-13 17:25:14 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:25:14 [import_utils.py:429] AssertionError: Duplicate NCCL runtime found in the current system: /opt/nccl-ring/lib/libnccl.so.2 and /usr/local/lib/python3.12/dist-packages/nvidia/nccl/lib/libnccl.so.2
+WARNING 10-13 17:25:15 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_ATTENTION_CONFIG
+WARNING 10-13 17:25:15 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_QSA_DET_LIB
+WARNING 10-13 17:25:15 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_REFUSAL_LAMBDA
+WARNING 10-13 17:25:15 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_NODE_RANK
+WARNING 10-13 17:25:15 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_CPUSET
+WARNING 10-13 17:25:15 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_REFUSAL_DIRECTION
+WARNING 10-13 17:25:15 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_QSA_DET_TOPK
+WARNING 10-13 17:25:15 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_REFUSAL_PROBE_LAYERS
+WARNING 10-13 17:25:15 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_REFUSAL_PROBE_CAL
+WARNING 10-13 17:25:15 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_REFUSAL_PROBE
+WARNING 10-13 17:25:15 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_MASTER_ADDR
+WARNING 10-13 17:25:15 [envs.py:2290] Unknown vLLM environment variable detected: VLLM_ADDITIONAL_CONFIG
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+INFO 10-13 17:25:21 [model.py:691] Resolved architecture: Qwen4ExpForConditionalGeneration
+INFO 10-13 17:25:21 [model.py:2027] Using max model len 262144
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+INFO 10-13 17:25:22 [cache.py:355] Using fp8_e4m3 data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+INFO 10-13 17:25:22 [arg_utils.py:2264] Inferred data_parallel_rank 0 from node_rank 1
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_section', 'mrope_interleaved'}
+INFO 10-13 17:25:28 [model.py:691] Resolved architecture: Qwen4ExpMTP
+INFO 10-13 17:25:28 [model.py:2027] Using max model len 262144
+WARNING 10-13 17:25:28 [speculative.py:1333] Enabling num_speculative_tokens > 1 will run multiple times of forward on same MTP layer,which may result in lower acceptance rate
+INFO 10-13 17:25:28 [scheduler.py:288] Chunked prefill is enabled with max_num_batched_tokens=4096.
+WARNING 10-13 17:25:28 [config.py:819] Qwen3.5 model specifies mamba_ssm_dtype='float32' in its config, but --mamba-ssm-cache-dtype='bfloat16' was passed. Using the user-specified value.
+INFO 10-13 17:25:28 [config.py:625] Mamba cache mode is set to 'align' for Qwen4ExpForConditionalGeneration by default when prefix caching is enabled
+INFO 10-13 17:25:28 [vllm.py:746] Auto-enabling VLLM_USE_BREAKABLE_CUDAGRAPH=1. Set VLLM_USE_BREAKABLE_CUDAGRAPH=0 to opt out.
+INFO 10-13 17:25:28 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+WARNING 10-13 17:25:28 [vllm.py:1999] max_num_scheduled_tokens is set to 4096 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increasing max_num_batched_tokens to accommodate the additional draft token slots, or decrease num_speculative_tokens.
+INFO 10-13 17:25:28 [compilation.py:329] Enabled custom fusions: norm_quant, act_quant
+INFO 10-13 17:25:28 [serve.py:217] Launching vLLM (v0.28.1rc1.dev628+g2a02f6efe) headless multiproc executor, with head node address spark2:29501 for torch.distributed process group.
+WARNING 10-13 17:25:32 [import_utils.py:429] Module deep_ep was found but failed to import
+WARNING 10-13 17:25:32 [import_utils.py:429] Traceback (most recent call last):
+WARNING 10-13 17:25:32 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/vllm/utils/import_utils.py", line 427, in _has_module
+WARNING 10-13 17:25:32 [import_utils.py:429]     importlib.import_module(module_name)
+WARNING 10-13 17:25:32 [import_utils.py:429]   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+WARNING 10-13 17:25:32 [import_utils.py:429]     return _bootstrap._gcd_import(name[level:], package, level)
+WARNING 10-13 17:25:32 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:25:32 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+WARNING 10-13 17:25:32 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+WARNING 10-13 17:25:32 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+WARNING 10-13 17:25:32 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+WARNING 10-13 17:25:32 [import_utils.py:429]   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+WARNING 10-13 17:25:32 [import_utils.py:429]   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+WARNING 10-13 17:25:32 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 83, in <module>
+WARNING 10-13 17:25:32 [import_utils.py:429]     check_nccl_so()
+WARNING 10-13 17:25:32 [import_utils.py:429]   File "/usr/local/lib/python3.12/dist-packages/deep_ep/__init__.py", line 59, in check_nccl_so
+WARNING 10-13 17:25:32 [import_utils.py:429]     assert so == loaded_nccl_so, f'Duplicate NCCL runtime found in the current system: {so} and {loaded_nccl_so}'
+WARNING 10-13 17:25:32 [import_utils.py:429]            ^^^^^^^^^^^^^^^^^^^^
+WARNING 10-13 17:25:32 [import_utils.py:429] AssertionError: Duplicate NCCL runtime found in the current system: /opt/nccl-ring/lib/libnccl.so.2 and /usr/local/lib/python3.12/dist-packages/nvidia/nccl/lib/libnccl.so.2
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+[transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker pid=924) INFO 10-13 17:25:34 [parallel_state.py:1807] world_size=3 rank=1 local_rank=0 distributed_init_method=tcp://spark2:29501 backend=nccl
+(Worker pid=924) INFO 10-13 17:25:47 [nccl.py:25] Found nccl from environment variable VLLM_NCCL_SO_PATH=/opt/nccl-ring/lib/libnccl.so.2
+dgx1:924:924 [0] NCCL INFO ncclOsDlopen(libnccl-env.so) failed: libnccl-env.so: cannot open shared object file: No such file or directory
+dgx1:924:924 [0] NCCL INFO ENV/Plugin: Could not find: libnccl-env.so
+dgx1:924:924 [0] NCCL INFO cudaDriverVersion 13030
+dgx1:924:924 [0] NCCL INFO NCCL_SOCKET_IFNAME set to enP7s7
+dgx1:924:924 [0] NCCL INFO NCCL version 2.30.7+cuda13.0
+dgx1:924:924 [0] NCCL INFO NCCL git version HEAD 73cf112-dirty
+dgx1:924:924 [0] NCCL INFO NCCL_NET_PLUGIN set by environment to none
+dgx1:924:924 [0] NCCL INFO dlvsym failed on mlx5dv_get_data_direct_sysfs_path - /lib/aarch64-linux-gnu/libmlx5.so: undefined symbol: mlx5dv_get_data_direct_sysfs_path, version MLX5_1.25 version MLX5_1.25
+dgx1:924:924 [0] NCCL INFO dlvsym failed on mlx5dv_reg_dmabuf_mr - /lib/aarch64-linux-gnu/libmlx5.so: undefined symbol: mlx5dv_reg_dmabuf_mr, version MLX5_1.25 version MLX5_1.25
+dgx1:924:924 [0] NCCL INFO NCCL_IB_HCA set to =rocep1s0f0,rocep1s0f1,roceP2p1s0f0,roceP2p1s0f1
+dgx1:924:924 [0] NCCL INFO NET/IB: [0] rocep1s0f0:uverbs0:1/RoCE provider=Mlx5 speed=200000 context=0x4fc4af50 pciPath=/sys/devices/pci0000:00/0000:00:00.0/0000:01:00.0 ar=0 oooRqSize=0
+dgx1:924:924 [0] NCCL INFO NET/IB: [1] rocep1s0f1:uverbs1:1/RoCE provider=Mlx5 speed=200000 context=0x4fc8c650 pciPath=/sys/devices/pci0000:00/0000:00:00.0/0000:01:00.0 ar=0 oooRqSize=0
+dgx1:924:924 [0] NCCL INFO NET/IB: [2] roceP2p1s0f0:uverbs2:1/RoCE provider=Mlx5 speed=200000 context=0x4fccdd50 pciPath=/sys/devices/pci0002:00/0002:00:00.0/0002:01:00.0 ar=0 oooRqSize=0
+dgx1:924:924 [0] NCCL INFO NET/IB: [3] roceP2p1s0f1:uverbs3:1/RoCE provider=Mlx5 speed=200000 context=0x4fd0f450 pciPath=/sys/devices/pci0002:00/0002:00:00.0/0002:01:00.0 ar=0 oooRqSize=0
+dgx1:924:924 [0] NCCL INFO NET/IB : Made virtual device [0] name=rocep1s0f0 speed=200000 ndevs=1 rail=-1 plane=-1
+dgx1:924:924 [0] NCCL INFO NET/IB : Made virtual device [1] name=rocep1s0f1 speed=200000 ndevs=1 rail=-1 plane=-1
+dgx1:924:924 [0] NCCL INFO NET/IB : Made virtual device [2] name=roceP2p1s0f0 speed=200000 ndevs=1 rail=-1 plane=-1
+dgx1:924:924 [0] NCCL INFO NET/IB : Made virtual device [3] name=roceP2p1s0f1 speed=200000 ndevs=1 rail=-1 plane=-1
+dgx1:924:924 [0] NCCL INFO NET/IB : Using [0]rocep1s0f0:1/RoCE [1]rocep1s0f1:1/RoCE [2]roceP2p1s0f0:1/RoCE [3]roceP2p1s0f1:1/RoCE [RO]; OOB enP7s7:spark1<0>
+dgx1:924:924 [0] NCCL INFO Initialized NET plugin IB
+dgx1:924:924 [0] NCCL INFO Assigned NET plugin IB to comm
+dgx1:924:924 [0] NCCL INFO ncclOsDlopen(libnccl-rma.so) failed: libnccl-rma.so: cannot open shared object file: No such file or directory
+dgx1:924:924 [0] NCCL INFO RMA/Plugin: Could not find: libnccl-rma.so
+dgx1:924:924 [0] NCCL INFO RMA/Plugin: Failed to load external plugin libnccl-rma.so, dlHandle: (nil), ncclRma: (nil)
+dgx1:924:924 [0] NCCL INFO RMA/Plugin: Assigned plugin RMA_IB_PROXY to comm
+dgx1:924:924 [0] NCCL INFO ncclOsDlopen(libnccl-gin.so) failed: libnccl-gin.so: cannot open shared object file: No such file or directory
+dgx1:924:924 [0] NCCL INFO GIN/Plugin: Could not find: libnccl-gin.so
+dgx1:924:924 [0] NCCL INFO GIN/Plugin: Failed to load external plugin libnccl-gin.so, dlHandle: (nil), ncclGin: (nil)
+dgx1:924:924 [0] NCCL INFO GIN/Plugin: Assigned plugin GIN_IB_GDAKI type 3 to comm
+dgx1:924:924 [0] NCCL INFO Using network IB
+dgx1:924:924 [0] NCCL INFO Loaded NVML from libnvidia-ml.so.1
+dgx1:924:924 [0] NCCL INFO [Rank 1] ncclCommInitRank comm 0x480d90b0 rank 1 nranks 3 cudaDev 0 nvmlDev 0 busId f01000 commId 0xe940b92bca881625 - Init START
+dgx1:924:924 [0] NCCL INFO RAS client listening socket at 127.0.0.1<28028>
+dgx1:924:924 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 0 'rocep1s0f0'
+dgx1:924:924 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 1 'rocep1s0f1'
+dgx1:924:924 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 2 'roceP2p1s0f0'
+dgx1:924:924 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 3 'roceP2p1s0f1'
+dgx1:924:924 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 0 'rocep1s0f0'
+dgx1:924:924 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 1 'rocep1s0f1'
+dgx1:924:924 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 2 'roceP2p1s0f0'
+dgx1:924:924 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 3 'roceP2p1s0f1'
+dgx1:924:924 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 0 'rocep1s0f0'
+dgx1:924:924 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 1 'rocep1s0f1'
+dgx1:924:924 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 2 'roceP2p1s0f0'
+dgx1:924:924 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 3 'roceP2p1s0f1'
+dgx1:924:924 [0] NCCL INFO NET/IB : Skipping makeVDevice, NCCL_IB_MERGE_NICS=0
+dgx1:924:924 [0] NCCL INFO TOPO/NET : Tried merging multiple devices together and failed. vProps={ndevs=2, devs=[0 1 0 0]}. Set NCCL_NET_MERGE_LEVEL=LOC to disable NIC fusion.
+dgx1:924:924 [0] NCCL INFO Marking physical devices as unplaced, increasing distance and restarting search.
+dgx1:924:924 [0] NCCL INFO NET/IB : Skipping makeVDevice, NCCL_IB_MERGE_NICS=0
+dgx1:924:924 [0] NCCL INFO TOPO/NET : Tried merging multiple devices together and failed. vProps={ndevs=2, devs=[2 3 0 0]}. Set NCCL_NET_MERGE_LEVEL=LOC to disable NIC fusion.
+dgx1:924:924 [0] NCCL INFO Marking physical devices as unplaced, increasing distance and restarting search.
+dgx1:924:924 [0] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 0 is empty, ignoring. (GPU affinity = ).
+dgx1:924:924 [0] NCCL INFO Rank 1: 4 Net devices
+dgx1:924:924 [0] NCCL INFO Rank 1: 0 CollNet devices
+dgx1:924:924 [0] NCCL INFO comm 0x480d90b0 rank 1 nRanks 3 nNodes 3 localRanks 1 localRank 0 MNNVL 0
+dgx1:924:924 [0] NCCL INFO Trees [0] -1/-1/-1->1->2 [1] -1/-1/-1->1->2 [2] 0/-1/-1->1->-1 [3] 0/-1/-1->1->-1
+dgx1:924:924 [0] NCCL INFO P2P Chunksize set to 262144
+dgx1:924:924 [0] NCCL INFO Tuning P2P operations with maxP2pPeers = 3
+dgx1:924:924 [0] NCCL INFO ncclOsDlopen(libnccl-profiler.so) failed: libnccl-profiler.so: cannot open shared object file: No such file or directory
+dgx1:924:924 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so
+dgx1:924:924 [0] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+dgx1:924:996 [0] NCCL INFO [Proxy Service] Device 0 CPU core 15
+dgx1:924:996 [0] NCCL INFO proxy listening socket at spark1<46935>
+dgx1:924:997 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 8
+dgx1:924:924 [0] NCCL INFO ncclOsDlopen(libnccl-tuner.so) failed: libnccl-tuner.so: cannot open shared object file: No such file or directory
+dgx1:924:924 [0] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so
+dgx1:924:924 [0] NCCL INFO threadThresholds 8/8/64 | 24/8/64 | 512 | 512
+dgx1:924:924 [0] NCCL INFO 4 coll channels, 4 collnet channels, 0 nvls channels, 4 p2p channels, 4 p2p channels per peer
+dgx1:924:924 [0] NCCL INFO Symmetric memory is not supported. cuMemEnable 1, globalGinSupport 0, cuMemGdrSupport 0
+dgx1:924:924 [0] NCCL INFO ncclCommInitRank comm 0x480d90b0 rank 1 nranks 3 cudaDev 0 nvmlDev 0 busId f01000 commId 0xe940b92bca881625 - Init COMPLETE
+dgx1:924:924 [0] NCCL INFO Init timings - ncclCommInitRank: rank 1 nranks 3 total 0.24 (kernels 0.17, alloc 0.03, bootstrap 0.03, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.00, rest 0.00)
+dgx1:924:998 [0] NCCL INFO [Proxy Progress] Device 0 CPU core 18
+dgx1:924:924 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[0] [receive] via NET/IB/0
+dgx1:924:924 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[0] [receive] via NET/IB/2
+dgx1:924:924 [0] NCCL INFO Channel 02/0 : 0[0] -> 1[0] [receive] via NET/IB/0
+dgx1:924:924 [0] NCCL INFO Channel 03/0 : 0[0] -> 1[0] [receive] via NET/IB/2
+dgx1:924:924 [0] NCCL INFO Channel 00/0 : 1[0] -> 2[0] [send] via NET/IB/1
+dgx1:924:924 [0] NCCL INFO Channel 01/0 : 1[0] -> 2[0] [send] via NET/IB/3
+dgx1:924:924 [0] NCCL INFO Channel 02/0 : 1[0] -> 2[0] [send] via NET/IB/1
+dgx1:924:924 [0] NCCL INFO Channel 03/0 : 1[0] -> 2[0] [send] via NET/IB/3
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xf5172400c000)
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xf51724050000)
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xf51724098000)
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xf517240dc000)
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xf51724124000)
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xf51724168000)
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xf517241b0000)
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xf517241f4000)
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: QP created: port=1 dev=0 devName=rocep1s0f0 ndevs=4 nmdevs=4 qp_num=3299 pkey=0 pd=0xf5172404ccf0 oooRq=0
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: Flush QP created: port=1 dev=0 devName=rocep1s0f0 ndevs=4 nmdevs=4 qp_num=3300 pkey=0 pd=0xf5172404ccf0
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbSenderQpsCreate: QP created: port=1 dev=3 devName=roceP2p1s0f1 ndevs=4 nmdevs=4 qp_num=716 pkey=0 pd=0xf51724284130 oooRq=0
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbConnectImpl: NCCL Dev 3 IbDev 3 Port 1 qp_num 716 mtu 5 GID 3 (0/103000AFFFF0000) ctsFifoRkey=0x1d5e58 ctsFifoLkey=0x1d5e58
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbConnectImpl: IbDev 3 Port 1 qp_num 716 query_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: QP created: port=1 dev=2 devName=roceP2p1s0f0 ndevs=4 nmdevs=4 qp_num=3439 pkey=0 pd=0xf51724284ce0 oooRq=0
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: Flush QP created: port=1 dev=2 devName=roceP2p1s0f0 ndevs=4 nmdevs=4 qp_num=3440 pkey=0 pd=0xf51724284ce0
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbSenderQpsCreate: QP created: port=1 dev=1 devName=rocep1s0f1 ndevs=4 nmdevs=4 qp_num=597 pkey=0 pd=0xf517242ed650 oooRq=0
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbConnectImpl: NCCL Dev 1 IbDev 1 Port 1 qp_num 597 mtu 5 GID 3 (0/102000AFFFF0000) ctsFifoRkey=0x1b9896 ctsFifoLkey=0x1b9896
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbConnectImpl: IbDev 1 Port 1 qp_num 597 query_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbSenderQpsCreate: QP created: port=1 dev=3 devName=roceP2p1s0f1 ndevs=4 nmdevs=4 qp_num=717 pkey=0 pd=0xf51724284130 oooRq=0
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbConnectImpl: NCCL Dev 3 IbDev 3 Port 1 qp_num 717 mtu 5 GID 3 (0/103000AFFFF0000) ctsFifoRkey=0x1dede3 ctsFifoLkey=0x1dede3
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbConnectImpl: IbDev 3 Port 1 qp_num 717 query_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbSenderQpsCreate: QP created: port=1 dev=1 devName=rocep1s0f1 ndevs=4 nmdevs=4 qp_num=598 pkey=0 pd=0xf517242ed650 oooRq=0
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbConnectImpl: NCCL Dev 1 IbDev 1 Port 1 qp_num 598 mtu 5 GID 3 (0/102000AFFFF0000) ctsFifoRkey=0x1b918e ctsFifoLkey=0x1b918e
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbConnectImpl: IbDev 1 Port 1 qp_num 598 query_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbSenderQpsToRts: Set ECE: IbDev 3 Port 1 qp_num 716 set_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx1:(Worker pid=924) WARNING 10-13 17:25:47 [symm_mem.py:67] SymmMemCommunicator: Device capability 12.1 not supported, communicator is not available.
+(Worker pid=924) WARNING 10-13 17:25:47 [flashinfer_all_reduce.py:383] FlashInfer All Reduce is disabled because it is not supported for world_size=3.
+(Worker pid=924) WARNING 10-13 17:25:47 [custom_all_reduce.py:184] Custom allreduce is disabled due to an unsupported world size: 3. Supported world sizes: [2, 4, 6, 8, 16]. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+(Worker pid=924) INFO 10-13 17:25:47 [nccl.py:25] Found nccl from environment variable VLLM_NCCL_SO_PATH=/opt/nccl-ring/lib/libnccl.so.2
+924:996 [0] NCCL INFO NET/IB: ncclIbSenderQpsToRts: Set ECE: IbDev 1 Port 1 qp_num 597 set_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: QP created: port=1 dev=0 devName=rocep1s0f0 ndevs=4 nmdevs=4 qp_num=3301 pkey=0 pd=0xf5172404ccf0 oooRq=0
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: Flush QP created: port=1 dev=0 devName=rocep1s0f0 ndevs=4 nmdevs=4 qp_num=3302 pkey=0 pd=0xf5172404ccf0
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbSenderQpsToRts: Set ECE: IbDev 3 Port 1 qp_num 717 set_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbSenderQpsToRts: Set ECE: IbDev 1 Port 1 qp_num 598 set_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: QP created: port=1 dev=2 devName=roceP2p1s0f0 ndevs=4 nmdevs=4 qp_num=3442 pkey=0 pd=0xf51724284ce0 oooRq=0
+dgx1:924:996 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: Flush QP created: port=1 dev=2 devName=roceP2p1s0f0 ndevs=4 nmdevs=4 qp_num=3444 pkey=0 pd=0xf51724284ce0
+dgx1:924:924 [0] NCCL INFO Connected all rings, use ring PXN 0 GDR 0
+dgx1:924:924 [0] NCCL INFO Initialized NET plugin IB
+dgx1:924:924 [0] NCCL INFO Assigned NET plugin IB to comm
+dgx1:924:924 [0] NCCL INFO RMA/Plugin: Assigned plugin RMA_IB_PROXY to comm
+dgx1:924:924 [0] NCCL INFO GIN/Plugin: Assigned plugin GIN_IB_GDAKI type 3 to comm
+dgx1:924:924 [0] NCCL INFO Using network IB
+dgx1:924:924 [0] NCCL INFO [Rank 1] ncclCommInitRank comm 0x51b075b0 rank 1 nranks 3 cudaDev 0 nvmlDev 0 busId f01000 commId 0x3dd1f6427ad63eab - Init START
+dgx1:924:924 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 0 'rocep1s0f0'
+dgx1:924:924 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 1 'rocep1s0f1'
+dgx1:924:924 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 2 'roceP2p1s0f0'
+dgx1:924:924 [0] NCCL INFO NET/GIN_IB_GDAKI : GPU Direct RDMA Disabled for HCA 3 'roceP2p1s0f1'
+dgx1:924:924 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 0 'rocep1s0f0'
+dgx1:924:924 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 1 'rocep1s0f1'
+dgx1:924:924 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 2 'roceP2p1s0f0'
+dgx1:924:924 [0] NCCL INFO NET/RMA_IB_PROXY : GPU Direct RDMA Disabled for HCA 3 'roceP2p1s0f1'
+dgx1:924:924 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 0 'rocep1s0f0'
+dgx1:924:924 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 1 'rocep1s0f1'
+dgx1:924:924 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 2 'roceP2p1s0f0'
+dgx1:924:924 [0] NCCL INFO NET/IB : GPU Direct RDMA Disabled for HCA 3 'roceP2p1s0f1'
+dgx1:924:924 [0] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 0 is empty, ignoring. (GPU affinity = ).
+dgx1:924:924 [0] NCCL INFO Rank 1: 4 Net devices
+dgx1:924:924 [0] NCCL INFO Rank 1: 0 CollNet devices
+dgx1:924:924 [0] NCCL INFO comm 0x51b075b0 rank 1 nRanks 3 nNodes 3 localRanks 1 localRank 0 MNNVL 0
+dgx1:924:924 [0] NCCL INFO Trees [0] -1/-1/-1->1->2 [1] -1/-1/-1->1->2 [2] 0/-1/-1->1->-1 [3] 0/-1/-1->1->-1
+dgx1:924:924 [0] NCCL INFO P2P Chunksize set to 262144
+dgx1:924:924 [0] NCCL INFO Tuning P2P operations with maxP2pPeers = 3
+dgx1:924:924 [0] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+dgx1:924:1027 [0] NCCL INFO [Proxy Service] Device 0 CPU core 19
+dgx1:924:1027 [0] NCCL INFO proxy listening socket at spark1<59841>
+dgx1:924:1028 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 8
+dgx1:924:924 [0] NCCL INFO threadThresholds 8/8/64 | 24/8/64 | 512 | 512
+dgx1:924:924 [0] NCCL INFO 4 coll channels, 4 collnet channels, 0 nvls channels, 4 p2p channels, 4 p2p channels per peer
+dgx1:924:924 [0] NCCL INFO Symmetric memory is not supported. cuMemEnable 1, globalGinSupport 0, cuMemGdrSupport 0
+dgx1:924:924 [0] NCCL INFO ncclCommInitRank comm 0x51b075b0 rank 1 nranks 3 cudaDev 0 nvmlDev 0 busId f01000 commId 0x3dd1f6427ad63eab - Init COMPLETE
+dgx1:924:924 [0] NCCL INFO Init timings - ncclCommInitRank: rank 1 nranks 3 total 0.01 (kernels 0.00, alloc 0.00, bootstrap 0.00, allgathers 0.00, topo 0.00, graphs 0.00, connections 0.00, rest 0.00)
+dgx1:924:1029 [0] NCCL INFO [Proxy Progress] Device 0 CPU core 17
+dgx1:924:924 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[0] [receive] via NET/IB/0
+dgx1:924:924 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[0] [receive] via NET/IB/2
+dgx1:924:924 [0] NCCL INFO Channel 02/0 : 0[0] -> 1[0] [receive] via NET/IB/0
+dgx1:924:924 [0] NCCL INFO Channel 03/0 : 0[0] -> 1[0] [receive] via NET/IB/2
+dgx1:924:924 [0] NCCL INFO Channel 00/0 : 1[0] -> 2[0] [send] via NET/IB/1
+dgx1:924:924 [0] NCCL INFO Channel 01/0 : 1[0] -> 2[0] [send] via NET/IB/3
+dgx1:924:924 [0] NCCL INFO Channel 02/0 : 1[0] -> 2[0] [send] via NET/IB/1
+dgx1:924:924 [0] NCCL INFO Channel 03/0 : 1[0] -> 2[0] [send] via NET/IB/3
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xf516bc00c000)
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xf516bc050000)
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xf516bc098000)
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbSenderQpsCreate: QP created: port=1 dev=1 devName=rocep1s0f1 ndevs=4 nmdevs=4 qp_num=599 pkey=0 pd=0xf517242ed650 oooRq=0
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbConnectImpl: NCCL Dev 1 IbDev 1 Port 1 qp_num 599 mtu 5 GID 3 (0/102000AFFFF0000) ctsFifoRkey=0x1b8885 ctsFifoLkey=0x1b8885
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbConnectImpl: IbDev 1 Port 1 qp_num 599 query_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: QP created: port=1 dev=0 devName=rocep1s0f0 ndevs=4 nmdevs=4 qp_num=3303 pkey=0 pd=0xf5172404ccf0 oooRq=0
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: Flush QP created: port=1 dev=0 devName=rocep1s0f0 ndevs=4 nmdevs=4 qp_num=3304 pkey=0 pd=0xf5172404ccf0
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbSenderQpsCreate: QP created: port=1 dev=3 devName=roceP2p1s0f1 ndevs=4 nmdevs=4 qp_num=718 pkey=0 pd=0xf51724284130 oooRq=0
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbConnectImpl: NCCL Dev 3 IbDev 3 Port 1 qp_num 718 mtu 5 GID 3 (0/103000AFFFF0000) ctsFifoRkey=0x1de4e1 ctsFifoLkey=0x1de4e1
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbConnectImpl: IbDev 3 Port 1 qp_num 718 query_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xf516bc190000)
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbSenderQpsToRts: Set ECE: IbDev 1 Port 1 qp_num 599 set_ece={supported=1, vendor_id=0x15b3, options=0x30000002, comp_mask=0x0}
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: QP created: port=1 dev=2 devName=roceP2p1s0f0 ndevs=4 nmdevs=4 qp_num=3445 pkey=0 pd=0xf51724284ce0 oooRq=0
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbReceiverQpsCreateToRts: Flush QP created: port=1 dev=2 devName=roceP2p1s0f0 ndevs=4 nmdevs=4 qp_num=3446 pkey=0 pd=0xf51724284ce0
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xf516bc222000)
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xf516bc266000)
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbRecvCommInit: Receive work requests will be posted on-demand
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the send communicator (comm=0xf516bc2ae000)
+dgx1:924:1027 [0] NCCL INFO NET/IB: ncclIbResiliencyInit: Resiliency is disabled on the recv communicator (comm=0xf516bc2f2000)
+dgx1:924:1027 [0] NCCL IN(Worker pid=924) INFO 10-13 17:25:47 [parallel_state.py:2173] rank 1 in world size 3 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 1, ETP rank 1, EP rank 1, EPLB rank N/A
+(Worker pid=924) INFO 10-13 17:25:47 [gpu_worker.py:450] Using V2 Model Runner
+(Worker_TP1 pid=924) INFO 10-13 17:25:48 [model_runner.py:401] Loading model from scratch...
+(Worker_TP1 pid=924) INFO 10-13 17:25:48 [__init__.py:883] Using B12xMxfp8LinearKernel for MXFP8 GEMM
+(Worker_TP1 pid=924) INFO 10-13 17:25:48 [cuda.py:587] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(Worker_TP1 pid=924) INFO 10-13 17:25:48 [mm_encoder_attention.py:372] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(Worker_TP1 pid=924) WARNING 10-13 17:25:48 [__init__.py:355] --linear-backend=b12x has no kernel for this linear layer type; using automatic selection for that layer type.
+(Worker_TP1 pid=924) INFO 10-13 17:25:48 [__init__.py:1128] Using FlashInferCuteDslNvFp4W4A16LinearKernel for NVFP4 GEMM
+(Worker_TP1 pid=924) INFO 10-13 17:25:48 [refusal_projection.py:173] rank1-refusal: ACTIVA dir=/opt/refusal/refusal_direction_flashnext.npy hidden=2560 lambda=0.0000 device=cuda:0
+(Worker_TP1 pid=924) INFO 10-13 17:25:48 [qwen_gdn_linear_attn.py:176] Using Triton/FLA GDN prefill kernel (requested=triton, head_k_dim=128).
+(Worker_TP1 pid=924) INFO 10-13 17:25:48 [qwen_gdn_linear_attn.py:528] GDN decode kernel: cuda
+(Worker_TP1 pid=924) INFO 10-13 17:25:48 [nvfp4.py:261] Using 'B12X' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CUTLASS', 'VLLM_CUTLASS', 'MARLIN', 'HUMMING', 'EMULATION'].
+(Worker_TP1 pid=924) INFO 10-13 17:25:48 [ple_mmap.py:101] QWEN_PLE_MMAP language_model.model.layers.1.ple.ple_embedding.ngram_embedding: 106667264 filas x 160 B = 15.89 GiB (rango TP 1 de 3, filas 106667264..213334528) en /ple/table.u8 [MADV_RANDOM]
+(Worker_TP1 pid=924) INFO 10-13 17:25:48 [ngram_embedding.py:724] Initialized PLE embedding language_model.model.layers.1.ple.ple_embedding.ngram_embedding: quantization_method=Qwen4ExpPLEFp8EmbeddingMethod, weight_dtype=torch.float8_e4m3fn, weight_device=cuda:0, pinned=False
+(Worker_TP1 pid=924) INFO 10-13 17:25:48 [flash_attn.py:898] Using FlashAttention version 2
+(Worker_TP1 pid=924) INFO 10-13 17:25:49 [weight_utils.py:895] Filesystem type for checkpoints: EXT4. Checkpoint size: 132.11 GiB. Available RAM: 72.19 GiB.
+(Worker_TP1 pid=924) INFO 10-13 17:25:49 [weight_utils.py:925] Auto-prefetch is disabled because the filesystem (EXT4) is not a recognized network FS (NFS/Lustre) and the checkpoint size (132.11 GiB) exceeds 90% of available RAM (72.19 GiB).
+(Worker_TP1 pid=924) INFO 10-13 17:28:58 [default_loader.py:430] Loading weights took 189.21 seconds
+(Worker_TP1 pid=924) INFO 10-13 17:28:59 [nvfp4.py:613] Using MoEPrepareAndFinalizeNoDPEPModular
+(Worker_TP1 pid=924) WARNING 10-13 17:29:01 [config.py:819] Qwen3.5 model specifies mamba_ssm_dtype='float32' in its config, but --mamba-ssm-cache-dtype='bfloat16' was passed. Using the user-specified value.
+(Worker_TP1 pid=924) INFO 10-13 17:29:01 [kernel.py:369] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+(Worker_TP1 pid=924) WARNING 10-13 17:29:01 [vllm.py:1999] max_num_scheduled_tokens is set to 4096 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increasing max_num_batched_tokens to accommodate the additional draft token slots, or decrease num_speculative_tokens.
+(Worker_TP1 pid=924) INFO 10-13 17:29:01 [weight_utils.py:895] Filesystem type for checkpoints: EXT4. Checkpoint size: 132.11 GiB. Available RAM: 68.07 GiB.
+(Worker_TP1 pid=924) INFO 10-13 17:29:01 [weight_utils.py:925] Auto-prefetch is disabled because the filesystem (EXT4) is not a recognized network FS (NFS/Lustre) and the checkpoint size (132.11 GiB) exceeds 90% of available RAM (68.07 GiB).
+(Worker_TP1 pid=924) INFO 10-13 17:29:27 [default_loader.py:430] Loading weights took 25.31 seconds
+(Worker_TP1 pid=924) WARNING 10-13 17:29:27 [speculator.py:203] Draft model Qwen4ExpMTP does not support external multimodal embeddings. Embeddings from the target model will not be passed to the drafter; using text-only draft inputs instead.
+(Worker_TP1 pid=924) INFO 10-13 17:29:28 [model_runner.py:433] Model loading took 30.14 GiB memory and 220.051981 seconds
+(Worker_TP1 pid=924) INFO 10-13 17:29:28 [interface.py:953] Setting attention block size to 832 tokens to ensure that attention page size is >= mamba page size.
+(Worker_TP1 pid=924) INFO 10-13 17:29:28 [interface.py:977] Padding mamba page size by 1.71% to ensure that mamba page size and attention page size are exactly equal.
+INFO 10-13 17:31:07 [torch_utils.py:280] Reducing Torch threads from 10 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(Worker_TP1 pid=924) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP1 pid=924) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP1 pid=924) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(Worker_TP1 pid=924) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP1 pid=924) [transformers] Unrecognized keys in `rope_parameters` for 'rope_type'='default': {'mrope_interleaved', 'mrope_section'}
+(Worker_TP1 pid=924) INFO 10-13 17:31:11 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 16384 tokens, and profiled with 1 image items of the maximum feature size.
+(Worker_TP1 pid=924) /usr/local/lib/python3.12/dist-packages/triton/language/core.py:2284: UserWarning: tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.
+(Worker_TP1 pid=924)   warn("tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.")
+(Worker_TP1 pid=924) INFO 10-13 17:32:08 [refusal_projection.py:365] rank1-refusal: 48 sitios 'language_model.model.layers*' verificados
+(Worker_TP1 pid=924) INFO 10-13 17:32:08 [refusal_projection.py:365] rank1-refusal: 48 sitios 'language_model.model.layers*' verificados
+(Worker_TP1 pid=924) INFO 10-13 17:32:08 [refusal_projection.py:365] rank1-refusal: 1 sitios 'language_model.model.layers*' verificados
+(Worker_TP1 pid=924) INFO 10-13 17:32:09 [gpu_worker.py:568] Initial free memory 102.92 GiB, reserved 48.0 GiB memory for KV Cache as specified by kv_cache_memory_bytes config and skipped memory profiling. This does not respect the gpu_memory_utilization config. Only use kv_cache_memory_bytes config when you want manual control of KV cache memory size. If OOM'ed, check the difference of initial free memory between the current run and the previous run where kv_cache_memory_bytes is suggested and update it correspondingly.
+(Worker_TP1 pid=924) INFO 10-13 17:34:46 [kernel_warmup.py:174] JIT kernel warmup starting.
+(Worker_TP1 pid=924) INFO 10-13 17:34:46 [kernel_warmup.py:184] JIT kernel warmup finished in 0.00s.
+(Worker_TP1 pid=924) INFO 10-13 17:34:46 [qwen_vl_triton_warmup.py:57] Warmed position embedding and vision rotary kernels on grids=[(1, 16, 16), (1, 16, 2), (1, 2, 16), (1, 2, 2)].
+(Worker_TP1 pid=924) INFO 10-13 17:34:47 [qwen_vl_triton_warmup.py:98] Warmed M-RoPE Triton kernels.
+(Worker_TP1 pid=924) INFO 10-13 17:34:47 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(Worker_TP1 pid=924) INFO 10-13 17:34:47 [spec_decode_rejection_warmup.py:64] Warming up spec-decode rejection sampler kernels (vocab=248448, num_spec=2, dtype_pairs=[('torch.float32', 'torch.bfloat16'), ('torch.bfloat16', 'torch.float32'), ('torch.float32', 'torch.float32'), ('torch.bfloat16', 'torch.bfloat16')], block_verify=True).
+(Worker_TP1 pid=924) INFO 10-13 17:34:51 [qwen4_exp_qsa_warmup.py:72] Warmed up Qwen4Exp QSA decode kernels: ((1, 1), (2, 1), (3, 1)).
+(Worker_TP1 pid=924) INFO 10-13 17:34:55 [qwen4_exp_qsa_warmup.py:86] Warmed up Qwen4Exp QSA sparse attention kernels: ((32, 1, 1), (32, 4, 1), (32, 8, 1), (32, 16, 1), (32, 64, 4), (64, 1, 2), (64, 4, 2)).
+(Worker_TP1 pid=924) INFO 10-13 17:34:55 [b12x_warmup.py:85] Warmed up 11 b12x MXFP8 kernel signature(s).
+(Worker_TP1 pid=924) INFO 10-13 17:34:55 [b12x_warmup.py:85] Warmed up 1 b12x MoE kernel signature(s).
+(Worker_TP1 pid=924) 2026-10-13 17:34:55,985 - INFO - autotuner.py:972 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+(Worker_TP1 pid=924) INFO 10-13 17:34:55 [kernel_warmup.py:361] Running FlashInfer autotune with 4096 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096).
+(Worker_TP1 pid=924) [AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   0%|          | 0/20 [00:00<?, ?profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   5%|▌         | 1/20 [00:07<02:19,  7.34s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  10%|█         | 2/20 [00:07<00:55,  3.10s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  15%|█▌        | 3/20 [00:07<00:29,  1.74s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  20%|██        | 4/20 [00:07<00:17,  1.11s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  25%|██▌       | 5/20 [00:07<00:11,  1.31profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  30%|███       | 6/20 [00:08<00:07,  1.82profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  35%|███▌      | 7/20 [00:08<00:05,  2.40profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  40%|████      | 8/20 [00:08<00:04,  3.00profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  45%|████▌     | 9/20 [00:08<00:03,  3.50profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  50%|█████     | 10/20 [00:08<00:02,  3.64profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  55%|█████▌    | 11/20 [00:09<00:02,  3.36profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  60%|██████    | 12/20 [00:09<00:02,  3.02profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  65%|██████▌   | 13/20 [00:09<00:02,  2.67profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  70%|███████   | 14/20 [00:10<00:02,  2.31profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  75%|███████▌  | 15/20 [00:14<00:07,  1.59s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  80%|████████  | 16/20 [00:29<00:22,  5.51s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  85%|████████▌ | 17/20 [00:34<00:15,  5.31s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  90%|█████████ | 18/20 [00:57<00:21, 10.75s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  95%|█████████▌| 19/20 [01:32<00:17, 17.98s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm: 100%|██████████| 20/20 [02:31<00:00, 30.26s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm: 100%|██████████| 20/20 [02:31<00:00,  7.57s/profile]
+(Worker_TP1 pid=924) [AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   0%|          | 0/20 [00:00<?, ?profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   5%|▌         | 1/20 [00:00<00:11,  1.63profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  15%|█▌        | 3/20 [00:00<00:03,  4.57profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  25%|██▌       | 5/20 [00:00<00:02,  6.74profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  35%|███▌      | 7/20 [00:01<00:01,  8.45profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  45%|████▌     | 9/20 [00:01<00:01,  9.52profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  55%|█████▌    | 11/20 [00:01<00:00,  9.10profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  65%|██████▌   | 13/20 [00:01<00:00,  7.94profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  70%|███████   | 14/20 [00:02<00:00,  7.21profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  75%|███████▌  | 15/20 [00:02<00:00,  6.45profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  80%|████████  | 16/20 [00:02<00:00,  5.78profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  85%|████████▌ | 17/20 [00:02<00:00,  5.12profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  90%|█████████ | 18/20 [00:03<00:00,  4.54profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  95%|█████████▌| 19/20 [00:03<00:00,  4.03profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm: 100%|██████████| 20/20 [00:03<00:00,  3.56profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm: 100%|██████████| 20/20 [00:03<00:00,  5.42profile/s]
+(Worker_TP1 pid=924) QWEN_KDET activo en _topk
+(Worker_TP1 pid=924) 2026-10-13 17:37:33,782 - INFO - autotuner.py:995 - flashinfer.jit: [Autotuner]: Autotuning process ends
+(Worker_TP1 pid=924) INFO 10-13 17:38:08 [breakable_cudagraph.py:288] Breakable CUDA graph enabled
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] WorkerProc hit an exception.
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] Traceback (most recent call last):
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/executor/multiproc_executor.py", line 1047, in _execute_worker_rpc
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     output = func(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]              ^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return func(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_worker.py", line 816, in compile_or_warm_up_model
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     cuda_graph_memory_bytes = self.model_runner.capture_model()
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return func(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 981, in capture_model
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     self.cudagraph_manager.capture(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu/cudagraph_utils.py", line 661, in capture
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     super().capture(create_forward_fn, progress_bar_desc)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return func(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu/cudagraph_utils.py", line 386, in capture
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     forward_fn(CUDAGraphMode.NONE)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu/cudagraph_utils.py", line 625, in forward_fn
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     model_output = model(**model_inputs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                    ^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._call_impl(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return forward_call(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/models/qwen4_exp/nvidia/model.py", line 1131, in forward
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     hidden_states = self.language_model.model(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._call_impl(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return inner()
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1832, in inner
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     result = forward_call(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/models/qwen4_exp/nvidia/model.py", line 631, in forward
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     hidden_states, block_output, injection = layer(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                                              ^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._call_impl(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return forward_call(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/models/qwen4_exp/nvidia/model.py", line 355, in forward
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     mlp_out = self.mlp(block_input)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]               ^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._call_impl(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return forward_call(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/models/qwen3_next.py", line 255, in forward
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     final_hidden_states = self.experts(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                           ^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._call_impl(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return forward_call(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/runner/moe_runner.py", line 728, in forward
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     result = self._forward_entry(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]              ^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 1279, in __call__
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._op(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/runner/moe_runner.py", line 164, in _moe_forward_shared
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     layer._forward_impl(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/runner/moe_runner.py", line 913, in _forward_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     shared_output, hidden_states = self._apply_quant_method(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/runner/moe_runner.py", line 630, in _apply_quant_method
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     fused_out = self.routed_experts.forward_modular(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/routed_experts.py", line 1201, in forward_modular
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self.quant_method.apply(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/quantization/modelopt.py", line 1083, in apply
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self.moe_kernel.apply(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/modular_kernel.py", line 1736, in apply
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self.impl.apply(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/modular_kernel.py", line 1505, in apply
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     fused_out = self._fused_experts(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                 ^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/modular_kernel.py", line 1353, in _fused_experts
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     self.fused_experts.apply(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/b12x.py", line 758, in apply
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     _run_b12x_moe_plan(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/b12x.py", line 123, in _run_b12x_moe_plan
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     fused_moe.run(binding=binding)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/b12x/moe/fused_moe/_impl.py", line 11614, in b12x_moe_fp4
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     _launch_micro(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/b12x/moe/fused_moe/_impl.py", line 11010, in _launch_micro
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     torch.ops.b12x.tp_moe_compact_micro_launch(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 1279, in __call__
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._op(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py", line 826, in adinplaceorview_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return op.redispatch(keyset & after_ADInplaceOrView_keyset, *args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 882, in redispatch
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._handle.redispatch_boxed(keyset, *args, **kwargs)  # type: ignore[return-value]
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py", line 441, in backend_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     result = self._backend_fns[device_type](*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_compile.py", line 54, in inner
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return disable_fn(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_dynamo/eval_frame.py", line 1446, in _fn
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return fn(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py", line 502, in wrapped_fn
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return fn(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/b12x/moe/fused_moe/_impl.py", line 10849, in _tp_moe_compact_micro_launch_op
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     _launch_compact_micro_flat(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/b12x/moe/fused_moe/_impl.py", line 10594, in _launch_compact_micro_flat
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     micro_cls.launch(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/b12x/moe/_shared/kernels/micro.py", line 5937, in launch
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     compiled_fn(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/jit_executor.py", line 1398, in __call__
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self.run_compiled_program(exe_args)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/jit_executor.py", line 1415, in run_compiled_program
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._default_executor.run_compiled_program(exe_args)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/jit_executor.py", line 1079, in run_compiled_program
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     raise e
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/jit_executor.py", line 1077, in run_compiled_program
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     raise cuda_helpers.create_cuda_runtime_error(error_code)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] cutlass.base_dsl.common.DSLCudaRuntimeError: 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] [91m[1merror:[0m CUDA_ERROR_ILLEGAL_ADDRESS (error code: 700) 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]  
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] [0m
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   [94m= note:[0m error code 700
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   [94m= note:[0m 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - [1mError name: CUDA_ERROR_ILLEGAL_ADDRESS
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - Error code: 700
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - CUDA_TOOLKIT_PATH: not set
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - Target SM ARCH: unknown (unspecified)[0m
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] [94m📊 GPU Information:[0m
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] [1m- CUDA devices available: 1 (current: <CUdevice 0>)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - Architecture: [94mBlackwell[0m ([92msm_121a[0m)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - Compatible SM archs: [92msm_121a[0m
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - Total Memory: [94m119.63 GB[0m
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] Traceback (most recent call last):
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/executor/multiproc_executor.py", line 1047, in _execute_worker_rpc
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     output = func(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]              ^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return func(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_worker.py", line 816, in compile_or_warm_up_model
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     cuda_graph_memory_bytes = self.model_runner.capture_model()
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return func(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 981, in capture_model
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     self.cudagraph_manager.capture(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu/cudagraph_utils.py", line 661, in capture
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     super().capture(create_forward_fn, progress_bar_desc)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return func(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu/cudagraph_utils.py", line 386, in capture
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     forward_fn(CUDAGraphMode.NONE)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu/cudagraph_utils.py", line 625, in forward_fn
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     model_output = model(**model_inputs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                    ^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._call_impl(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return forward_call(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/models/qwen4_exp/nvidia/model.py", line 1131, in forward
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     hidden_states = self.language_model.model(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._call_impl(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return inner()
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1832, in inner
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     result = forward_call(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/models/qwen4_exp/nvidia/model.py", line 631, in forward
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     hidden_states, block_output, injection = layer(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                                              ^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._call_impl(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return forward_call(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/models/qwen4_exp/nvidia/model.py", line 355, in forward
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     mlp_out = self.mlp(block_input)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]               ^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._call_impl(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return forward_call(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/models/qwen3_next.py", line 255, in forward
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     final_hidden_states = self.experts(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                           ^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._call_impl(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return forward_call(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/runner/moe_runner.py", line 728, in forward
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     result = self._forward_entry(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]              ^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 1279, in __call__
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._op(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/runner/moe_runner.py", line 164, in _moe_forward_shared
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     layer._forward_impl(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/runner/moe_runner.py", line 913, in _forward_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     shared_output, hidden_states = self._apply_quant_method(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/runner/moe_runner.py", line 630, in _apply_quant_method
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     fused_out = self.routed_experts.forward_modular(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/routed_experts.py", line 1201, in forward_modular
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self.quant_method.apply(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/quantization/modelopt.py", line 1083, in apply
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self.moe_kernel.apply(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/modular_kernel.py", line 1736, in apply
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self.impl.apply(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/modular_kernel.py", line 1505, in apply
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     fused_out = self._fused_experts(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]                 ^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/modular_kernel.py", line 1353, in _fused_experts
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     self.fused_experts.apply(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/b12x.py", line 758, in apply
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     _run_b12x_moe_plan(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/b12x.py", line 123, in _run_b12x_moe_plan
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     fused_moe.run(binding=binding)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/b12x/moe/fused_moe/_impl.py", line 11614, in b12x_moe_fp4
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     _launch_micro(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/b12x/moe/fused_moe/_impl.py", line 11010, in _launch_micro
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     torch.ops.b12x.tp_moe_compact_micro_launch(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 1279, in __call__
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._op(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py", line 826, in adinplaceorview_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return op.redispatch(keyset & after_ADInplaceOrView_keyset, *args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 882, in redispatch
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._handle.redispatch_boxed(keyset, *args, **kwargs)  # type: ignore[return-value]
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py", line 441, in backend_impl
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     result = self._backend_fns[device_type](*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_compile.py", line 54, in inner
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return disable_fn(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_dynamo/eval_frame.py", line 1446, in _fn
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return fn(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/torch/_library/custom_ops.py", line 502, in wrapped_fn
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return fn(*args, **kwargs)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/b12x/moe/fused_moe/_impl.py", line 10849, in _tp_moe_compact_micro_launch_op
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     _launch_compact_micro_flat(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/b12x/moe/fused_moe/_impl.py", line 10594, in _launch_compact_micro_flat
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     micro_cls.launch(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/b12x/moe/_shared/kernels/micro.py", line 5937, in launch
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     compiled_fn(
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/jit_executor.py", line 1398, in __call__
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self.run_compiled_program(exe_args)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/jit_executor.py", line 1415, in run_compiled_program
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     return self._default_executor.run_compiled_program(exe_args)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/jit_executor.py", line 1079, in run_compiled_program
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     raise e
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   File "/usr/local/lib/python3.12/dist-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/jit_executor.py", line 1077, in run_compiled_program
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]     raise cuda_helpers.create_cuda_runtime_error(error_code)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] cutlass.base_dsl.common.DSLCudaRuntimeError: 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] [91m[1merror:[0m CUDA_ERROR_ILLEGAL_ADDRESS (error code: 700) 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]  
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] [0m
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   [94m= note:[0m error code 700
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055]   [94m= note:[0m 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - [1mError name: CUDA_ERROR_ILLEGAL_ADDRESS
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - Error code: 700
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - CUDA_TOOLKIT_PATH: not set
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - Target SM ARCH: unknown (unspecified)[0m
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] [94m📊 GPU Information:[0m
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] [1m- CUDA devices available: 1 (current: <CUdevice 0>)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - Architecture: [94mBlackwell[0m ([92msm_121a[0m)
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - Compatible SM archs: [92msm_121a[0m
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] - Total Memory: [94m119.63 GB[0m
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] 
+(Worker_TP1 pid=924) ERROR 10-13 17:38:14 [multiproc_executor.py:1055] 

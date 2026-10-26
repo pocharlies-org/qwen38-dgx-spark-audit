@@ -1,0 +1,20 @@
+(APIServer pid=1) INFO 10-14 09:00:02 [launcher.py:70] Route: /is_scaling_elastic_ep, Methods: POST
+(APIServer pid=1) INFO 10-14 09:00:02 [launcher.py:70] Route: /v1/chat/completions/render, Methods: POST
+(APIServer pid=1) INFO 10-14 09:00:02 [launcher.py:70] Route: /v1/completions/render, Methods: POST
+(APIServer pid=1) INFO 10-14 09:00:02 [launcher.py:70] Route: /v1/chat/completions/derender, Methods: POST
+(APIServer pid=1) INFO 10-14 09:00:02 [launcher.py:70] Route: /v1/completions/derender, Methods: POST
+(APIServer pid=1) INFO 10-14 09:00:02 [launcher.py:70] Route: /inference/v1/generate, Methods: POST
+(APIServer pid=1) INFO:     Started server process [1]
+(APIServer pid=1) INFO:     Waiting for application startup.
+(APIServer pid=1) INFO:     Application startup complete.
+(APIServer pid=1) INFO:     spark3:56386 - "GET /health HTTP/1.1" 200 OK
+(Worker_TP1 pid=141) 2026-10-14 08:59:15,632 [b12x-trace] GOT rank=1 round=0 key=round-0/decision waited=0.0s
+(Worker_TP1 pid=141) INFO 10-14 08:59:15 [kernel_warmup.py:123] JIT kernel warmup starting.
+(Worker_TP1 pid=141) INFO 10-14 08:59:15 [kernel_warmup.py:133] JIT kernel warmup finished in 0.00s.
+(Worker_TP1 pid=141) INFO 10-14 08:59:16 [kernel_warmup.py:192] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP1 pid=141) INFO 10-14 08:59:30 [speculator.py:187] Capturing model for speculator...
+(Worker_TP1 pid=141) INFO 10-14 08:59:30 [model_runner.py:1106] Graph capturing finished in 14 secs, took 0.55 GiB
+(Worker_TP1 pid=141) INFO 10-14 08:59:30 [gpu_worker.py:962] CUDA graph pool memory: 0.55 GiB (actual), 0.16 GiB (estimated), difference: 0.39 GiB (70.5%).
+(Worker_TP1 pid=141) INFO 10-14 08:59:30 [gpu_worker.py:1025] Free memory on device (105.49/119.63 GiB) on startup. Desired GPU memory utilization is (0.8, 95.7 GiB). Actual usage is 61.33 GiB for consumed memory (weights + non-torch), 0.87 GiB for peak activation, and 0.55 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=35232399668` (32.81 GiB) to fit into requested memory, or `--kv-cache-memory=45742956032` (42.6 GiB) to fully utilize gpu memory. Current kv cache memory in use is 33.35 GiB.
+(Worker_TP1 pid=141) INFO 10-14 08:59:42 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP1 pid=141) WARNING 10-14 08:59:42 [torch_utils.py:266] OMP_NUM_THREADS=4 is set; leaving Torch threads at 4 for serving. Multi-threaded torch CPU ops during serving can degrade performance through spin-wait contention and cgroup CPU-quota throttling.

@@ -1,0 +1,68 @@
+06:32:20Z A: caché sobre 64K (su receta tal cual)
+A: {"paso": "1 contexto 64K", "prompt_tokens": 65541, "reutilizados_metricas": 0, "consultados_metricas": 65543, "cached_tokens_usage": null, "recalculados": 65541, "ttft_s": 33.057}
+A: {"paso": "2 contexto + 2048 nuevos", "prompt_tokens": 67667, "reutilizados_metricas": 63504, "consultados_metricas": 67669, "cached_tokens_usage": null, "recalculados": 4163, "ttft_s": 2.434}
+A: {"paso": "3 repetición exacta de 2", "prompt_tokens": 67667, "reutilizados_metricas": 66528, "consultados_metricas": 67669, "cached_tokens_usage": null, "recalculados": 1139, "ttft_s": 0.791}
+06:32:59Z b-mnbt4096: inicio
+06:33:08Z 1× arriba con: EXTRA_ARGS=--max-num-batched-tokens 4096
+06:39:08Z 1× lista en 5 min; attention block size to 3024 GPU KV cache size: 993,754 tokens
+06:56:06Z benchy exit=0
+b-mnbt4096 A: {"paso": "1 contexto 64K", "prompt_tokens": 65541, "reutilizados_metricas": 0, "consultados_metricas": 65543, "cached_tokens_usage": null, "recalculados": 65541, "ttft_s": 31.835}
+b-mnbt4096 A: {"paso": "2 contexto + 2048 nuevos", "prompt_tokens": 67667, "reutilizados_metricas": 63504, "consultados_metricas": 67669, "cached_tokens_usage": null, "recalculados": 4163, "ttft_s": 2.397}
+b-mnbt4096 A: {"paso": "3 repetición exacta de 2", "prompt_tokens": 67667, "reutilizados_metricas": 66528, "consultados_metricas": 67669, "cached_tokens_usage": null, "recalculados": 1139, "ttft_s": 0.79}
+06:56:43Z b-mnbt4096: fin
+06:56:43Z f-nuestros-3: inicio
+06:56:52Z 1× arriba con: EXTRA_ARGS=--max-num-batched-tokens 4096 --long-prefill-token-threshold 2048
+06:59:31Z 1× lista en 2 min; attention block size to 3024 GPU KV cache size: 993,754 tokens
+07:16:19Z benchy exit=0
+f-nuestros-3 A: {"paso": "1 contexto 64K", "prompt_tokens": 65541, "reutilizados_metricas": 0, "consultados_metricas": 65543, "cached_tokens_usage": null, "recalculados": 65541, "ttft_s": 33.678}
+f-nuestros-3 A: {"paso": "2 contexto + 2048 nuevos", "prompt_tokens": 67667, "reutilizados_metricas": 63504, "consultados_metricas": 67669, "cached_tokens_usage": null, "recalculados": 4163, "ttft_s": 2.462}
+f-nuestros-3 A: {"paso": "3 repetición exacta de 2", "prompt_tokens": 67667, "reutilizados_metricas": 66528, "consultados_metricas": 67669, "cached_tokens_usage": null, "recalculados": 1139, "ttft_s": 0.784}
+07:16:58Z f-nuestros-3: fin
+07:16:58Z e-ssm-bf16: inicio
+07:17:07Z 1× arriba con: EXTRA_ARGS=--mamba-ssm-cache-dtype bfloat16
+07:17:43Z no arranca: (EngineCore pid=211) ERROR 10-13 07:17:35 [core.py:1484]     raise ValueError(
+(EngineCore pid=211) ERROR 10-13 07:17:35 [core.py:1484] ValueError: deferred checkpoints require an FP32 recurrent state, got torch.bfloat16
+07:17:44Z e-ssm-bf16: fin
+07:17:44Z g-ple-gpu: inicio (la PLE en GPU; su 1× la lleva en disco)
+07:18:09Z 1× arriba con: EXTRA_ARGS- VLLM_PLE_MMAP=0
+07:23:22Z no arranca: 
+07:23:23Z g-ple-gpu: fin
+07:23:23Z c-perfil: inicio
+07:23:32Z 1× arriba con: VLLM_PLE_MMAP=1 EXTRA_ARGS=--profiler-config.profiler=torch --profiler-config.torch_profiler_dir=/cache/xdg/perfil-c --profiler-config.torch_profiler_with_stack=false
+07:26:11Z 1× lista en 2 min; attention block size to 3024 GPU KV cache size: 993,754 tokens
+{"c1": {"ttft_s": [2.434], "total_s": [2.513], "ventana_s": 7.2}}
+{"c8": {"ttft_s": [18.591, 18.274, 8.038, 16.172, 11.632, 18.27, 18.584, 11.629], "total_s": [18.678, 18.59, 16.17, 18.273, 16.169, 18.601, 18.601, 16.167], "ventana_s": 33.3}}
+07:28:28Z carga exit=0
+07:29:33Z resumen exit=0
+== /home/user/bench-results/dgx-847/pruebas/1x/c-perfil/dgx3_1.async_llm.1791876410939254024.pt.trace.json.gz  GPU total 0.00 s
+== /home/user/bench-results/dgx-847/pruebas/1x/c-perfil/dgx3_1.async_llm.1791876464383851146.pt.trace.json.gz  GPU total 0.00 s
+== /home/user/bench-results/dgx-847/pruebas/1x/c-perfil/dp0_pp0_tp0_dcp0_ep0_rank0.1791876411236688791.pt.trace.json.gz  GPU total 2.32 s
+  moe/gemm nvfp4      1.897 s   81.9%
+  otros               0.202 s    8.7%
+  muestreo/mtp        0.121 s    5.2%
+  gdn/mamba           0.048 s    2.1%
+  ple                 0.045 s    1.9%
+  atención            0.003 s    0.1%
+  allreduce/nccl      0.000 s    0.0%
+     22.6%  kernel_cutlass_kernel_b12xmoe_sharedkernelssiluMoEDynamicKernelSilu_object_at__tensorptrbf16gmemalign16o256025
+     12.9%  kernel_cutlass_kernel_b12xattentionqsa_score_cute_RepresentativeScoreKernel_object_at__cutlasscutecore_Pointer
+      9.7%  kernel_cutlass_kernel_b12xattentionpaged_selected_forward_SelectedPositionPagedForwardKernel_object_at__ptrbf1
+      6.0%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      6.0%  kernel_cutlass_kernel_b12xnormhyperconnection_cute_PackedCombineNorm_object_at__ptrbf16gmem_ptrbf16gmem_ptrbf1
+      5.4%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      3.5%  _gate_mean_kernel
+      2.5%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1102401_TVLayou
+      2.1%  kernel_cutlass_kernel_b12x_libdense_gemmDenseGemmKernel_object_at__CopyAtom_ThrID10_TVLayoutSrc1819201_TVLayou
+      2.1%  kernel_cutlass_kernel_b12xattentiondsa_indexertiled_topkDSATiledTopkKernel_object_at__tensorptrf32gmemo1_tenso
+      2.0%  _emit_stable_topk_kernel
+      2.0%  kernel_cutlass_kernel_b12xsequencemtp_feedback_cute_prefillMTPPrefillBf16GemmKernel_object_at__tensor00o327682
+== /home/user/bench-results/dgx-847/pruebas/1x/c-perfil/dp0_pp0_tp0_dcp0_ep0_rank0.1791876465204393124.pt.trace.json.gz  GPU total 17.38 s
+  moe/gemm nvfp4     13.852 s   79.7%
+  otros               1.685 s    9.7%
+  muestreo/mtp        1.057 s    6.1%
+  gdn/mamba           0.410 s    2.4%
+  ple                 0.361 s    2.1%
+  atención            0.012 s    0.1%
+  allreduce/nccl      0.000 s    0.0%
+07:29:33Z c-perfil: fin
+07:29:33Z 1x: fin

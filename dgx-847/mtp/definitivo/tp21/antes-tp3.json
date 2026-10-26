@@ -1,0 +1,1987 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "argocd.argoproj.io/sync-wave": "1",
+                    "argocd.argoproj.io/tracking-id": "ai:apps/Deployment:llm/qwen38-flash-next-head",
+                    "deployment.kubernetes.io/revision": "31"
+                },
+                "creationTimestamp": "2026-10-12T07:28:30Z",
+                "generation": 70,
+                "labels": {
+                    "app": "qwen38-flash-next-head",
+                    "llm.dgx-infra/model-family": "qwen38-next"
+                },
+                "name": "qwen38-flash-next-head",
+                "namespace": "llm",
+                "resourceVersion": "270055387",
+                "uid": "d7bcf350-636c-4661-9767-8e3618404512"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "qwen38-flash-next-head"
+                    }
+                },
+                "strategy": {
+                    "type": "Recreate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "internal.example/launch-revision": "vllm-qwen38fn-20261010-tp3"
+                        },
+                        "labels": {
+                            "app": "qwen38-flash-next-head",
+                            "endpoint-role": "production",
+                            "llm.dgx-infra/model-family": "qwen38-next",
+                            "llm.dgx-infra/pool": "tooling-resident"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "bash",
+                                    "/opt/qwen38fn/launch.sh"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "QWEN_NCCL_RING_HOST",
+                                        "value": "dgx2"
+                                    },
+                                    {
+                                        "name": "NCCL_CUMEM_ENABLE",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "NCCL_RUNTIME_CONNECT",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "NCCL_ALGO",
+                                        "value": "Ring"
+                                    },
+                                    {
+                                        "name": "LD_PRELOAD",
+                                        "value": "/opt/nccl-ring/lib/libnccl.so.2"
+                                    },
+                                    {
+                                        "name": "VLLM_NCCL_SO_PATH",
+                                        "value": "/opt/nccl-ring/lib/libnccl.so.2"
+                                    },
+                                    {
+                                        "name": "VLLM_NODE_RANK",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "VLLM_HOST_IP",
+                                        "value": "spark2"
+                                    },
+                                    {
+                                        "name": "VLLM_MASTER_ADDR",
+                                        "value": "spark2"
+                                    },
+                                    {
+                                        "name": "MODEL_PATH",
+                                        "value": "/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3"
+                                    },
+                                    {
+                                        "name": "MODEL_REVISION",
+                                        "value": "16c9bd54788d12390838a65ce4a4ecda97fa5f1d"
+                                    },
+                                    {
+                                        "name": "SERVED_MODEL_NAME",
+                                        "value": "qwen38-flash-next"
+                                    },
+                                    {
+                                        "name": "GPU_MEM_UTIL",
+                                        "value": "0.816"
+                                    },
+                                    {
+                                        "name": "KV_CACHE_MEMORY_BYTES",
+                                        "value": "51539607552"
+                                    },
+                                    {
+                                        "name": "MAX_MODEL_LEN",
+                                        "value": "262144"
+                                    },
+                                    {
+                                        "name": "MAX_NUM_SEQS",
+                                        "value": "10"
+                                    },
+                                    {
+                                        "name": "MAX_NUM_BATCHED_TOKENS",
+                                        "value": "4096"
+                                    },
+                                    {
+                                        "name": "LONG_PREFILL_TOKEN_THRESHOLD",
+                                        "value": "2048"
+                                    },
+                                    {
+                                        "name": "MAMBA_SSM_CACHE_DTYPE",
+                                        "value": "bfloat16"
+                                    },
+                                    {
+                                        "name": "VLLM_QSA_DET_TOPK",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "VLLM_ATTENTION_CONFIG",
+                                        "value": "{\"indexer_kv_dtype\":\"fp8\"}"
+                                    },
+                                    {
+                                        "name": "SCHEDULING_POLICY",
+                                        "value": "priority"
+                                    },
+                                    {
+                                        "name": "KV_CACHE_DTYPE",
+                                        "value": "fp8_e4m3"
+                                    },
+                                    {
+                                        "name": "COMPILATION_CONFIG",
+                                        "value": "{\"mode\":3,\"cudagraph_mode\":\"FULL_AND_PIECEWISE\"}"
+                                    },
+                                    {
+                                        "name": "SPECULATIVE_CONFIG",
+                                        "value": "{\"method\":\"mtp\",\"num_speculative_tokens\":4,\"disable_eagle_block_drop\":true,\"num_speculative_tokens_per_batch_size\":[[1,16,4]],\"rejection_sample_method\":\"block\",\"draft_sample_method\":\"probabilistic\"}"
+                                    },
+                                    {
+                                        "name": "VLLM_ADDITIONAL_CONFIG",
+                                        "value": "{\"gdn_prefill_backend\":\"triton\"}"
+                                    },
+                                    {
+                                        "name": "VLLM_SPARSE_INDEXER_MAX_LOGITS_MB",
+                                        "value": "64"
+                                    },
+                                    {
+                                        "name": "TOOL_CALL_PARSER",
+                                        "value": "qwen3_coder"
+                                    },
+                                    {
+                                        "name": "REASONING_PARSER",
+                                        "value": "qwen3"
+                                    },
+                                    {
+                                        "name": "VLLM_CPUSET",
+                                        "value": "5-9,15-19"
+                                    },
+                                    {
+                                        "name": "TORCH_CUDA_ARCH_LIST",
+                                        "value": "12.1f"
+                                    },
+                                    {
+                                        "name": "CUTE_DSL_ARCH",
+                                        "value": "sm_121a"
+                                    },
+                                    {
+                                        "name": "FLASHINFER_CUDA_ARCH_LIST",
+                                        "value": "12.1a"
+                                    },
+                                    {
+                                        "name": "FLASHINFER_DISABLE_VERSION_CHECK",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "VLLM_PLE_CPU_OFFLOAD",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "QWEN_PLE_MMAP_DIR",
+                                        "value": "/ple"
+                                    },
+                                    {
+                                        "name": "VLLM_USE_DEEP_GEMM",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "VLLM_USE_V2_MODEL_RUNNER",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "NCCL_SOCKET_IFNAME",
+                                        "value": "enP7s7"
+                                    },
+                                    {
+                                        "name": "GLOO_SOCKET_IFNAME",
+                                        "value": "enP7s7"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_MERGE_NICS",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "NCCL_NET_PLUGIN",
+                                        "value": "none"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_DISABLE",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "NCCL_CROSS_NIC",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "NCCL_NET",
+                                        "value": "IB"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_ADDR_FAMILY",
+                                        "value": "AF_INET"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_ROCE_VERSION_NUM",
+                                        "value": "2"
+                                    },
+                                    {
+                                        "name": "NCCL_IGNORE_CPU_AFFINITY",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "TP_SOCKET_IFNAME",
+                                        "value": "enP7s7"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_AUTO_DETECT",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "NCCL_NVLS_ENABLE",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "NCCL_DEBUG",
+                                        "value": "INFO"
+                                    },
+                                    {
+                                        "name": "NCCL_DEBUG_SUBSYS",
+                                        "value": "INIT,NET"
+                                    },
+                                    {
+                                        "name": "HF_HOME",
+                                        "value": "/cache/huggingface"
+                                    },
+                                    {
+                                        "name": "HF_HUB_OFFLINE",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "TRANSFORMERS_OFFLINE",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "VLLM_HTTP_TIMEOUT_KEEP_ALIVE",
+                                        "value": "600"
+                                    },
+                                    {
+                                        "name": "VLLM_USAGE_SOURCE",
+                                        "value": "production-docker-image"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_DIRECTION",
+                                        "value": "/opt/refusal/refusal_direction_flashnext.npy"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_LAMBDA",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_PROBE",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_PROBE_LAYERS",
+                                        "value": "16,20,24,28,32"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_PROBE_CAL",
+                                        "value": "/opt/refusal-probe-cal/cal.json"
+                                    },
+                                    {
+                                        "name": "QWEN38_B12X",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "VLLM_MTP_DRAFT_VOCAB",
+                                        "value": "/opt/qwen38fn-mtp-dv/ids-es-K131072.txt.gz"
+                                    }
+                                ],
+                                "image": "docker.io/vllm/vllm-openai@sha256:96b234afa2867031ad0a226b149a06483861e613e3a3083da53398d347b5ffbd",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "vllm",
+                                "ports": [
+                                    {
+                                        "containerPort": 8000,
+                                        "name": "http",
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/health",
+                                        "port": 8000,
+                                        "scheme": "HTTP"
+                                    },
+                                    "periodSeconds": 15,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 10
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "memory": "112Gi",
+                                        "nvidia.com/gpu": "1"
+                                    },
+                                    "requests": {
+                                        "cpu": "4",
+                                        "memory": "88Gi"
+                                    }
+                                },
+                                "securityContext": {
+                                    "capabilities": {
+                                        "add": [
+                                            "IPC_LOCK",
+                                            "SYS_PTRACE"
+                                        ]
+                                    }
+                                },
+                                "startupProbe": {
+                                    "failureThreshold": 120,
+                                    "httpGet": {
+                                        "path": "/health",
+                                        "port": 8000,
+                                        "scheme": "HTTP"
+                                    },
+                                    "periodSeconds": 30,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 10
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/qwen38fn-mtp-dv",
+                                        "name": "mtp-draft-vocab",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/nccl-ring",
+                                        "name": "nccl-ring",
+                                        "readOnly": true,
+                                        "subPath": "opt/nccl-ring"
+                                    },
+                                    {
+                                        "mountPath": "/cache/huggingface",
+                                        "name": "hf-cache",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/qwen38fn",
+                                        "name": "launch",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/ursu",
+                                        "name": "ursu-root",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/ursu/overlays",
+                                        "name": "ursu-overlays",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/ursu/refusal",
+                                        "name": "ursu-refusal",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/ursu/refusal/payload",
+                                        "name": "ursu-refusal-payload",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/refusal-probe-cal",
+                                        "name": "refusal-probe-cal",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/qwen38fn-kdet",
+                                        "name": "kernel-det",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/ple",
+                                        "name": "ple-table",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/qwen38fn-ple",
+                                        "name": "ple-mmap",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/tmp",
+                                        "name": "vllm-tmp"
+                                    },
+                                    {
+                                        "mountPath": "/dev/infiniband",
+                                        "name": "infiniband"
+                                    },
+                                    {
+                                        "mountPath": "/dev/shm",
+                                        "name": "shm"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "Default",
+                        "enableServiceLinks": false,
+                        "hostNetwork": true,
+                        "imagePullSecrets": [
+                            {
+                                "name": "harbor-pull"
+                            }
+                        ],
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "python3",
+                                    "/opt/qwen38fn-ple/build_ple_table.py"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "CKPT_DIR",
+                                        "value": "/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3"
+                                    },
+                                    {
+                                        "name": "CKPT_REVISION",
+                                        "value": "16c9bd54788d12390838a65ce4a4ecda97fa5f1d"
+                                    },
+                                    {
+                                        "name": "OUT_DIR",
+                                        "value": "/ple"
+                                    },
+                                    {
+                                        "name": "TP_SIZE",
+                                        "value": "3"
+                                    },
+                                    {
+                                        "name": "TP_RANK",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "SPECULATIVE_CONFIG",
+                                        "value": "{\"method\":\"mtp\",\"num_speculative_tokens\":1,\"disable_eagle_block_drop\":true,\"num_speculative_tokens_per_batch_size\":[[1,16,1]],\"rejection_sample_method\":\"block\",\"draft_sample_method\":\"probabilistic\"}"
+                                    }
+                                ],
+                                "image": "docker.io/vllm/vllm-openai@sha256:96b234afa2867031ad0a226b149a06483861e613e3a3083da53398d347b5ffbd",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "ple-table",
+                                "resources": {
+                                    "limits": {
+                                        "memory": "4Gi"
+                                    },
+                                    "requests": {
+                                        "cpu": "1",
+                                        "memory": "1Gi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/cache/huggingface",
+                                        "name": "hf-cache",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/ple",
+                                        "name": "ple-table"
+                                    },
+                                    {
+                                        "mountPath": "/opt/qwen38fn-ple",
+                                        "name": "ple-mmap",
+                                        "readOnly": true
+                                    }
+                                ]
+                            }
+                        ],
+                        "nodeSelector": {
+                            "kubernetes.io/arch": "arm64",
+                            "kubernetes.io/hostname": "gx10-ec3d"
+                        },
+                        "restartPolicy": "Always",
+                        "runtimeClassName": "nvidia",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 120,
+                        "tolerations": [
+                            {
+                                "effect": "NoSchedule",
+                                "key": "dedicated",
+                                "operator": "Equal",
+                                "value": "llm"
+                            }
+                        ],
+                        "volumes": [
+                            {
+                                "image": {
+                                    "pullPolicy": "IfNotPresent",
+                                    "reference": "internal.example/homelab/nccl-ring@sha256:79db26e7877a099847cf12c2067a3dd3f02156c51a0d77386691b272316ce77e"
+                                },
+                                "name": "nccl-ring"
+                            },
+                            {
+                                "name": "hf-cache",
+                                "persistentVolumeClaim": {
+                                    "claimName": "hf-cache-nvidia-dgx-ro",
+                                    "readOnly": true
+                                }
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 365,
+                                    "name": "qwen38-flash-next-vllm-launch"
+                                },
+                                "name": "launch"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-ursu-root"
+                                },
+                                "name": "ursu-root"
+                            },
+                            {
+                                "name": "ursu-overlays",
+                                "projected": {
+                                    "defaultMode": 420,
+                                    "sources": [
+                                        {
+                                            "configMap": {
+                                                "name": "qwen38fn-ursu-overlays-a"
+                                            }
+                                        },
+                                        {
+                                            "configMap": {
+                                                "name": "qwen38fn-ursu-overlays-b"
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-ursu-refusal"
+                                },
+                                "name": "ursu-refusal"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-ursu-refusal-payload"
+                                },
+                                "name": "ursu-refusal-payload"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-kernel-det"
+                                },
+                                "name": "kernel-det"
+                            },
+                            {
+                                "hostPath": {
+                                    "path": "/home/user/.cache/qwen38fn-ple-ursu",
+                                    "type": "DirectoryOrCreate"
+                                },
+                                "name": "ple-table"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-mtp-draft-vocab"
+                                },
+                                "name": "mtp-draft-vocab"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-ple-mmap"
+                                },
+                                "name": "ple-mmap"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-refusal-probe-cal",
+                                    "optional": true
+                                },
+                                "name": "refusal-probe-cal"
+                            },
+                            {
+                                "hostPath": {
+                                    "path": "/home/user/.cache/vllm-tmp",
+                                    "type": "DirectoryOrCreate"
+                                },
+                                "name": "vllm-tmp"
+                            },
+                            {
+                                "hostPath": {
+                                    "path": "/dev/infiniband",
+                                    "type": "Directory"
+                                },
+                                "name": "infiniband"
+                            },
+                            {
+                                "emptyDir": {
+                                    "medium": "Memory",
+                                    "sizeLimit": "16Gi"
+                                },
+                                "name": "shm"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-10-13T18:32:55Z",
+                        "lastUpdateTime": "2026-10-14T00:12:58Z",
+                        "message": "ReplicaSet \"qwen38-flash-next-head-5778b7f896\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2026-10-14T00:26:30Z",
+                        "lastUpdateTime": "2026-10-14T00:26:30Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 70,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "terminatingReplicas": 0,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "argocd.argoproj.io/sync-wave": "1",
+                    "argocd.argoproj.io/tracking-id": "ai:apps/Deployment:llm/qwen38-flash-next-worker",
+                    "deployment.kubernetes.io/revision": "30"
+                },
+                "creationTimestamp": "2026-10-12T07:28:30Z",
+                "generation": 70,
+                "labels": {
+                    "app": "qwen38-flash-next-worker",
+                    "llm.dgx-infra/model-family": "qwen38-next"
+                },
+                "name": "qwen38-flash-next-worker",
+                "namespace": "llm",
+                "resourceVersion": "270035091",
+                "uid": "bd573e35-ad63-46e9-bef6-653e3ca9ab51"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "qwen38-flash-next-worker"
+                    }
+                },
+                "strategy": {
+                    "type": "Recreate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "internal.example/launch-revision": "vllm-qwen38fn-20261010-tp3"
+                        },
+                        "labels": {
+                            "app": "qwen38-flash-next-worker",
+                            "llm.dgx-infra/model-family": "qwen38-next"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "bash",
+                                    "/opt/qwen38fn/launch.sh"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "QWEN_NCCL_RING_HOST",
+                                        "value": "dgx1"
+                                    },
+                                    {
+                                        "name": "NCCL_CUMEM_ENABLE",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "NCCL_RUNTIME_CONNECT",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "NCCL_ALGO",
+                                        "value": "Ring"
+                                    },
+                                    {
+                                        "name": "LD_PRELOAD",
+                                        "value": "/opt/nccl-ring/lib/libnccl.so.2"
+                                    },
+                                    {
+                                        "name": "VLLM_NCCL_SO_PATH",
+                                        "value": "/opt/nccl-ring/lib/libnccl.so.2"
+                                    },
+                                    {
+                                        "name": "VLLM_NODE_RANK",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "VLLM_HOST_IP",
+                                        "value": "spark1"
+                                    },
+                                    {
+                                        "name": "VLLM_MASTER_ADDR",
+                                        "value": "spark2"
+                                    },
+                                    {
+                                        "name": "MODEL_PATH",
+                                        "value": "/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3"
+                                    },
+                                    {
+                                        "name": "MODEL_REVISION",
+                                        "value": "16c9bd54788d12390838a65ce4a4ecda97fa5f1d"
+                                    },
+                                    {
+                                        "name": "SERVED_MODEL_NAME",
+                                        "value": "qwen38-flash-next"
+                                    },
+                                    {
+                                        "name": "GPU_MEM_UTIL",
+                                        "value": "0.73"
+                                    },
+                                    {
+                                        "name": "KV_CACHE_MEMORY_BYTES",
+                                        "value": "51539607552"
+                                    },
+                                    {
+                                        "name": "MAX_MODEL_LEN",
+                                        "value": "262144"
+                                    },
+                                    {
+                                        "name": "MAX_NUM_SEQS",
+                                        "value": "10"
+                                    },
+                                    {
+                                        "name": "MAX_NUM_BATCHED_TOKENS",
+                                        "value": "4096"
+                                    },
+                                    {
+                                        "name": "LONG_PREFILL_TOKEN_THRESHOLD",
+                                        "value": "2048"
+                                    },
+                                    {
+                                        "name": "MAMBA_SSM_CACHE_DTYPE",
+                                        "value": "bfloat16"
+                                    },
+                                    {
+                                        "name": "VLLM_QSA_DET_TOPK",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "VLLM_ATTENTION_CONFIG",
+                                        "value": "{\"indexer_kv_dtype\":\"fp8\"}"
+                                    },
+                                    {
+                                        "name": "SCHEDULING_POLICY",
+                                        "value": "priority"
+                                    },
+                                    {
+                                        "name": "KV_CACHE_DTYPE",
+                                        "value": "fp8_e4m3"
+                                    },
+                                    {
+                                        "name": "COMPILATION_CONFIG",
+                                        "value": "{\"mode\":3,\"cudagraph_mode\":\"FULL_AND_PIECEWISE\"}"
+                                    },
+                                    {
+                                        "name": "SPECULATIVE_CONFIG",
+                                        "value": "{\"method\":\"mtp\",\"num_speculative_tokens\":4,\"disable_eagle_block_drop\":true,\"num_speculative_tokens_per_batch_size\":[[1,16,4]],\"rejection_sample_method\":\"block\",\"draft_sample_method\":\"probabilistic\"}"
+                                    },
+                                    {
+                                        "name": "VLLM_ADDITIONAL_CONFIG",
+                                        "value": "{\"gdn_prefill_backend\":\"triton\"}"
+                                    },
+                                    {
+                                        "name": "VLLM_SPARSE_INDEXER_MAX_LOGITS_MB",
+                                        "value": "64"
+                                    },
+                                    {
+                                        "name": "TOOL_CALL_PARSER",
+                                        "value": "qwen3_coder"
+                                    },
+                                    {
+                                        "name": "REASONING_PARSER",
+                                        "value": "qwen3"
+                                    },
+                                    {
+                                        "name": "VLLM_CPUSET",
+                                        "value": "5-9,15-19"
+                                    },
+                                    {
+                                        "name": "TORCH_CUDA_ARCH_LIST",
+                                        "value": "12.1f"
+                                    },
+                                    {
+                                        "name": "CUTE_DSL_ARCH",
+                                        "value": "sm_121a"
+                                    },
+                                    {
+                                        "name": "FLASHINFER_CUDA_ARCH_LIST",
+                                        "value": "12.1a"
+                                    },
+                                    {
+                                        "name": "FLASHINFER_DISABLE_VERSION_CHECK",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "VLLM_PLE_CPU_OFFLOAD",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "QWEN_PLE_MMAP_DIR",
+                                        "value": "/ple"
+                                    },
+                                    {
+                                        "name": "VLLM_USE_DEEP_GEMM",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "VLLM_USE_V2_MODEL_RUNNER",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "NCCL_SOCKET_IFNAME",
+                                        "value": "enP7s7"
+                                    },
+                                    {
+                                        "name": "GLOO_SOCKET_IFNAME",
+                                        "value": "enP7s7"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_MERGE_NICS",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "NCCL_NET_PLUGIN",
+                                        "value": "none"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_DISABLE",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "NCCL_CROSS_NIC",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "NCCL_NET",
+                                        "value": "IB"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_ADDR_FAMILY",
+                                        "value": "AF_INET"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_ROCE_VERSION_NUM",
+                                        "value": "2"
+                                    },
+                                    {
+                                        "name": "NCCL_IGNORE_CPU_AFFINITY",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "TP_SOCKET_IFNAME",
+                                        "value": "enP7s7"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_AUTO_DETECT",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "NCCL_NVLS_ENABLE",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "NCCL_DEBUG",
+                                        "value": "INFO"
+                                    },
+                                    {
+                                        "name": "NCCL_DEBUG_SUBSYS",
+                                        "value": "INIT,NET"
+                                    },
+                                    {
+                                        "name": "HF_HOME",
+                                        "value": "/cache/huggingface"
+                                    },
+                                    {
+                                        "name": "HF_HUB_OFFLINE",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "TRANSFORMERS_OFFLINE",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "VLLM_HTTP_TIMEOUT_KEEP_ALIVE",
+                                        "value": "600"
+                                    },
+                                    {
+                                        "name": "VLLM_USAGE_SOURCE",
+                                        "value": "production-docker-image"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_DIRECTION",
+                                        "value": "/opt/refusal/refusal_direction_flashnext.npy"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_LAMBDA",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_PROBE",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_PROBE_LAYERS",
+                                        "value": "16,20,24,28,32"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_PROBE_CAL",
+                                        "value": "/opt/refusal-probe-cal/cal.json"
+                                    },
+                                    {
+                                        "name": "QWEN38_B12X",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "VLLM_MTP_DRAFT_VOCAB",
+                                        "value": "/opt/qwen38fn-mtp-dv/ids-es-K131072.txt.gz"
+                                    }
+                                ],
+                                "image": "docker.io/vllm/vllm-openai@sha256:96b234afa2867031ad0a226b149a06483861e613e3a3083da53398d347b5ffbd",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "vllm",
+                                "resources": {
+                                    "limits": {
+                                        "memory": "112Gi",
+                                        "nvidia.com/gpu": "1"
+                                    },
+                                    "requests": {
+                                        "cpu": "4",
+                                        "memory": "88Gi"
+                                    }
+                                },
+                                "securityContext": {
+                                    "capabilities": {
+                                        "add": [
+                                            "IPC_LOCK",
+                                            "SYS_PTRACE"
+                                        ]
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/qwen38fn-mtp-dv",
+                                        "name": "mtp-draft-vocab",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/nccl-ring",
+                                        "name": "nccl-ring",
+                                        "readOnly": true,
+                                        "subPath": "opt/nccl-ring"
+                                    },
+                                    {
+                                        "mountPath": "/cache/huggingface",
+                                        "name": "hf-cache",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/qwen38fn",
+                                        "name": "launch",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/ursu",
+                                        "name": "ursu-root",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/ursu/overlays",
+                                        "name": "ursu-overlays",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/ursu/refusal",
+                                        "name": "ursu-refusal",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/ursu/refusal/payload",
+                                        "name": "ursu-refusal-payload",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/refusal-probe-cal",
+                                        "name": "refusal-probe-cal",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/qwen38fn-kdet",
+                                        "name": "kernel-det",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/ple",
+                                        "name": "ple-table",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/qwen38fn-ple",
+                                        "name": "ple-mmap",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/tmp",
+                                        "name": "vllm-tmp"
+                                    },
+                                    {
+                                        "mountPath": "/dev/infiniband",
+                                        "name": "infiniband"
+                                    },
+                                    {
+                                        "mountPath": "/dev/shm",
+                                        "name": "shm"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "Default",
+                        "enableServiceLinks": false,
+                        "hostNetwork": true,
+                        "imagePullSecrets": [
+                            {
+                                "name": "harbor-pull"
+                            }
+                        ],
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "python3",
+                                    "/opt/qwen38fn-ple/build_ple_table.py"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "CKPT_DIR",
+                                        "value": "/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3"
+                                    },
+                                    {
+                                        "name": "CKPT_REVISION",
+                                        "value": "16c9bd54788d12390838a65ce4a4ecda97fa5f1d"
+                                    },
+                                    {
+                                        "name": "OUT_DIR",
+                                        "value": "/ple"
+                                    },
+                                    {
+                                        "name": "TP_SIZE",
+                                        "value": "3"
+                                    },
+                                    {
+                                        "name": "TP_RANK",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "SPECULATIVE_CONFIG",
+                                        "value": "{\"method\":\"mtp\",\"num_speculative_tokens\":1,\"disable_eagle_block_drop\":true,\"num_speculative_tokens_per_batch_size\":[[1,16,1]],\"rejection_sample_method\":\"block\",\"draft_sample_method\":\"probabilistic\"}"
+                                    }
+                                ],
+                                "image": "docker.io/vllm/vllm-openai@sha256:96b234afa2867031ad0a226b149a06483861e613e3a3083da53398d347b5ffbd",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "ple-table",
+                                "resources": {
+                                    "limits": {
+                                        "memory": "4Gi"
+                                    },
+                                    "requests": {
+                                        "cpu": "1",
+                                        "memory": "1Gi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/cache/huggingface",
+                                        "name": "hf-cache",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/ple",
+                                        "name": "ple-table"
+                                    },
+                                    {
+                                        "mountPath": "/opt/qwen38fn-ple",
+                                        "name": "ple-mmap",
+                                        "readOnly": true
+                                    }
+                                ]
+                            }
+                        ],
+                        "nodeSelector": {
+                            "kubernetes.io/arch": "arm64",
+                            "kubernetes.io/hostname": "nvidia-dgx"
+                        },
+                        "restartPolicy": "Always",
+                        "runtimeClassName": "nvidia",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 120,
+                        "tolerations": [
+                            {
+                                "effect": "NoSchedule",
+                                "key": "dedicated",
+                                "operator": "Equal",
+                                "value": "llm"
+                            }
+                        ],
+                        "volumes": [
+                            {
+                                "image": {
+                                    "pullPolicy": "IfNotPresent",
+                                    "reference": "internal.example/homelab/nccl-ring@sha256:79db26e7877a099847cf12c2067a3dd3f02156c51a0d77386691b272316ce77e"
+                                },
+                                "name": "nccl-ring"
+                            },
+                            {
+                                "hostPath": {
+                                    "path": "/home/dibanerz/.cache/huggingface",
+                                    "type": "Directory"
+                                },
+                                "name": "hf-cache"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 365,
+                                    "name": "qwen38-flash-next-vllm-launch"
+                                },
+                                "name": "launch"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-ursu-root"
+                                },
+                                "name": "ursu-root"
+                            },
+                            {
+                                "name": "ursu-overlays",
+                                "projected": {
+                                    "defaultMode": 420,
+                                    "sources": [
+                                        {
+                                            "configMap": {
+                                                "name": "qwen38fn-ursu-overlays-a"
+                                            }
+                                        },
+                                        {
+                                            "configMap": {
+                                                "name": "qwen38fn-ursu-overlays-b"
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-ursu-refusal"
+                                },
+                                "name": "ursu-refusal"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-ursu-refusal-payload"
+                                },
+                                "name": "ursu-refusal-payload"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-kernel-det"
+                                },
+                                "name": "kernel-det"
+                            },
+                            {
+                                "hostPath": {
+                                    "path": "/home/user/.cache/qwen38fn-ple-ursu",
+                                    "type": "DirectoryOrCreate"
+                                },
+                                "name": "ple-table"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-mtp-draft-vocab"
+                                },
+                                "name": "mtp-draft-vocab"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-ple-mmap"
+                                },
+                                "name": "ple-mmap"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-refusal-probe-cal",
+                                    "optional": true
+                                },
+                                "name": "refusal-probe-cal"
+                            },
+                            {
+                                "hostPath": {
+                                    "path": "/home/user/.cache/vllm-tmp",
+                                    "type": "DirectoryOrCreate"
+                                },
+                                "name": "vllm-tmp"
+                            },
+                            {
+                                "hostPath": {
+                                    "path": "/dev/infiniband",
+                                    "type": "Directory"
+                                },
+                                "name": "infiniband"
+                            },
+                            {
+                                "emptyDir": {
+                                    "medium": "Memory",
+                                    "sizeLimit": "16Gi"
+                                },
+                                "name": "shm"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-10-12T07:28:30Z",
+                        "lastUpdateTime": "2026-10-14T00:12:58Z",
+                        "message": "ReplicaSet \"qwen38-flash-next-worker-69995bb978\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2026-10-14T00:13:04Z",
+                        "lastUpdateTime": "2026-10-14T00:13:04Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 70,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "terminatingReplicas": 0,
+                "updatedReplicas": 1
+            }
+        },
+        {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "metadata": {
+                "annotations": {
+                    "argocd.argoproj.io/sync-wave": "1",
+                    "argocd.argoproj.io/tracking-id": "ai:apps/Deployment:llm/qwen38-flash-next-worker-dgx3",
+                    "deployment.kubernetes.io/revision": "30"
+                },
+                "creationTimestamp": "2026-10-12T07:28:30Z",
+                "generation": 70,
+                "labels": {
+                    "app": "qwen38-flash-next-worker-dgx3",
+                    "llm.dgx-infra/model-family": "qwen38-next"
+                },
+                "name": "qwen38-flash-next-worker-dgx3",
+                "namespace": "llm",
+                "resourceVersion": "270035066",
+                "uid": "8b7b4a28-e54d-42b5-b5e2-032c4ffd9b08"
+            },
+            "spec": {
+                "progressDeadlineSeconds": 600,
+                "replicas": 1,
+                "revisionHistoryLimit": 10,
+                "selector": {
+                    "matchLabels": {
+                        "app": "qwen38-flash-next-worker-dgx3"
+                    }
+                },
+                "strategy": {
+                    "type": "Recreate"
+                },
+                "template": {
+                    "metadata": {
+                        "annotations": {
+                            "internal.example/launch-revision": "vllm-qwen38fn-20261010-tp3"
+                        },
+                        "labels": {
+                            "app": "qwen38-flash-next-worker-dgx3",
+                            "llm.dgx-infra/model-family": "qwen38-next"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "bash",
+                                    "/opt/qwen38fn/launch.sh"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "QWEN_NCCL_RING_HOST",
+                                        "value": "dgx3"
+                                    },
+                                    {
+                                        "name": "NCCL_CUMEM_ENABLE",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "NCCL_RUNTIME_CONNECT",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "NCCL_ALGO",
+                                        "value": "Ring"
+                                    },
+                                    {
+                                        "name": "LD_PRELOAD",
+                                        "value": "/opt/nccl-ring/lib/libnccl.so.2"
+                                    },
+                                    {
+                                        "name": "VLLM_NCCL_SO_PATH",
+                                        "value": "/opt/nccl-ring/lib/libnccl.so.2"
+                                    },
+                                    {
+                                        "name": "VLLM_NODE_RANK",
+                                        "value": "2"
+                                    },
+                                    {
+                                        "name": "VLLM_HOST_IP",
+                                        "value": "spark3"
+                                    },
+                                    {
+                                        "name": "VLLM_MASTER_ADDR",
+                                        "value": "spark2"
+                                    },
+                                    {
+                                        "name": "MODEL_PATH",
+                                        "value": "/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3"
+                                    },
+                                    {
+                                        "name": "MODEL_REVISION",
+                                        "value": "16c9bd54788d12390838a65ce4a4ecda97fa5f1d"
+                                    },
+                                    {
+                                        "name": "SERVED_MODEL_NAME",
+                                        "value": "qwen38-flash-next"
+                                    },
+                                    {
+                                        "name": "GPU_MEM_UTIL",
+                                        "value": "0.73"
+                                    },
+                                    {
+                                        "name": "KV_CACHE_MEMORY_BYTES",
+                                        "value": "51539607552"
+                                    },
+                                    {
+                                        "name": "MAX_MODEL_LEN",
+                                        "value": "262144"
+                                    },
+                                    {
+                                        "name": "MAX_NUM_SEQS",
+                                        "value": "10"
+                                    },
+                                    {
+                                        "name": "MAX_NUM_BATCHED_TOKENS",
+                                        "value": "4096"
+                                    },
+                                    {
+                                        "name": "LONG_PREFILL_TOKEN_THRESHOLD",
+                                        "value": "2048"
+                                    },
+                                    {
+                                        "name": "MAMBA_SSM_CACHE_DTYPE",
+                                        "value": "bfloat16"
+                                    },
+                                    {
+                                        "name": "VLLM_QSA_DET_TOPK",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "VLLM_ATTENTION_CONFIG",
+                                        "value": "{\"indexer_kv_dtype\":\"fp8\"}"
+                                    },
+                                    {
+                                        "name": "SCHEDULING_POLICY",
+                                        "value": "priority"
+                                    },
+                                    {
+                                        "name": "KV_CACHE_DTYPE",
+                                        "value": "fp8_e4m3"
+                                    },
+                                    {
+                                        "name": "COMPILATION_CONFIG",
+                                        "value": "{\"mode\":3,\"cudagraph_mode\":\"FULL_AND_PIECEWISE\"}"
+                                    },
+                                    {
+                                        "name": "SPECULATIVE_CONFIG",
+                                        "value": "{\"method\":\"mtp\",\"num_speculative_tokens\":4,\"disable_eagle_block_drop\":true,\"num_speculative_tokens_per_batch_size\":[[1,16,4]],\"rejection_sample_method\":\"block\",\"draft_sample_method\":\"probabilistic\"}"
+                                    },
+                                    {
+                                        "name": "VLLM_ADDITIONAL_CONFIG",
+                                        "value": "{\"gdn_prefill_backend\":\"triton\"}"
+                                    },
+                                    {
+                                        "name": "VLLM_SPARSE_INDEXER_MAX_LOGITS_MB",
+                                        "value": "64"
+                                    },
+                                    {
+                                        "name": "TOOL_CALL_PARSER",
+                                        "value": "qwen3_coder"
+                                    },
+                                    {
+                                        "name": "REASONING_PARSER",
+                                        "value": "qwen3"
+                                    },
+                                    {
+                                        "name": "VLLM_CPUSET",
+                                        "value": "5-9,15-19"
+                                    },
+                                    {
+                                        "name": "TORCH_CUDA_ARCH_LIST",
+                                        "value": "12.1f"
+                                    },
+                                    {
+                                        "name": "CUTE_DSL_ARCH",
+                                        "value": "sm_121a"
+                                    },
+                                    {
+                                        "name": "FLASHINFER_CUDA_ARCH_LIST",
+                                        "value": "12.1a"
+                                    },
+                                    {
+                                        "name": "FLASHINFER_DISABLE_VERSION_CHECK",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "VLLM_PLE_CPU_OFFLOAD",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "QWEN_PLE_MMAP_DIR",
+                                        "value": "/ple"
+                                    },
+                                    {
+                                        "name": "VLLM_USE_DEEP_GEMM",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "VLLM_USE_V2_MODEL_RUNNER",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "NCCL_SOCKET_IFNAME",
+                                        "value": "enP7s7"
+                                    },
+                                    {
+                                        "name": "GLOO_SOCKET_IFNAME",
+                                        "value": "enP7s7"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_MERGE_NICS",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "NCCL_NET_PLUGIN",
+                                        "value": "none"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_DISABLE",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "NCCL_CROSS_NIC",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "NCCL_NET",
+                                        "value": "IB"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_ADDR_FAMILY",
+                                        "value": "AF_INET"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_ROCE_VERSION_NUM",
+                                        "value": "2"
+                                    },
+                                    {
+                                        "name": "NCCL_IGNORE_CPU_AFFINITY",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "TP_SOCKET_IFNAME",
+                                        "value": "enP7s7"
+                                    },
+                                    {
+                                        "name": "NCCL_IB_AUTO_DETECT",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "NCCL_NVLS_ENABLE",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "NCCL_DEBUG",
+                                        "value": "INFO"
+                                    },
+                                    {
+                                        "name": "NCCL_DEBUG_SUBSYS",
+                                        "value": "INIT,NET"
+                                    },
+                                    {
+                                        "name": "HF_HOME",
+                                        "value": "/cache/huggingface"
+                                    },
+                                    {
+                                        "name": "HF_HUB_OFFLINE",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "TRANSFORMERS_OFFLINE",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "VLLM_HTTP_TIMEOUT_KEEP_ALIVE",
+                                        "value": "600"
+                                    },
+                                    {
+                                        "name": "VLLM_USAGE_SOURCE",
+                                        "value": "production-docker-image"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_DIRECTION",
+                                        "value": "/opt/refusal/refusal_direction_flashnext.npy"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_LAMBDA",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_PROBE",
+                                        "value": "0"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_PROBE_LAYERS",
+                                        "value": "16,20,24,28,32"
+                                    },
+                                    {
+                                        "name": "VLLM_REFUSAL_PROBE_CAL",
+                                        "value": "/opt/refusal-probe-cal/cal.json"
+                                    },
+                                    {
+                                        "name": "QWEN38_B12X",
+                                        "value": "1"
+                                    },
+                                    {
+                                        "name": "VLLM_MTP_DRAFT_VOCAB",
+                                        "value": "/opt/qwen38fn-mtp-dv/ids-es-K131072.txt.gz"
+                                    }
+                                ],
+                                "image": "docker.io/vllm/vllm-openai@sha256:96b234afa2867031ad0a226b149a06483861e613e3a3083da53398d347b5ffbd",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "vllm",
+                                "resources": {
+                                    "limits": {
+                                        "memory": "112Gi",
+                                        "nvidia.com/gpu": "1"
+                                    },
+                                    "requests": {
+                                        "cpu": "4",
+                                        "memory": "88Gi"
+                                    }
+                                },
+                                "securityContext": {
+                                    "capabilities": {
+                                        "add": [
+                                            "IPC_LOCK",
+                                            "SYS_PTRACE"
+                                        ]
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/qwen38fn-mtp-dv",
+                                        "name": "mtp-draft-vocab",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/nccl-ring",
+                                        "name": "nccl-ring",
+                                        "readOnly": true,
+                                        "subPath": "opt/nccl-ring"
+                                    },
+                                    {
+                                        "mountPath": "/cache/huggingface",
+                                        "name": "hf-cache",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/qwen38fn",
+                                        "name": "launch",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/ursu",
+                                        "name": "ursu-root",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/ursu/overlays",
+                                        "name": "ursu-overlays",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/ursu/refusal",
+                                        "name": "ursu-refusal",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/ursu/refusal/payload",
+                                        "name": "ursu-refusal-payload",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/refusal-probe-cal",
+                                        "name": "refusal-probe-cal",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/qwen38fn-kdet",
+                                        "name": "kernel-det",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/ple",
+                                        "name": "ple-table",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/opt/qwen38fn-ple",
+                                        "name": "ple-mmap",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/tmp",
+                                        "name": "vllm-tmp"
+                                    },
+                                    {
+                                        "mountPath": "/dev/infiniband",
+                                        "name": "infiniband"
+                                    },
+                                    {
+                                        "mountPath": "/dev/shm",
+                                        "name": "shm"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dnsPolicy": "Default",
+                        "enableServiceLinks": false,
+                        "hostNetwork": true,
+                        "imagePullSecrets": [
+                            {
+                                "name": "harbor-pull"
+                            }
+                        ],
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "python3",
+                                    "/opt/qwen38fn-ple/build_ple_table.py"
+                                ],
+                                "env": [
+                                    {
+                                        "name": "CKPT_DIR",
+                                        "value": "/cache/huggingface/qwen38fn-mtp-ursu-nvfp4-tp3"
+                                    },
+                                    {
+                                        "name": "CKPT_REVISION",
+                                        "value": "16c9bd54788d12390838a65ce4a4ecda97fa5f1d"
+                                    },
+                                    {
+                                        "name": "OUT_DIR",
+                                        "value": "/ple"
+                                    },
+                                    {
+                                        "name": "TP_SIZE",
+                                        "value": "3"
+                                    },
+                                    {
+                                        "name": "TP_RANK",
+                                        "value": "2"
+                                    },
+                                    {
+                                        "name": "SPECULATIVE_CONFIG",
+                                        "value": "{\"method\":\"mtp\",\"num_speculative_tokens\":1,\"disable_eagle_block_drop\":true,\"num_speculative_tokens_per_batch_size\":[[1,16,1]],\"rejection_sample_method\":\"block\",\"draft_sample_method\":\"probabilistic\"}"
+                                    }
+                                ],
+                                "image": "docker.io/vllm/vllm-openai@sha256:96b234afa2867031ad0a226b149a06483861e613e3a3083da53398d347b5ffbd",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "ple-table",
+                                "resources": {
+                                    "limits": {
+                                        "memory": "4Gi"
+                                    },
+                                    "requests": {
+                                        "cpu": "1",
+                                        "memory": "1Gi"
+                                    }
+                                },
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File",
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/cache/huggingface",
+                                        "name": "hf-cache",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "mountPath": "/ple",
+                                        "name": "ple-table"
+                                    },
+                                    {
+                                        "mountPath": "/opt/qwen38fn-ple",
+                                        "name": "ple-mmap",
+                                        "readOnly": true
+                                    }
+                                ]
+                            }
+                        ],
+                        "nodeSelector": {
+                            "kubernetes.io/arch": "arm64",
+                            "kubernetes.io/hostname": "dgx3"
+                        },
+                        "restartPolicy": "Always",
+                        "runtimeClassName": "nvidia",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 120,
+                        "tolerations": [
+                            {
+                                "effect": "NoSchedule",
+                                "key": "dedicated",
+                                "operator": "Equal",
+                                "value": "llm"
+                            }
+                        ],
+                        "volumes": [
+                            {
+                                "image": {
+                                    "pullPolicy": "IfNotPresent",
+                                    "reference": "internal.example/homelab/nccl-ring@sha256:79db26e7877a099847cf12c2067a3dd3f02156c51a0d77386691b272316ce77e"
+                                },
+                                "name": "nccl-ring"
+                            },
+                            {
+                                "name": "hf-cache",
+                                "persistentVolumeClaim": {
+                                    "claimName": "hf-cache-dgx1-dgx3-llm-ro",
+                                    "readOnly": true
+                                }
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 365,
+                                    "name": "qwen38-flash-next-vllm-launch"
+                                },
+                                "name": "launch"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-ursu-root"
+                                },
+                                "name": "ursu-root"
+                            },
+                            {
+                                "name": "ursu-overlays",
+                                "projected": {
+                                    "defaultMode": 420,
+                                    "sources": [
+                                        {
+                                            "configMap": {
+                                                "name": "qwen38fn-ursu-overlays-a"
+                                            }
+                                        },
+                                        {
+                                            "configMap": {
+                                                "name": "qwen38fn-ursu-overlays-b"
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-ursu-refusal"
+                                },
+                                "name": "ursu-refusal"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-ursu-refusal-payload"
+                                },
+                                "name": "ursu-refusal-payload"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-kernel-det"
+                                },
+                                "name": "kernel-det"
+                            },
+                            {
+                                "hostPath": {
+                                    "path": "/home/user/.cache/qwen38fn-ple-ursu",
+                                    "type": "DirectoryOrCreate"
+                                },
+                                "name": "ple-table"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-mtp-draft-vocab"
+                                },
+                                "name": "mtp-draft-vocab"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-ple-mmap"
+                                },
+                                "name": "ple-mmap"
+                            },
+                            {
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "qwen38fn-refusal-probe-cal",
+                                    "optional": true
+                                },
+                                "name": "refusal-probe-cal"
+                            },
+                            {
+                                "hostPath": {
+                                    "path": "/home/user/.cache/vllm-tmp",
+                                    "type": "DirectoryOrCreate"
+                                },
+                                "name": "vllm-tmp"
+                            },
+                            {
+                                "hostPath": {
+                                    "path": "/dev/infiniband",
+                                    "type": "Directory"
+                                },
+                                "name": "infiniband"
+                            },
+                            {
+                                "emptyDir": {
+                                    "medium": "Memory",
+                                    "sizeLimit": "16Gi"
+                                },
+                                "name": "shm"
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "availableReplicas": 1,
+                "conditions": [
+                    {
+                        "lastTransitionTime": "2026-10-12T07:28:30Z",
+                        "lastUpdateTime": "2026-10-14T00:12:59Z",
+                        "message": "ReplicaSet \"qwen38-flash-next-worker-dgx3-745fbfd695\" has successfully progressed.",
+                        "reason": "NewReplicaSetAvailable",
+                        "status": "True",
+                        "type": "Progressing"
+                    },
+                    {
+                        "lastTransitionTime": "2026-10-14T00:13:03Z",
+                        "lastUpdateTime": "2026-10-14T00:13:03Z",
+                        "message": "Deployment has minimum availability.",
+                        "reason": "MinimumReplicasAvailable",
+                        "status": "True",
+                        "type": "Available"
+                    }
+                ],
+                "observedGeneration": 70,
+                "readyReplicas": 1,
+                "replicas": 1,
+                "terminatingReplicas": 0,
+                "updatedReplicas": 1
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}

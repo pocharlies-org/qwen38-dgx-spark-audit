@@ -1,0 +1,18 @@
+compare http://spark2:8000 contra /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/e2-1.json (suelo de ruido /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/e2-2.json)
+  short0: diverge@23
+  short1: diverge@20 suelo@19
+  short2: diverge@11 suelo@11
+  long-chunked-prefill: diverge@7 suelo@7 frio/caliente@62
+  cache-warm: diverge@43 suelo@7
+  cache-cold: diverge@7 suelo@7 frio/caliente@62
+  prefix-cache-turn2: diverge@12 suelo@5
+  mixed-c8-0: diverge@15 suelo@27
+  mixed-c8-1: diverge@27 suelo@29
+  mixed-c8-2: diverge@27 suelo@15
+  mixed-c8-3: diverge@49 suelo@79
+  mixed-c8-4: diverge@87 suelo@87
+  mixed-c8-5: diverge@15 suelo@15
+  mixed-c8-6: diverge@16 suelo@16
+  mixed-c8-7: diverge@49 suelo@79
+# escrito /home/user/bench-results/dgx-847/mtp/definitivo/gdn-mix/capturas/B2-r2-vs-e2.json
+RESULTADO: sin sospechas de corrupcion

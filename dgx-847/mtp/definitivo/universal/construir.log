@@ -1,0 +1,66 @@
+== dgx1 2026-10-14T18:11:00+02:00 | fuente /home/dibanerz/.cache/huggingface/hub/models--ursuciprian--Qwen3.8-Flash-Next-NVFP4-GDN-MSE/snapshots/16c9bd54788d12390838a65ce4a4ecda97fa5f1d/.
+== plan (check, sin escribir nada)
+  model-00034-of-00036.safetensors: 4,845,321,352 bytes de salida
+  model-00035-of-00036.safetensors: 2,467,065,040 bytes de salida
+  vista: 119,445,280,392 reescritos + 9,669,968 copiados (1 shards) = 111.3 GiB
+== disco: 119445280392 bytes nuevos (pico 127445280392) | libres ahora 348 GB de 982 -> tras escribir 220 GB libres, uso 77%
+== convert --universal
+AVISO (config distinta de la que DGX-780 esperaba): full_attention_interval: esperado 4, visto None
+AVISO (config distinta de la que DGX-780 esperaba): ple_embedding_dtype: esperado 'float8_e4m3fn', visto 'nvfp4'
+relleno: 151337 tensores {'ab': 144, 'conv': 36, 'expert_down': 50176, 'expert_in': 100352, 'kv': 50, 'out': 72, 'qkv': 72, 'shared_down': 97, 'shared_in': 194, 'vhead': 72, 'z': 72}
+PLE: 0 capas, 0 shards descuantizados, 0 escalas por shard descartadas
+  model.language_model.layers.1: filas 320001536 -> 320001792 (divisor 128->384), por rango 106667264, shards de 2500014 en la imagen vs 2500012 en el checkpoint (los QWEN_TP3_PLE_SHARD_SKIP los descarta y manda las filas al NVMe)
+config.json (text_config): {'num_key_value_heads': 6, 'linear_num_key_heads': 24, 'linear_num_value_heads': 72, 'shared_expert_intermediate_size': 768, 'moe_intermediate_size': 768, 'vocab_size': 248320, 'make_ngram_vocab_size_divisible_by': 384, 'ple_embedding_dtype': 'nvfp4'}
+  universal model.language_model.layers.1: PLE NVFP4 128 partes de 2500012 -> 2500014 filas (tabla 320,001,536 -> 320,001,792, relleno 256 al final, divisor 384); vocabulario 248320 intacto; reescribe 17 ficheros
+  model-00001-of-00036.safetensors: 5,097,976,280 bytes sha256=1d1fd97d5e9cbaf6
+  model-00002-of-00036.safetensors: 1,800,012,688 bytes sha256=8c9319dfc8d0a66c
+  model-00003-of-00036.safetensors: 1,764,827,728 bytes sha256=80a9f23985625496
+  model-00004-of-00036.safetensors: 5,097,980,600 bytes sha256=91778636647c1108
+  model-00005-of-00036.safetensors: 1,800,012,688 bytes sha256=91a218c100adc4e1
+  model-00006-of-00036.safetensors: 5,097,980,600 bytes sha256=000da1765939f442
+  model-00007-of-00036.safetensors: 1,800,012,688 bytes sha256=ef4ee39df9374443
+  model-00008-of-00036.safetensors: 5,097,992,696 bytes sha256=b82fe3c33165204a
+  model-00009-of-00036.safetensors: 1,800,012,688 bytes sha256=e28a18e5492e31b5
+  model-00010-of-00036.safetensors: 5,097,994,424 bytes sha256=4b8866082082b1a1
+  model-00011-of-00036.safetensors: 1,800,012,688 bytes sha256=3847a7c365c2e94d
+  model-00012-of-00036.safetensors: 5,097,994,424 bytes sha256=e46f908908165661
+  model-00013-of-00036.safetensors: 1,800,012,688 bytes sha256=c01733c5e6337caf
+  model-00014-of-00036.safetensors: 5,097,994,424 bytes sha256=756327f4a8447c02
+  model-00015-of-00036.safetensors: 1,800,012,688 bytes sha256=69b4ffc58af76217
+  model-00016-of-00036.safetensors: 5,097,994,424 bytes sha256=b7139661f1cab0ff
+  model-00017-of-00036.safetensors: 1,800,012,688 bytes sha256=c174f01425997c4f
+  model-00018-of-00036.safetensors: 5,097,994,424 bytes sha256=282a05fa4e194a73
+  model-00019-of-00036.safetensors: 1,800,012,688 bytes sha256=c81be56e00dfe146
+  model-00020-of-00036.safetensors: 5,097,994,424 bytes sha256=2a89d8a6808bf73f
+  model-00021-of-00036.safetensors: 1,800,012,688 bytes sha256=958ca715cf0f738e
+  model-00022-of-00036.safetensors: 5,097,994,424 bytes sha256=d8efb64748055078
+  model-00023-of-00036.safetensors: 1,800,012,688 bytes sha256=339c3c2fefb7eb08
+  model-00024-of-00036.safetensors: 5,097,994,424 bytes sha256=1f274c84950fbe73
+  model-00025-of-00036.safetensors: 1,800,012,688 bytes sha256=fe4dbb8cc1437717
+  model-00026-of-00036.safetensors: 5,097,994,424 bytes sha256=18128abab11d1b57
+  model-00027-of-00036.safetensors: 1,800,012,688 bytes sha256=2c1a7922eeca5354
+  model-00028-of-00036.safetensors: 5,097,994,424 bytes sha256=5ed2c20f2cb0f0ad
+  model-00029-of-00036.safetensors: 1,800,012,688 bytes sha256=accff978a7dff001
+  model-00030-of-00036.safetensors: 5,097,994,424 bytes sha256=caea1277e8e6c364
+  model-00031-of-00036.safetensors: 1,800,012,688 bytes sha256=8446b986baa06b7b
+  model-00032-of-00036.safetensors: 5,097,994,424 bytes sha256=c5b8770dab12ae82
+  model-00033-of-00036.safetensors: 1,800,012,688 bytes sha256=471a311dc0368a90
+  model-00034-of-00036.safetensors: 4,845,321,352 bytes sha256=3fe79f56794a86d9
+  model-00035-of-00036.safetensors: 2,467,065,040 bytes sha256=2d678a8ee451b45c
+  model-00036-of-00036.safetensors: 9,669,968 bytes enlazado sha256=72c76c2b5249adfe
+index: 301838 tensores, 119,414,406,872 bytes tiles, 0 escalas PLE fuera
+== verify --universal (re-troceo byte a byte contra el ORIGINAL y divisibilidad 1/2/3)
+AVISO (config distinta de la que DGX-780 esperaba): full_attention_interval: esperado 4, visto None
+AVISO (config distinta de la que DGX-780 esperaba): ple_embedding_dtype: esperado 'float8_e4m3fn', visto 'nvfp4'
+relleno: 151337 tensores {'ab': 144, 'conv': 36, 'expert_down': 50176, 'expert_in': 100352, 'kv': 50, 'out': 72, 'qkv': 72, 'shared_down': 97, 'shared_in': 194, 'vhead': 72, 'z': 72}
+PLE: 0 capas, 0 shards descuantizados, 0 escalas por shard descartadas
+  model.language_model.layers.1: filas 320001536 -> 320001792 (divisor 128->384), por rango 106667264, shards de 2500014 en la imagen vs 2500012 en el checkpoint (los QWEN_TP3_PLE_SHARD_SKIP los descarta y manda las filas al NVMe)
+config.json (text_config): {'num_key_value_heads': 6, 'linear_num_key_heads': 24, 'linear_num_value_heads': 72, 'shared_expert_intermediate_size': 768, 'moe_intermediate_size': 768, 'vocab_size': 248320, 'make_ngram_vocab_size_divisible_by': 384, 'ple_embedding_dtype': 'nvfp4'}
+  universal model.language_model.layers.1: PLE NVFP4 128 partes de 2500012 -> 2500014 filas (tabla 320,001,536 -> 320,001,792, relleno 256 al final, divisor 384); vocabulario 248320 intacto; reescribe 17 ficheros
+verify pasa=True errores=0 avisos=[]
+== copia MXFP8: reutilizo /home/dibanerz/.cache/huggingface/qwen38fn-mtp-ursu-mxfp8-tp3 (sus formas son las GLOBALES padreadas: vale para 1, 2 y 3)
+== pruebas
+  config: OK {'num_key_value_heads': 6, 'linear_num_key_heads': 24, 'linear_num_value_heads': 72, 'shared_expert_intermediate_size': 768, 'moe_intermediate_size': 768, 'vocab_size': 248320, 'make_ngram_vocab_size_divisible_by': 384, 'ple_embedding_dtype': 'nvfp4'}
+Traceback (most recent call last):
+  File "<stdin>", line 24, in <module>
+KeyError: 'model.language_model.layers.1.ple.ple_embedding.ngram_embedding.weight_scale_2'
