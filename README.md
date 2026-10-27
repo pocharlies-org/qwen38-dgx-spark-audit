@@ -1,3 +1,17 @@
+---
+pretty_name: Qwen3.8-Flash-Next on 3x DGX Spark — speed audit
+license: mit
+tags:
+  - benchmark
+  - dgx-spark
+  - vllm
+  - qwen
+  - inference
+language:
+  - en
+  - es
+---
+
 # Qwen3.8-Flash-Next on 3× NVIDIA DGX Spark — speed audit & recipe comparison
 
 Raw data, scripts and logs from a speed audit of our resident LLM (Qwen3.8-Flash-Next,
